@@ -1,0 +1,25 @@
+{
+  "name": "siperiayu-be",
+  "version": "1.0.0",
+  "description": "��#\u0000 \u0000s\u0000i\u0000p\u0000e\u0000r\u0000i\u0000a\u0000y\u0000u\u0000-\u0000b\u0000e\u0000\r\u0000 \u0000",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yahdiindrawan/siperiayu-be.git"
+  },
+  "author": "Yahdi Indrawan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yahdiindrawan/siperiayu-be/issues"
+  },
+  "homepage": "https://github.com/yahdiindrawan/siperiayu-be#readme",
+  "dependencies": {
+    "express": "^4.19.2",
+    "morgan": "^1.10.0",
+    "nodemon": "^3.1.3"
+  }
+}
