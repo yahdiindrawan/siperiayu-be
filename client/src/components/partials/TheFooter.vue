@@ -1,7 +1,6 @@
 <template>
-    <footer class="bg-white drop-shadow-[35px_0px_20px_rgba(0,0,0,0.2)]">
+    <footer class="bg-white drop-shadow-[35px_0px_5px_rgba(0,0,0,0.2)]">
         <div class="pt-8 px-12">
-
             <div class="max-w-7xl border-b-2 border-gray-200 mx-auto grid grid-cols-12 gap-x-6 space-x-4">
                 <div class="col-span-4 space-y-4">
                     <TheLogo/>
@@ -37,13 +36,13 @@
                 <div class="col-span-2 p-4">
                     <h5 class="text-xl font-bold text-primary text-center">Media Sosial</h5>
                     <div class="flex justify-around py-4 text-lg mx-auto">
-                        <a href="https://www.instagram.com/dpupr.indramayu/" target="_blank" class="flex items-center">
+                        <a href="https://www.instagram.com/dpupr.indramayu/" target="_blank" class="flex items-center transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-100 duration-300">
                             <img src="@/assets/icons/instagram.png" alt="Instagram Logo" class="h-11 w-11">
                         </a>
-                        <a href="https://www.facebook.com/dinaspuprindramayu" target="_blank" class="flex items-center">
+                        <a href="https://www.facebook.com/dinaspuprindramayu" target="_blank" class="flex items-center transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-100 duration-300">
                             <img src="@/assets/icons/facebook.png" alt="Facebook Logo" class="h-9 w-9">
                         </a>
-                        <a href="/" class="flex items-center">
+                        <a href="/" class="flex items-center transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-100 duration-300">
                             <img src="@/assets/icons/twitter.png" alt="Twitter Logo" class="h-9 w-9">
                         </a>
                     </div>

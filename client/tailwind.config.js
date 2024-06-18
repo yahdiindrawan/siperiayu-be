@@ -13,7 +13,7 @@ export default {
       colors: {
         'primary': '#BB2727',
         'secondary': '#ED2828',
-        'brown': '#F8F6F1'
+        'beige': '#F8F6F1'
       },
       backgroundImage: {
         'header-pattern': "url('./src/assets/backgrounds/header-pattern.svg')",

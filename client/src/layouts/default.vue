@@ -1,7 +1,7 @@
 <template>
     <div>
         <TheHeader/>
-        <main class="my-8">
+        <main>
             <slot/>
         </main>
         <TheFooter/>
