@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen">
+  <div class="">
     <!-- Hero Section -->
      <section class="max-w-7xl mx-auto">
         <div class="grid grid-cols-2 gap-4 content-center">
@@ -20,5 +20,9 @@
           </div>
         </div>
      </section>
+     <!-- Section Kalkulator -->
+      <section id="kalkulator">
+        <div>Test</div>
+      </section>
   </div>
 </template>
