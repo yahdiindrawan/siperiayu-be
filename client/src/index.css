@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* @layer base {
+    @font-face {
+        font-family: "Glacial";
+        src: url("./assets/fonts/GlacialIndifference-Regular.otf") format("otf"),
+          url("./assets/fonts/GlacialIndifference-Bold.otf") format("otf");
+      }
+} */

@@ -1,23 +1,18 @@
 <template>
-  <h1>{{dataMessage?.message}}</h1>
+  <div id="app">
+    <component :is="this.$route.meta.layout || 'div'">
+      <router-view :key="$route.fullpath" />
+    </component>
+  </div>
 </template>
 
-<script setup>
-import axios from 'axios';
-import { ref, onMounted } from 'vue';
-
-const dataMessage = ref(null)
-
-const getMessage = async () => {
-  try {
-    const { data } = await axios.get("http://localhost:3000/")
-    dataMessage.value = data;
-  } catch (error) {
-    console.log(error)
-  }
+<script>
+export default {
+  name: "App",
+  data() {
+    return {
+      layout: "div",
+    };
+  },
 };
-
-onMounted(() => {
-  getMessage();
-});
 </script>
