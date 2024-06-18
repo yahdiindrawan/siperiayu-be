@@ -1,12 +1,12 @@
 <template>
     <footer class="bg-white drop-shadow-[35px_0px_5px_rgba(0,0,0,0.2)]">
-        <div class="pt-8 px-12">
-            <div class="max-w-7xl border-b-2 border-gray-200 mx-auto grid grid-cols-12 gap-x-6 space-x-4">
-                <div class="col-span-4 space-y-4">
+        <div class="pt-4 px-8 lg:pt-8 lg:px-12">
+            <div class="max-w-7xl border-b-2 border-gray-200 mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-x-6 lg:space-x-2 xl:space-x-4">
+                <div class="py-2 lg:col-span-4 space-y-2 lg:space-y-4">
                     <TheLogo/>
-                    <p class="font-sans">Simulasi Perhitungan Retribusi <br> Persetujuan Bangunan Gedung (PBG) <br> Kabupaten Indramayu</p>
+                    <p class="font-sans">Simulasi Perhitungan Retribusi <br class="hidden lg:block"> Persetujuan Bangunan Gedung (PBG) <br class="hidden lg:block"> Kabupaten Indramayu</p>
                 </div>
-                <div class="col-span-3 p-4">
+                <div class="lg:col-span-3 py-2 xl:p-4">
                     <h5 class="text-xl font-bold text-primary">Tautan</h5>
                     <div class="py-4 text-lg">
                         <router-link to="/" class="flex items-center">
@@ -23,7 +23,7 @@
                         </router-link>
                     </div>
                 </div>
-                <div class="col-span-3 p-4">
+                <div class="lg:col-span-3 py-2 xl:p-4">
                     <h5 class="text-xl font-bold text-primary">Kontak</h5>
                     <div class="py-4 text-lg">
                         <p>Jl. Pahlawan No. 61, 
@@ -33,9 +33,9 @@
                         </p>
                     </div>
                 </div>
-                <div class="col-span-2 p-4">
-                    <h5 class="text-xl font-bold text-primary text-center">Media Sosial</h5>
-                    <div class="flex justify-around py-4 text-lg mx-auto">
+                <div class="lg:col-span-2 py-2 xl:p-4">
+                    <h5 class="text-xl font-bold text-primary lg:text-center">Media Sosial</h5>
+                    <div class="flex space-x-2 lg:justify-around py-4 text-lg mx-auto">
                         <a href="https://www.instagram.com/dpupr.indramayu/" target="_blank" class="flex items-center transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-100 duration-300">
                             <img src="@/assets/icons/instagram.png" alt="Instagram Logo" class="h-11 w-11">
                         </a>
@@ -49,7 +49,7 @@
                 </div>
             </div>
             <div class="py-6">
-                <p class="text-center">&copy; 2024 Dinas Pekerjaan Umum dan Penataan Ruang Kabupaten Indramayu</p>
+                <p class="text-sm lg:text-base text-center">&copy; 2024 Dinas Pekerjaan Umum dan Penataan Ruang Kabupaten Indramayu</p>
             </div>
         </div>
         <div class="max-w-screen">
