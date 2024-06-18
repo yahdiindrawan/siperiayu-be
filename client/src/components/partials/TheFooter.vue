@@ -53,7 +53,7 @@
                 <p class="text-center">&copy; 2024 Dinas Pekerjaan Umum dan Penataan Ruang Kabupaten Indramayu</p>
             </div>
         </div>
-        <div class="w-screen">
+        <div class="max-w-screen">
             <img src="@/assets/icons/building.gif" alt="Animation">
         </div>
     </footer>

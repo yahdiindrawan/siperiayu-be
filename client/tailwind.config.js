@@ -11,7 +11,8 @@ export default {
         sans: ['"Glacial Indiff"']
       },
       colors: {
-        'primary': '#BB2727'
+        'primary': '#BB2727',
+        'secondary': '#ED2828'
       }
     },
   },
