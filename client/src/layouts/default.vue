@@ -1,6 +1,7 @@
 <template>
     <div>
-        <TheHeader/>
+        <!-- <TheHeader/> -->
+        <TheNavbar/>
         <main>
             <slot/>
         </main>
@@ -10,11 +11,13 @@
 
 <script>
 import TheHeader from "@/components/partials/TheHeader.vue";
+import TheNavbar from "@/components/partials/TheNavbar.vue";
 import TheFooter from "@/components/partials/TheFooter.vue";
 export default {
     components: {
-    TheHeader,
-    TheFooter
+        TheHeader,
+        TheNavbar,
+        TheFooter
 }
 }
 </script>
