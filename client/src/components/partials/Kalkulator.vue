@@ -1,6 +1,6 @@
 <template>
     <section id="kalkulator" class="bg-beige">
-        <div class="max-w-7xl mx-auto py-12 px-8">
+        <div class="max-w-7xl mx-auto py-8 md:py-12 px-4 md:px-8">
           <div class="flex">
             <h2 class="text-primary font-bold text-3xl flex">
               <p class="underline underline-offset-8 decoration-black">K</p>
@@ -8,11 +8,11 @@
             </h2>
           </div>
           <p class="pt-2">Simulasi perhitungan retribusi PBG</p>
-          <div class="space-y-8 py-4">
+          <div class="py-4">
             <!-- Fungsi Bangunan -->
-            <div class="bg-white rounded-lg p-2">
+            <div class="hidden md:block bg-white rounded-lg p-2">
               <div class="p-4">
-                <table class="hidden md:block min-w-full border-2 border-gray-200 rounded-lg p-4">
+                <table class="min-w-full border-2 border-gray-200 rounded-lg p-4">
                   <tr>
                     <td colspan="3" rowspan="2" scope="col" class="uppercase border-2 border-gray-200 py-3.5 pl-4 pr-3 text-center text-sm font-semibold text-gray-900 sm:pl-0"></td>
                     <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">Fungsi Bangunan</th>
@@ -83,6 +83,95 @@
                   </tr>
                 </table>
               </div>
+            </div>
+
+            <div class="md:hidden bg-white rounded-lg p-2">
+              <div class="p-4 space-y-3">
+                  <div class="min-w-full border-2 border-gray-200 rounded-lg divide-y-2">
+                    <div class="py-3 px-4 text-gray-900 text-sm space-y-3">
+                      <h6 class="uppercase font-semibold">Fungsi Bangunan</h6>
+                      <select v-model="form.fungsiBangunan" @change="changeFungsiBangunan" id="location" name="location" class="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-gray-600 sm:text-sm sm:leading-6">
+                        <option :value="null">- Pilih Fungsi Bangunan -</option>
+                        <option v-for="(list, index) in dataFungsiBangunan" :key="index" :value="list" class="py-4">
+                          {{list.name}}
+                        </option>
+                      </select>
+                    </div>
+                    <div class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2">
+                      <h6 class="uppercase font-semibold">Indeks</h6>
+                      <p>{{ form.fungsiBangunan?.value || 0 }}</p>
+                    </div>
+                    <div class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2">
+                      <h6 class="uppercase font-semibold">Nilai (A)</h6>
+                      <p>{{ form.valueFungsiBangunan || 0 }}</p>
+                    </div>
+                  </div>
+
+                  <div v-for="(data, index) in dataClasifications" :key="index" class="min-w-full border-2 border-gray-200 rounded-lg divide-y-2">
+                    <div class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2">
+                      <h6 class="uppercase font-semibold">Klasifikasi</h6>
+                      <p>{{ data.clasification}}</p>
+                    </div>
+                    <div class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2">
+                      <h6 class="uppercase font-semibold">Bobot</h6>
+                      <p>{{ data.weight}}</p>
+                    </div>
+                    <div class="py-3 px-4 text-gray-900 text-sm space-y-3">
+                      <h6 class="uppercase font-semibold">Parameter</h6>
+                      <select v-model="dataClasifications[index].selectedParameter" @change="changeClassification(index)" id="location" name="location" class="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-gray-600 sm:text-sm sm:leading-6">
+                        <option :value="null">- Pilih {{ data.clasification }} -</option>
+                        <option v-for="(list, index) in data.parameters" :key="index" :value="list" class="py-4">
+                          {{list.name}}
+                        </option>
+                      </select>
+                    </div>
+                    <div class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2">
+                      <h6 class="uppercase font-semibold">Indeks</h6>
+                      <p>{{ dataClasifications[index].selectedParameter?.value || 0 }}</p>
+                    </div>
+                    <div class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2">
+                      <h6 class="uppercase font-semibold">Nilai (B)</h6>
+                      <p>{{ dataClasifications[index].value || 0 }}</p>
+                    </div>
+                  </div>
+
+                  <div class="min-w-full border-2 border-gray-200 rounded-lg divide-y-2">
+                    <div class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2">
+                      <h6 class="uppercase font-semibold">Jumlah (B)</h6>
+                      <p>{{ form.valueClassification || 0.00 }}</p>
+                    </div>
+                  </div>
+
+                  <div class="min-w-full border-2 border-gray-200 rounded-lg divide-y-2">
+                    <div class="py-3 px-4 text-gray-900 text-sm space-y-3">
+                      <h6 class="uppercase font-semibold">Faktor Kepemilikan</h6>
+                      <select v-model="form.faktorKepemilikan" @change="changeFaktorKepemilikan" id="location" name="location" class="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-gray-600 sm:text-sm sm:leading-6">
+                        <option :value="null">- Pilih Faktor Kepemilikan -</option>
+                        <option v-for="(list, index) in dataFaktorKepemilikan" :key="index" :value="list" class="py-4">
+                          {{list.name}}
+                        </option>
+                      </select>
+                    </div>
+                    <div class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2">
+                      <h6 class="uppercase font-semibold">Indeks</h6>
+                      <p>{{ form.faktorKepemilikan?.value || 0 }}</p>
+                    </div>
+                    <div class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2">
+                      <h6 class="uppercase font-semibold">Nilai (C)</h6>
+                      <p>{{ form.valueFaktorKepemilikan || 0 }}</p>
+                    </div>
+                  </div>
+
+                  <div class="min-w-full border-2 border-gray-200 rounded-lg divide-y-2">
+                    <div class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2">
+                      <h6 class="uppercase font-semibold">Indeks Terintegrasi (IT) = A x B x C</h6>
+                      <p>{{ form.indeksTerintegrasi || 0.00 }}</p>
+                    </div>
+                  </div>
+                  
+
+                </div>
+
             </div>
 
           </div>
