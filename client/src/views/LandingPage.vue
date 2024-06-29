@@ -27,8 +27,9 @@
           <img src="@/assets/icons/building.gif" alt="Animation" class="bg-cover w-full">
       </div>
      </section>
+     <TheCalculator/>
      <!-- Section Kalkulator -->
-      <section id="kalkulator" class="bg-beige">
+      <!-- <section id="kalkulator" class="bg-beige">
         <div class="max-w-7xl mx-auto py-12">
           <div class="flex">
             <h2 class="text-primary font-bold text-3xl flex">
@@ -38,7 +39,7 @@
           </div>
           <p class="pt-2">Simulasi perhitungan retribusi PBG</p>
           <div class="space-y-8 py-4">
-            <!-- Fungsi Bangunan -->
+            
             <div class="bg-white rounded-lg p-2">
               <div class="p-4">
                 <table class="min-w-full border-2 border-gray-200 rounded-lg p-4">
@@ -131,7 +132,7 @@
               </div>
             </div>
 
-            <!-- Luas Bangunan -->
+            
             <div class="bg-white rounded-lg p-2">
               <div class="p-4">
                 <table class="min-w-full border-2 border-gray-200 rounded-lg p-4">
@@ -181,7 +182,7 @@
               </div>
             </div>
 
-            <!-- Jenis Prasarana -->
+            
             <div class="bg-white rounded-lg p-2">
               <div class="p-4">
                 <table class="min-w-full border-2 border-gray-200 rounded-lg p-4">
@@ -303,13 +304,15 @@
 
           </div>
         </div>
-      </section>
+      </section> -->
   </div>
 </template>
 
-<script setup>
-const people = [
-  { name: 'Lindsay Walton', title: 'Front-end Developer', email: 'lindsay.walton@example.com', role: 'Member' },
-  // More people...
-]
+<script>
+import TheCalculator from '@/components/partials/Kalkulator.vue'
+export default {
+  components: {
+    TheCalculator
+  }
+}
 </script>
