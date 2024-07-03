@@ -368,7 +368,7 @@ const formIndeksKegiatan = reactive({
   indeksLokalitas: 0.5,
   indeksKegiatan: null,
   valueIndeksKegiatan: null,
-  shst: 4870000,
+  shst: 5350000,
   jumlah: 0
 })
 
