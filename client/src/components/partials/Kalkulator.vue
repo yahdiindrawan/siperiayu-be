@@ -9,7 +9,7 @@
           </div>
           <p class="pt-2">Simulasi perhitungan retribusi PBG</p>
           <div class="py-4">
-            <!-- Fungsi Bangunan -->
+            <!-- Desktop Display -->
             <div class="space-y-6 hidden md:block">
               <div class="bg-white rounded-lg p-2">
                 <div class="p-4">
@@ -85,6 +85,7 @@
                   </table>
                 </div>
               </div>
+
               <div class="bg-white rounded-lg p-2">
                 <div class="p-4">
                   <table class="min-w-full border-2 border-gray-200 rounded-lg p-4">
@@ -111,33 +112,69 @@
                           </option>
                         </select>
                       </td>
-                      <td scope="col" class="px-3 border-2 border-gray-200 py-2.5 text-center text-sm text-gray-900">
-                        <div class="flex justify-between">
-                          <p>Rp.</p>
-                          <p>{{ toCurrency(formIndeksKegiatan.shst) }}</p>
-                        </div>
-                      </td>
-                      <td scope="col" class="px-3 border-2 border-gray-200 py-2.5 text-center text-sm text-gray-900">
-                        <div class="flex justify-between">
-                          <p>Rp.</p>
-                          <p>{{ toCurrency(formIndeksKegiatan.jumlah) || 0.000 }}</p>
-                        </div>
-                      </td>
+                      <td scope="col" class="px-3 border-2 border-gray-200 py-2.5 text-right text-sm text-gray-900">{{ toCurrency(formIndeksKegiatan.shst) }}</td>
+                      <td scope="col" class="px-3 border-2 border-gray-200 py-2.5 text-right text-sm text-gray-900">{{ toCurrency(formIndeksKegiatan.jumlah) || 0.000 }}</td>
                     </tr>
                     <tr>
                       <th colspan="4" scope="col" class="px-8 border-2 border-gray-200 py-3.5 text-right text-sm font-semibold text-gray-900">Jumlah Retribusi Bangunan Gedung</th>
-                      <th scope="col" class="px-3 border-2 border-gray-200 py-3.5 text-center text-sm text-gray-900">
-                        <div class="flex justify-between">
-                          <p>Rp.</p>
-                          <p>{{ toCurrency(formIndeksKegiatan.jumlah) || 0.000 }}</p>
-                        </div>
-                      </th>
+                      <th scope="col" class="px-3 border-2 border-gray-200 py-3.5 text-right text-sm text-gray-900">{{ toCurrency(formIndeksKegiatan.jumlah) || 0.000 }}</th>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+
+              <div class="bg-white rounded-lg p-2">
+                <div class="p-4">
+                  <table class="min-w-full border-2 border-gray-200 rounded-lg p-4">
+                    <tr>
+                      <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">No</th>
+                      <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">Jenis Prasarana</th>
+                      <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">Bangunan</th>
+                      <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">Satuan</th>
+                      <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">Harga Satuan Prasarana (HSPBG)</th>
+                      <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">Luas Prasarana Bangunan</th>
+                      <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">Nilai Retribusi</th>
+                    </tr>
+                    <template v-for="(prasarana, indexPrasarana) in dataPrasarana">
+                      <tr v-for="(data, index) in prasarana.data" :key="index">
+                        <!-- {{ prasarana.data.length }} -->
+                        <td v-if="index===0" :rowspan="prasarana.data.length" scope="col" class="px-3 border-2 border-gray-200 py-2.5 text-center text-sm text-gray-900">{{  indexPrasarana + 1 }}</td>
+                        <td v-if="index===0" :rowspan="prasarana.data.length" scope="col" class="px-3 border-2 border-gray-200 py-2.5 text-left text-sm text-gray-900">{{ prasarana.jenis }}</td>
+                        <td scope="col" class="px-3 border-2 border-gray-200 py-2.5 text-left text-sm text-gray-900">{{ data.bangunan }}</td>
+                        <td scope="col" class="px-3 border-2 border-gray-200 py-2.5 text-left text-sm text-gray-900">
+                          <span v-html="data.satuan"></span>
+                        </td>
+                        <td scope="col" class="px-3 border-2 border-gray-200 py-2.5 text-right text-sm text-gray-900">{{ toCurrency(data.hspbg) || 0.000 }}</td>
+                        <td scope="col" class="px-3 border-2 border-gray-200 py-2.5 text-left text-sm text-gray-900">
+                          <div class="mt-2 flex rounded-md shadow-sm">
+                            <input v-model="data.luasPrasarana" @change="updateNilaiRetribusiPrasarana(indexPrasarana, index)" type="number" name="company-website" id="company-website" class="block w-full px-4 min-w-0 flex-1 rounded-none rounded-l-3xl border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6" placeholder="" />
+                            <span v-html="data.satuanLuas" class="inline-flex bg-gray-200 items-center rounded-r-3xl border border-l-0 border-gray-300 px-3 text-gray-500 sm:text-sm"></span>
+                          </div>
+                        </td>
+                        <td scope="col" class="px-3 border-2 border-gray-200 py-2.5 text-right text-sm text-gray-900">{{ toCurrency(data.nilaiRetribusi) || 0.000 }}</td>
+                      </tr>
+                    </template>
+                    <tr>
+                      <th colspan="6" scope="col" class="px-8 border-2 border-gray-200 py-3.5 text-right text-sm font-semibold text-gray-900">Jumlah Retribusi Prasarana Bangunan Gedung</th>
+                      <th scope="col" class="px-3 border-2 border-gray-200 py-3.5 text-right text-sm text-gray-900">{{ toCurrency(form.jumlahRetribusiPrasarana) || 0.000 }}</th>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+
+              <div class="bg-white rounded-lg p-2">
+                <div class="p-4">
+                  <table class="min-w-full border-2 border-gray-200 rounded-lg p-4">
+                    <tr>
+                      <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-right text-sm font-semibold text-gray-900">TOTAL NILAI RETRIBUSI</th>
+                      <th scope="col" class="px-3 border-2 border-gray-200 py-3.5 text-left text-sm font-semibold text-gray-900">{{ toCurrency(form.jumlahRetribusiSeluruhnya) || 0.000 }}</th>
                     </tr>
                   </table>
                 </div>
               </div>
             </div>
 
+            <!-- Mobile Display -->
             <div class="md:hidden space-y-6">
               <div class="bg-white rounded-lg p-2">
                 <div class="p-4 space-y-3">
@@ -252,15 +289,13 @@
                       </div>
                       <div class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2">
                         <h6 class="uppercase font-semibold">SHST</h6>
-                        <div class="flex justify-between">
-                          <p class="pr-2">Rp</p>
+                        <div>
                           <p>{{ toCurrency(formIndeksKegiatan.shst) }}</p>
                         </div>
                       </div>
                       <div class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2">
                         <h6 class="uppercase font-semibold">Jumlah</h6>
-                        <div class="flex justify-between">
-                          <p class="pr-2">Rp</p>
+                        <div>
                           <p>{{ toCurrency(formIndeksKegiatan.jumlah) || 0.000 }}</p>
                         </div>
                       </div>
@@ -269,8 +304,7 @@
                     <div class="min-w-full border-2 border-gray-200 rounded-lg divide-y-2">
                       <div class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2">
                         <h6 class="uppercase font-semibold">Jumlah Retribusi Bangunan Gedung</h6>
-                        <div class="flex font-semibold justify-between">
-                          <p class="pr-2">Rp</p>
+                        <div class="font-semibold text-right">
                           <p>{{ toCurrency(formIndeksKegiatan.jumlah) || 0.000 }}</p>
                         </div>
                       </div>
@@ -353,6 +387,56 @@ const dataIndeksKegiatan = reactive([
   { name: 'Pelestarian Utama', value: 0.15 }
 ])
 
+const dataPrasarana = reactive([
+  {
+    jenis: 'Konstruksi pembatas/ penahan/pengaman',
+    data: [
+      {
+        bangunan: 'Pagar',
+        satuan: 'M',
+        hspbg: 25200,
+        luasPrasarana: 0,
+        satuanLuas: 'M<sup>2</sup>',
+        nilaiRetribusi: 0
+      }
+    ]
+  },
+  {
+    jenis: 'Konstruksi perkerasan aspal, beton',
+    data: [
+      {
+        bangunan: '',
+        satuan: 'M<sup>2</sup>',
+        hspbg: 2300,
+        luasPrasarana: 0,
+        satuanLuas: 'M<sup>2</sup>',
+        nilaiRetribusi: 0
+      }
+    ],
+  },
+  {
+    jenis: 'Konstruksi reklame/ papan nama',
+    data: [
+      {
+        bangunan: 'Billboard papan iklan',
+        satuan: 'Unit dan penambahannya (Luas maksimum 12 m .Apabila ada penambahan luas unit, dikenakan biaya tambahan Rp 500.000,00/m )',
+        hspbg: 6600000,
+        luasPrasarana: 0,
+        satuanLuas: 'Unit',
+        nilaiRetribusi: 0
+      },
+      {
+        bangunan: 'Papan nama (berdiri sendiri atau berupa tembok pagar)',
+        satuan: 'Unit dan penambahannya (Luas maksimum 2 m<sup>2</sup>. Apabila ada penambahan luas unit, dikenakan biaya tambahan Rp 150.000,00/m )',
+        hspbg: 306000,
+        luasPrasarana: 0,
+        satuanLuas: 'Unit',
+        nilaiRetribusi: 0
+      }
+    ]
+  }
+])
+
 const form = reactive({
   fungsiBangunan: null,
   valueFungsiBangunan: null,
@@ -360,7 +444,9 @@ const form = reactive({
   valueClassification: null,
   faktorKepemilikan: null,
   valueFaktorKepemilikan: null,
-  indeksTerintegrasi: null
+  indeksTerintegrasi: null,
+  jumlahRetribusiPrasarana: 0,
+  jumlahRetribusiSeluruhnya: 0
 })
 
 const formIndeksKegiatan = reactive({
@@ -399,8 +485,23 @@ const updateJumlahLuasBangunan = () => {
   formIndeksKegiatan.jumlah = (form.indeksTerintegrasi * formIndeksKegiatan.luasBangunan * (formIndeksKegiatan.indeksLokalitas/100) * formIndeksKegiatan.valueIndeksKegiatan * formIndeksKegiatan.shst).toFixed(2)
 }
 
+const updateNilaiRetribusiPrasarana = (indexPrasarana, index) => {
+  dataPrasarana[indexPrasarana].data[index].nilaiRetribusi = dataPrasarana[indexPrasarana].data[index].hspbg * dataPrasarana[indexPrasarana].data[index].luasPrasarana
+  form.jumlahRetribusiPrasarana = dataPrasarana.reduce((total, prasarana) => {
+    return total + prasarana.data.reduce((subtotal, item) => {
+      return subtotal + item.nilaiRetribusi;
+    }, 0);
+  }, 0);
+  updateJumlahRetribusiSeluruhnya()
+}
+
+const updateJumlahRetribusiSeluruhnya = () => {
+  form.jumlahRetribusiSeluruhnya = parseFloat(formIndeksKegiatan.jumlah) + form.jumlahRetribusiPrasarana
+}
+
 const updatePerhitungan = () => {
   updateIndeksTerintegrasi()
   updateJumlahLuasBangunan()
+  updateJumlahRetribusiSeluruhnya()
 }
 </script>
