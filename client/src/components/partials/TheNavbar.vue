@@ -29,10 +29,10 @@
                     <img src="@/assets/icons/calculator.svg" alt="Calculator Icon" class="mr-2 h-5 md:h-6">
                     Kalkulator
                 </router-link>
-                <router-link to="/" class="flex items-center text-sm md:text-base hover:opacity-90 hover:text-primary transition ease-in-out delay-150 hover:-translate-y-0.5 hover:scale-100 duration-300">
+                <a href="https://wa.me/+6287841401022" target="_blank" class="flex items-center text-sm md:text-base hover:opacity-90 hover:text-primary transition ease-in-out delay-150 hover:-translate-y-0.5 hover:scale-100 duration-300">
                     <img src="@/assets/icons/phone.svg" alt="Phone Icon" class="mr-2 h-5 md:h-6">
                     Hubungi Kami
-                </router-link>
+                </a>
             </div>
           <!-- <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
             <button type="button" class="relative rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
@@ -49,7 +49,7 @@
           <!-- Current: "bg-indigo-50 border-indigo-500 text-indigo-700", Default: "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700" -->
           <router-link to="#beranda" class="block border-l-4 border-primary py-2 pl-3 pr-4 text-base font-medium text-primary">Beranda</router-link>
           <router-link to="#kalkulator" @click.native="open = !open" class="block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700">Kalkulator</router-link>
-          <router-link href="#" class="block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700">Hubungi Kami</router-link>
+          <a href="https://wa.me/+6287841401022" target="_blank" class="block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700">Hubungi Kami</a>
         </div>
       </DisclosurePanel>
     </Disclosure>
