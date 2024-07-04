@@ -313,6 +313,56 @@
                   </div>
   
               </div>
+
+              <div class="bg-white rounded-lg p-2">
+                <div class="p-4 space-y-3">
+                  <template v-for="(prasarana, indexPrasarana) in dataPrasarana">
+                    <div v-for="(data, index) in prasarana.data" :key="index" class="min-w-full border-2 border-gray-200 rounded-lg divide-y-2">
+                      <div class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2">
+                        <h6 class="uppercase font-semibold">Jenis Prasarana</h6>
+                        <p >{{ prasarana.jenis }}</p>
+                      </div>
+                      <div class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2">
+                        <h6 class="uppercase font-semibold">Bangunan</h6>
+                        <p>{{data.bangunan}}</p>
+                      </div>
+                      <div class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2">
+                        <h6 class="uppercase font-semibold">Satuan</h6>
+                        <span v-html="data.satuan"></span>
+                      </div>
+                      <div class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2">
+                        <h6 class="uppercase font-semibold">Harga Satuan Prasarana (HSPBG)</h6>
+                        <p>{{ toCurrency(data.hspbg) || 0.000 }}</p>
+                      </div>
+                      <div class="py-3 px-4 text-gray-900 text-sm space-y-3">
+                        <h6 class="uppercase font-semibold">Luas Prasarana Bangunan</h6>
+                        <div class="mt-2 flex rounded-md shadow-sm">
+                          <input v-model="data.luasPrasarana" @change="updateNilaiRetribusiPrasarana(indexPrasarana, index)" type="number" name="company-website" id="company-website" class="block w-full px-4 min-w-0 flex-1 rounded-none rounded-l-3xl border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6" placeholder="" />
+                            <span v-html="data.satuanLuas" class="inline-flex bg-gray-200 items-center rounded-r-3xl border border-l-0 border-gray-300 px-3 text-gray-500 sm:text-sm"></span>
+                        </div>
+                      </div>
+                      <div class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2">
+                        <h6 class="uppercase font-semibold">Nilai Retribusi</h6>
+                        <p>{{ toCurrency(data.nilaiRetribusi) || 0.000 }}</p>
+                      </div>
+                    </div>
+                  </template>
+                </div>
+              </div>
+
+              <div class="bg-white rounded-lg p-2">
+                <div class="p-4 space-y-3">
+                  <div class="min-w-full border-2 border-gray-200 rounded-lg divide-y-2">
+                      <div class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2">
+                        <h6 class="uppercase font-semibold">TOTAL NILAI RETRIBUSI</h6>
+                        <div class="font-semibold text-right">
+                          <p>{{ toCurrency(form.jumlahRetribusiSeluruhnya) || 0.000 }}</p>
+                        </div>
+                      </div>
+                    </div>                             
+                </div>
+              </div>
+
             </div>
 
           </div>
