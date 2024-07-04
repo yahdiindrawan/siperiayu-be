@@ -7,7 +7,7 @@
                 <img src="@/assets/logos/logo-siperiayu.svg" alt="Logo Siperiayu" class="h-14">
             </div>
             <nav class="flex space-x-12">
-                <router-link to="#beranda" class="flex items-center hover:opacity-90 hover:text-primary transition ease-in-out delay-150 hover:-translate-y-0.5 hover:scale-100 duration-300">
+                <router-link to="#" class="flex items-center hover:opacity-90 hover:text-primary transition ease-in-out delay-150 hover:-translate-y-0.5 hover:scale-100 duration-300">
                     <img src="@/assets/icons/home.svg" alt="Home Icon" class="mr-2 h-6">
                     Beranda
                 </router-link>

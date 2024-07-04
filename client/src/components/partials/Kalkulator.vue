@@ -92,8 +92,8 @@
                     <tr>
                       <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">Luas Bangunan</th>
                       <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">Indeks Lokalitas</th>
-                      <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">Indeks Kegiatan</th>
-                      <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">SHST</th>
+                      <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">Indeks BG Terbangun</th>
+                      <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">SHST*</th>
                       <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">Jumlah</th>
                     </tr>
                     <tr>
@@ -105,8 +105,8 @@
                       </td>
                       <td scope="col" class="px-3 border-2 border-gray-200 py-2.5 text-center text-sm text-gray-900">{{ formIndeksKegiatan.indeksLokalitas }} %</td>
                       <td scope="col" class="px-3 border-2 border-gray-200 py-2.5 text-center text-sm text-gray-900">
-                        <select v-model="formIndeksKegiatan.indeksKegiatan" @change="changeHandle('Indeks Kegiatan')" id="location" name="location" class="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-gray-600 sm:text-sm sm:leading-6">
-                          <option :value="null">- Pilih Indeks Kegiatan -</option>
+                        <select v-model="formIndeksKegiatan.indeksKegiatan" @change="changeHandle('Indeks BG Terbangun')" id="location" name="location" class="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-gray-600 sm:text-sm sm:leading-6">
+                          <option :value="null">- Pilih Indeks BG Terbangun -</option>
                           <option v-for="(list, index) in dataIndeksKegiatan" :key="index" :value="list" class="py-4">
                             {{list.name}}
                           </option>
@@ -120,6 +120,7 @@
                       <th scope="col" class="px-3 border-2 border-gray-200 py-3.5 text-right text-sm text-gray-900">{{ toCurrency(formIndeksKegiatan.jumlah) || 0.000 }}</th>
                     </tr>
                   </table>
+                  <div class="p-4 text-sm italic">*SHST (Standar Harga Satuan Tertinggi) Bangunan Gedung dan Harga Satuan Prasarana Bangunan Gedung menggunakan SHST sesuai peraturan yang berlaku saat ini. <a href="#" class="underline text-blue-600">Klik disini</a> untuk melihat SHST yang berlaku saat ini.</div>
                 </div>
               </div>
 
@@ -279,9 +280,9 @@
                         <p>{{ formIndeksKegiatan.indeksLokalitas }} %</p>
                       </div>
                       <div class="py-3 px-4 text-gray-900 text-sm space-y-2">
-                        <h6 class="uppercase font-semibold">Indeks Kegiatan</h6>
-                        <select v-model="formIndeksKegiatan.indeksKegiatan" @change="changeHandle('Indeks Kegiatan')" id="location" name="location" class="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-gray-600 sm:text-sm sm:leading-6">
-                          <option :value="null">- Pilih Indeks Kegiatan -</option>
+                        <h6 class="uppercase font-semibold">Indeks BG Terbangun</h6>
+                        <select v-model="formIndeksKegiatan.indeksKegiatan" @change="changeHandle('Indeks BG Terbangun')" id="location" name="location" class="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-gray-600 sm:text-sm sm:leading-6">
+                          <option :value="null">- Pilih Indeks BG Terbangun -</option>
                           <option v-for="(list, index) in dataIndeksKegiatan" :key="index" :value="list" class="py-4">
                             {{list.name}}
                           </option>
@@ -520,7 +521,7 @@ const changeHandle = (kategori, index) => {
     form.valueClassification = dataClasifications.reduce((n, { value }) => n + value, 0).toFixed(2)  
   } else if (kategori === 'Faktor Kepemilikan') {
     form.faktorKepemilikan ? form.valueFaktorKepemilikan = form.faktorKepemilikan.value : form.valueFaktorKepemilikan = 0
-  } else if (kategori === 'Indeks Kegiatan') {
+  } else if (kategori === 'Indeks BG Terbangun') {
     console.log(formIndeksKegiatan.indeksKegiatan)
     formIndeksKegiatan.indeksKegiatan ? formIndeksKegiatan.valueIndeksKegiatan = formIndeksKegiatan.indeksKegiatan.value : formIndeksKegiatan.valueIndeksKegiatan = 0
   }
