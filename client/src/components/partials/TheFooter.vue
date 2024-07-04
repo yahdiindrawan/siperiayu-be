@@ -8,7 +8,7 @@
                 </div>
                 <div class="lg:col-span-3 py-2 xl:p-4">
                     <h5 class="text-xl font-bold text-primary">Tautan</h5>
-                    <div class="py-4 text-lg">
+                    <div class="py-4 space-y-1 text-lg">
                         <router-link to="/" class="flex items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="5" stroke="currentColor" class="size-4 mr-1">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
@@ -21,6 +21,12 @@
                             </svg>
                             Hubungi Kami
                         </a>
+                        <router-link to="/admin" class="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="5" stroke="currentColor" class="size-4 mr-1">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                            </svg>
+                            Admin
+                        </router-link>
                     </div>
                 </div>
                 <div class="lg:col-span-3 py-2 xl:p-4">
