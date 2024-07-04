@@ -93,7 +93,7 @@
                       <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">Luas Bangunan</th>
                       <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">Indeks Lokalitas</th>
                       <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">Indeks BG Terbangun</th>
-                      <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">SHST</th>
+                      <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">SHST*</th>
                       <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">Jumlah</th>
                     </tr>
                     <tr>
@@ -120,6 +120,7 @@
                       <th scope="col" class="px-3 border-2 border-gray-200 py-3.5 text-right text-sm text-gray-900">{{ toCurrency(formIndeksKegiatan.jumlah) || 0.000 }}</th>
                     </tr>
                   </table>
+                  <div class="p-4 text-sm italic">*SHST (Standar Harga Satuan Tertinggi) Bangunan Gedung dan Harga Satuan Prasarana Bangunan Gedung menggunakan SHST sesuai peraturan yang berlaku saat ini. <a href="#" class="underline text-blue-600">Klik disini</a> untuk melihat SHST yang berlaku saat ini.</div>
                 </div>
               </div>
 
