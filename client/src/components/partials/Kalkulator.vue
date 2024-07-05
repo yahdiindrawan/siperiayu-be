@@ -366,6 +366,15 @@
 
             </div>
 
+            <div class="mt-6 bg-white rounded-lg p-5 flex">
+              <div class="bg-primary-200 p-4 rounded-lg">
+                <div class="flex items-start text-sm md:text-base text-justify">
+                  <img src="@/assets/icons/info.svg" class="w-9 mt-1 pr-2"/>
+                    Informasi yang diperoleh dari Simulasi Perhitungan Retribusi PBG ini tidak bisa menjadi patokan nilai retribusi sebenarnya karena simulasi ini hanya membantu menghitung perkiraan nilai retribusi. Data final besaran nilai retribusi PBG akan mengacu pada Surat Ketetapan Retribusi Daerah (SKRD) yang akan diterbitkan melalui SIMBG.
+                </div>
+              </div>
+              </div>
+
           </div>
         </div>
       </section>
@@ -373,6 +382,7 @@
 <script setup>
 import { toCurrency } from '@/helpers'
 import { reactive } from 'vue'
+import { InformationCircleIcon } from '@heroicons/vue/24/outline'
 const dataFungsiBangunan = reactive([
   { name: 'Hunian (< 100 m2 dan < 2 lantai)', value: 0.15 },
   { name: 'Hunian (> 100 m2 dan > 2 lantai)', value: 0.17 },
