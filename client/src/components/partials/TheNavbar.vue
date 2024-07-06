@@ -1,5 +1,5 @@
 <template>
-    <Disclosure as="nav" class="bg-white z-50 sticky top-0 left-0" v-slot="{ open }" :class="{ 'shadow transition-shadow delay-150 duration-600 ease-in-out' : !view.atTopOfPage}">
+    <Disclosure as="nav" id="navbar" class="bg-white z-50 sticky top-0 left-0" v-slot="{ open }" :class="{ 'shadow transition-shadow delay-150 duration-600 ease-in-out' : !view.atTopOfPage}">
       <div class="relative ease-in-out transition-opacity opacity-80 ease-in-out duration-300" :class="{ 'hidden' : !view.atTopOfPage}">
         <img src="@/assets/backgrounds/bg-navbar.svg" alt="" class="absolute top-12 sm:top-6 md:top-8 lg:top-4 xl:-top-2 2xl:-top-3 3xl:-top-8 w-full">
       </div>

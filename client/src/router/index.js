@@ -26,10 +26,15 @@ const router = createRouter({
   ],
   scrollBehavior(to, from, savedPosition) {
     if (to.hash) {
-      return {
-        el: to.hash,
-        behavior: 'smooth',
-      }
+      const yOffset = document.getElementById('navbar').getBoundingClientRect().height;
+      const element = document.getElementById(to.hash.substring(1));
+      const y = element.getBoundingClientRect().top + window.scrollY - yOffset;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+      // return {
+      //   el: to.hash,
+      //   behavior: 'smooth',
+      //   top: 
+      // }
     }
   }
 })

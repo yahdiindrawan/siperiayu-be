@@ -1,7 +1,7 @@
 <template>
   <div class="">
     <!-- Hero Section -->
-     <section class="relative mt-2 sm:mt-4 lg:mt-6 min-h-screen lg:max-h-screen">
+     <section class="relative mt-2 sm:mt-4 lg:mt-6 min-h-screen lg:max-h-screen scroll-mt-8">
       <img src="@/assets/icons/building.gif" alt="Animation" class="hidden lg:block md:absolute bottom-28 inset-x-0 bg-cover w-full">
       <div class="max-w-7xl mx-auto p-4 md:py-4 lg:py-6">
         <div class="grid grid-cols-1 lg:grid-cols-2 lg:gap-4 content-center">
@@ -24,9 +24,6 @@
           </div>
         </div>
       </div>
-      <!-- <div class="max-w-screen mt-8">
-        
-      </div> -->
     </section>
     <img src="@/assets/icons/building-mobile.gif" alt="Animation" class="bg-cover lg:hidden w-full">
      <TheCalculator/>
