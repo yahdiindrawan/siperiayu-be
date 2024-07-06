@@ -17,7 +17,7 @@ export default {
         'primary-200': '#FFE2E2'
       },
       backgroundImage: {
-        'header-pattern': "url('./src/assets/backgrounds/navbar-bg.png')",
+        'header-pattern': "url('./src/assets/backgrounds/navbar-navbar.png')",
       },
       screens: {
         '3xl': '1920px'
