@@ -1,7 +1,7 @@
 <template>
     <Disclosure as="nav" class="bg-white z-50 sticky top-0 left-0" v-slot="{ open }" :class="{ 'shadow transition-shadow delay-150 duration-600 ease-in-out' : !view.atTopOfPage}">
       <div class="relative ease-in-out transition-opacity opacity-80 ease-in-out duration-300" :class="{ 'hidden' : !view.atTopOfPage}">
-        <img src="@/assets/backgrounds/bg-navbar.svg" alt="" class="absolute top-12 sm:top-6 md:top-8 lg:top-4 xl:-top-2 2xl:-top-8 w-full">
+        <img src="@/assets/backgrounds/bg-navbar.svg" alt="" class="absolute top-12 sm:top-6 md:top-8 lg:top-4 xl:-top-2 2xl:-top-3 3xl:-top-8 w-full">
       </div>
       <div class="mx-auto px-3 md:px-4 py-1 md:py-2 lg:py-3">
         <div class="relative flex h-16 justify-between lg:px-4">
