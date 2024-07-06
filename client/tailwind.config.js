@@ -17,7 +17,10 @@ export default {
         'primary-200': '#FFE2E2'
       },
       backgroundImage: {
-        'header-pattern': "url('./src/assets/backgrounds/header-pattern.svg')",
+        'header-pattern': "url('./src/assets/backgrounds/navbar-bg.png')",
+      },
+      screens: {
+        '3xl': '1920px'
       }
     },
   },

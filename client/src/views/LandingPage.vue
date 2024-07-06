@@ -1,7 +1,7 @@
 <template>
   <div class="">
     <!-- Hero Section -->
-     <section class="mt-2 lg:mt-8">
+     <section class="mt-6">
       <div class="max-w-7xl mx-auto py-4 lg:py-6">
         <div class="grid grid-cols-1 lg:grid-cols-2 lg:gap-4 content-center">
           <div class="p-4 order-last lg:order-first">

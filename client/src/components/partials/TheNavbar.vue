@@ -1,5 +1,8 @@
 <template>
-    <Disclosure as="nav" class="bg-white sticky top-0" v-slot="{ open }">
+    <Disclosure as="nav" class="bg-white z-50 sticky top-0 left-0" v-slot="{ open }" :class="{ 'shadow transition-shadow delay-150 duration-600 ease-in-out' : !view.atTopOfPage}">
+      <div class="hidden xl:block relative ease-in-out opacity-70 transition-opacity ease-in-out duration-300" :class="{ 'hidden  ' : !view.atTopOfPage}">
+        <img src="@/assets/backgrounds/bg-navbar.svg" alt="" class="absolute top-0 w-full">
+      </div>
       <div class="mx-auto mx-2 px-4 py-3">
         <div class="relative flex h-16 justify-between lg:px-4">
           <div class="absolute inset-y-0 right-0 flex items-center sm:hidden">
@@ -55,7 +58,24 @@
     </Disclosure>
   </template>
   
-  <script setup>
-  import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
-  import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/vue/24/outline'
-  </script>
+<script setup>
+import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
+import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import { onMounted, reactive } from 'vue'
+
+const view = reactive({
+  atTopOfPage: true
+});
+
+const handleScroll = () => {
+  if(window.pageYOffset>35){
+      if(view.atTopOfPage) view.atTopOfPage = false
+  }else{
+      if(!view.atTopOfPage) view.atTopOfPage = true
+  }
+}
+onMounted(() => {
+  window.addEventListener('scroll', handleScroll)
+})
+
+</script>
