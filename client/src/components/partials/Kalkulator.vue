@@ -91,7 +91,14 @@
                   <table class="min-w-full border-2 border-gray-200 rounded-lg p-4">
                     <tr>
                       <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">Luas Bangunan</th>
-                      <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">Indeks Lokalitas</th>
+                      <th scope="col" class="px-3 relative uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">
+                        Indeks Lokalitas
+                        <button @click="isOpen = !isOpen" class="absolute top-2 right-2 transition ease-in-out hover:scale-110">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
+                          </svg>
+                        </button>
+                      </th>
                       <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">Indeks BG Terbangun</th>
                       <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">SHST*</th>
                       <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">Jumlah</th>
@@ -103,7 +110,14 @@
                           <span class="inline-flex bg-gray-200 items-center rounded-r-3xl border border-l-0 border-gray-300 px-3 text-gray-500 sm:text-sm">M <sup>2</sup></span>
                         </div>
                       </td>
-                      <td scope="col" class="px-3 border-2 border-gray-200 py-2.5 text-center text-sm text-gray-900">{{ formIndeksKegiatan.indeksLokalitas }} %</td>
+                      <td scope="col" class="px-3 border-2 border-gray-200 py-2.5 text-center text-sm text-gray-900">
+                        <select v-model="formIndeksKegiatan.indeksLokalitas" @change="changeHandle('Indeks BG Terbangun')" id="location" name="location" class="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-gray-600 sm:text-sm sm:leading-6">
+                          <option :value="null">- Pilih Indeks Lokalitas -</option>
+                          <option v-for="(list, index) in dataIndeksLokalitas" :key="index" :value="list" class="py-4">
+                            {{list}}
+                          </option>
+                        </select>
+                      </td>
                       <td scope="col" class="px-3 border-2 border-gray-200 py-2.5 text-center text-sm text-gray-900">
                         <select v-model="formIndeksKegiatan.indeksKegiatan" @change="changeHandle('Indeks BG Terbangun')" id="location" name="location" class="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-gray-600 sm:text-sm sm:leading-6">
                           <option :value="null">- Pilih Indeks BG Terbangun -</option>
@@ -120,7 +134,7 @@
                       <th scope="col" class="px-3 border-2 border-gray-200 py-3.5 text-right text-sm text-gray-900">{{ toCurrency(formIndeksKegiatan.jumlah) || 0.000 }}</th>
                     </tr>
                   </table>
-                  <div class="p-4 text-sm italic">*SHST (Standar Harga Satuan Tertinggi) Bangunan Gedung dan Harga Satuan Prasarana Bangunan Gedung menggunakan SHST sesuai peraturan yang berlaku saat ini. <a href="#" class="underline text-blue-600">Klik disini</a> untuk melihat SHST yang berlaku saat ini.</div>
+                  <div class="p-4 text-sm italic">*SHST (Standar Harga Satuan Tertinggi) Bangunan Gedung dan Harga Satuan Prasarana Bangunan Gedung menggunakan SHST sesuai peraturan yang berlaku saat ini. <a href="/perbup641-2024.pdf" download target="_blank" class="hover:underline text-blue-600">Klik disini</a> untuk melihat SHST yang berlaku saat ini.</div>
                 </div>
               </div>
 
@@ -275,9 +289,19 @@
                           <span class="inline-flex bg-gray-200 items-center rounded-r-3xl border border-l-0 border-gray-300 px-3 text-gray-500 sm:text-sm">M <sup>2</sup></span>
                         </div>
                       </div>
-                      <div class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2">
+                      <div class="relative py-3 px-4 text-gray-900 items-center text-sm space-y-2">
+                        <button @click="isOpen = !isOpen" class="absolute top-2 right-2 transition ease-in-out hover:scale-110">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
+                          </svg>
+                        </button>
                         <h6 class="uppercase font-semibold">Indeks Lokalitas</h6>
-                        <p>{{ formIndeksKegiatan.indeksLokalitas }} %</p>
+                        <select v-model="formIndeksKegiatan.indeksLokalitas" @change="changeHandle('Indeks BG Terbangun')" id="location" name="location" class="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-gray-600 sm:text-sm sm:leading-6">
+                          <option :value="null">- Pilih Indeks Lokalitas -</option>
+                          <option v-for="(list, index) in dataIndeksLokalitas" :key="index" :value="list" class="py-4">
+                            {{list}}
+                          </option>
+                        </select>
                       </div>
                       <div class="py-3 px-4 text-gray-900 text-sm space-y-2">
                         <h6 class="uppercase font-semibold">Indeks BG Terbangun</h6>
@@ -374,15 +398,152 @@
                 </div>
               </div>
               </div>
-
           </div>
         </div>
+
+        <TransitionRoot appear :show="isOpen" as="template">
+          <Dialog as="div" @close="closeModal" class="relative z-50">
+            <TransitionChild
+              as="template"
+              enter="duration-300 ease-out"
+              enter-from="opacity-0"
+              enter-to="opacity-100"
+              leave="duration-200 ease-in"
+              leave-from="opacity-100"
+              leave-to="opacity-0"
+            >
+              <div class="fixed inset-0 bg-black/25" />
+            </TransitionChild>
+
+            <div class="fixed inset-0 overflow-y-auto">
+              <div
+                class="flex min-h-full items-center justify-center p-4 text-center"
+              >
+                <TransitionChild
+                  as="template"
+                  enter="duration-300 ease-out"
+                  enter-from="opacity-0 scale-95"
+                  enter-to="opacity-100 scale-100"
+                  leave="duration-200 ease-in"
+                  leave-from="opacity-100 scale-100"
+                  leave-to="opacity-0 scale-95"
+                >
+                  <DialogPanel
+                    class="w-full relative max-w-2xl transform overflow-hidden rounded-2xl bg-white p-8 text-left align-middle shadow-xl transition-all"
+                  >
+                      <button
+                        type="button"
+                        class="absolute top-2 right-2 inline-flex justify-center px-4 py-2 text-lg font-medium text-gray-900 transtition ease-in-out hover:scale-110 hover:font-medium"
+                        @click="isOpen = !isOpen"
+                      >
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                      </svg>
+
+                      </button>
+                    <DialogTitle
+                      as="h3"
+                      class="text-lg font-medium leading-6 text-gray-900 text-center"
+                    >
+                      Daftar Indeks Lokalitas
+                    </DialogTitle>
+                    <div class="mt-4 text-xs overflow-x-auto">
+                      <table class="border-2 border-gray-200 mx-auto">
+                        <tr>
+                          <td rowspan="2" class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 border-2 border-gray-200 font-semibold text-center">Fungsi Bangunan</td>
+                          <td rowspan="2" class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 border-2 border-gray-200 font-semibold text-center">Keterangan</td>
+                          <td colspan="4" class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 border-2 border-gray-200 font-semibold text-center">Indeks Lokalitas</td>
+                        </tr>
+                        <tr>
+                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 border-2 border-gray-200 font-semibold">Jl. Nasional</td>
+                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 border-2 border-gray-200 font-semibold">Jl. Provinsi</td>
+                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 border-2 border-gray-200 font-semibold">Jl. Kabupaten</td>
+                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 border-2 border-gray-200 font-semibold">Jl. Lingkungan</td>
+                        </tr>
+
+                        <tr>
+                          <td rowspan="2" class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200">Hunian</td>
+                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200">Sederhana</td>
+                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.5</td>
+                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.5</td>
+                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.5</td>
+                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.4</td>
+                        </tr>
+                        <tr>
+                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200">Tidak Sederhana</td>
+                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.5</td>
+                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.5</td>
+                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.5</td>
+                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.4</td>
+                        </tr>
+
+                        <tr>
+                          <td rowspan="2" class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200">Usaha</td>
+                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200">Mikro</td>
+                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.4</td>
+                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.4</td>
+                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.4</td>
+                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.3</td>
+                        </tr>
+                        <tr>
+                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200">Non Mikro</td>
+                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.5</td>
+                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.5</td>
+                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.5</td>
+                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.5</td>
+                        </tr>
+
+                        <tr>
+                          <td rowspan="2" class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200">Sosial Budaya</td>
+                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200">PAUD s.d. SLTA</td>
+                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.1</td>
+                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.1</td>
+                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.1</td>
+                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.1</td>
+                        </tr>
+                        <tr>
+                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200">Perguruan Tinggi</td>
+                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.2</td>
+                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.2</td>
+                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.2</td>
+                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.2</td>
+                        </tr>
+
+                        <tr>
+                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200">Sosial Budaya</td>
+                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200"></td>
+                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.3</td>
+                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.3</td>
+                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.3</td>
+                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.3</td>
+                        </tr>
+                        <tr>
+                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200">Khusus</td>
+                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200"></td>
+                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.5</td>
+                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.5</td>
+                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.5</td>
+                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.5</td>
+                        </tr>
+                      </table>
+                    </div>
+
+                  </DialogPanel>
+                </TransitionChild>
+              </div>
+            </div>
+          </Dialog>
+        </TransitionRoot>
       </section>
 </template>
 <script setup>
 import { toCurrency } from '@/helpers'
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 import { InformationCircleIcon } from '@heroicons/vue/24/outline'
+import { TransitionRoot, TransitionChild, Dialog, DialogPanel, DialogTitle } from '@headlessui/vue'
+
+const isOpen = ref(false)
+
 const dataFungsiBangunan = reactive([
   { name: 'Hunian (< 100 m2 dan < 2 lantai)', value: 0.15 },
   { name: 'Hunian (> 100 m2 dan > 2 lantai)', value: 0.17 },
@@ -440,6 +601,8 @@ const dataFaktorKepemilikan = reactive([
   { name: 'Perorangan/Badan Usaha', value: 1 },
   { name: 'Negara', value: 0 }
 ])
+
+const dataIndeksLokalitas = reactive([0.1, 0.2, 0.3, 0.4, 0.5])
 
 const dataIndeksKegiatan = reactive([
 { name: 'Rusak Sedang - Pelestarian Madya', value: 0.225 },
@@ -512,7 +675,7 @@ const form = reactive({
 
 const formIndeksKegiatan = reactive({
   luasBangunan: null,
-  indeksLokalitas: 0.5,
+  indeksLokalitas: null,
   indeksKegiatan: null,
   valueIndeksKegiatan: null,
   shst: 5350000,
