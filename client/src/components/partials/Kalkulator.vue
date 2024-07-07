@@ -148,6 +148,7 @@
                       <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">Satuan</th>
                       <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">Harga Satuan Prasarana (HSPBG)</th>
                       <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">Luas Prasarana Bangunan</th>
+                      <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">Indeks BG Terbangun</th>
                       <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">Nilai Retribusi</th>
                     </tr>
                     <template v-for="(prasarana, indexPrasarana) in dataPrasarana">
@@ -162,9 +163,17 @@
                         <td scope="col" class="px-3 border-2 border-gray-200 py-2.5 text-right text-sm text-gray-900">{{ toCurrency(data.hspbg) || 0.000 }}</td>
                         <td scope="col" class="px-3 border-2 border-gray-200 py-2.5 text-left text-sm text-gray-900">
                           <div class="mt-2 flex rounded-md shadow-sm">
-                            <input v-model="data.luasPrasarana" @change="updateNilaiRetribusiPrasarana(indexPrasarana, index)" type="number" name="company-website" id="company-website" class="block w-full px-4 min-w-0 flex-1 rounded-none rounded-l-3xl border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6" placeholder="" />
+                            <input v-model="data.luasPrasarana" @change="updateNilaiRetribusiPrasarana(indexPrasarana, index)" type="number" name="company-website" id="company-website" class="block w-full pl-4 pr-1 min-w-16 flex-1 rounded-none rounded-l-3xl border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6" placeholder="" />
                             <span v-html="data.satuanLuas" class="inline-flex bg-gray-200 items-center rounded-r-3xl border border-l-0 border-gray-300 px-3 text-gray-500 sm:text-sm"></span>
                           </div>
+                        </td>
+                        <td scope="col" class="px-3 border-2 border-gray-200 py-2.5 text-left text-sm text-gray-900">
+                          <select v-model="data.indeksBGTerbangun" @change="updateNilaiRetribusiPrasarana(indexPrasarana, index)" id="location" name="location" class="block w-full rounded-md border-0 py-1.5 pl-3 pr-3 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-gray-600 sm:text-sm sm:leading-6">
+                            <option :value="null">- Pilih -</option>
+                            <option v-for="(list, index) in dataIndeksBGTerbangun" :key="index" :value="list.value" class="py-4">
+                              {{list.name}}
+                            </option>
+                          </select>
                         </td>
                         <td scope="col" class="px-3 border-2 border-gray-200 py-2.5 text-right text-sm text-gray-900">{{ toCurrency(data.nilaiRetribusi) || 0.000 }}</td>
                       </tr>
@@ -365,6 +374,15 @@
                           <input v-model="data.luasPrasarana" @change="updateNilaiRetribusiPrasarana(indexPrasarana, index)" type="number" name="company-website" id="company-website" class="block w-full px-4 min-w-0 flex-1 rounded-none rounded-l-3xl border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6" placeholder="" />
                             <span v-html="data.satuanLuas" class="inline-flex bg-gray-200 items-center rounded-r-3xl border border-l-0 border-gray-300 px-3 text-gray-500 sm:text-sm"></span>
                         </div>
+                      </div>
+                      <div class="py-3 px-4 text-gray-900 text-sm space-y-3">
+                        <h6 class="uppercase font-semibold">Indeks BG Terbangun</h6>
+                        <select v-model="data.indeksBGTerbangun" @change="updateNilaiRetribusiPrasarana(indexPrasarana, index)" id="location" name="location" class="block w-full rounded-md border-0 py-1.5 pl-3 pr-3 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-gray-600 sm:text-sm sm:leading-6">
+                            <option :value="null">- Pilih -</option>
+                            <option v-for="(list, index) in dataIndeksBGTerbangun" :key="index" :value="list.value" class="py-4">
+                              {{list.name}}
+                            </option>
+                          </select>
                       </div>
                       <div class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2">
                         <h6 class="uppercase font-semibold">Nilai Retribusi</h6>
@@ -611,6 +629,15 @@ const dataIndeksKegiatan = reactive([
   { name: 'Pelestarian Utama', value: 0.15 }
 ])
 
+const dataIndeksBGTerbangun = reactive([
+  { name: 'Pembangunan Gedung Baru', value: 1 },
+  { name: 'Sedang - Rehabilitasi BG', value: 0.225 },
+  { name: 'Berat - Rehabilitasi BG', value: 0.325 },
+  { name: 'Pelestarian Pratama', value: 0.325 },
+  { name: 'Pelestarian Madya', value: 0.225 },
+  { name: 'Pelestarian Utama', value: 0.15 }
+])
+
 const dataPrasarana = reactive([
   {
     jenis: 'Konstruksi pembatas/ penahan/pengaman',
@@ -621,6 +648,7 @@ const dataPrasarana = reactive([
         hspbg: 25200,
         luasPrasarana: 0,
         satuanLuas: 'M<sup>2</sup>',
+        indeksBGTerbangun: null,
         nilaiRetribusi: 0
       }
     ]
@@ -634,6 +662,7 @@ const dataPrasarana = reactive([
         hspbg: 2300,
         luasPrasarana: 0,
         satuanLuas: 'M<sup>2</sup>',
+        indeksBGTerbangun: null,
         nilaiRetribusi: 0
       }
     ],
@@ -647,6 +676,7 @@ const dataPrasarana = reactive([
         hspbg: 6600000,
         luasPrasarana: 0,
         satuanLuas: 'Unit',
+        indeksBGTerbangun: null,
         nilaiRetribusi: 0
       },
       {
@@ -655,6 +685,7 @@ const dataPrasarana = reactive([
         hspbg: 306000,
         luasPrasarana: 0,
         satuanLuas: 'Unit',
+        indeksBGTerbangun: null,
         nilaiRetribusi: 0
       }
     ]
@@ -695,7 +726,6 @@ const changeHandle = (kategori, index) => {
   } else if (kategori === 'Faktor Kepemilikan') {
     form.faktorKepemilikan ? form.valueFaktorKepemilikan = form.faktorKepemilikan.value : form.valueFaktorKepemilikan = 0
   } else if (kategori === 'Indeks BG Terbangun') {
-    console.log(formIndeksKegiatan.indeksKegiatan)
     formIndeksKegiatan.indeksKegiatan ? formIndeksKegiatan.valueIndeksKegiatan = formIndeksKegiatan.indeksKegiatan.value : formIndeksKegiatan.valueIndeksKegiatan = 0
   }
   updatePerhitungan()
@@ -710,7 +740,7 @@ const updateJumlahLuasBangunan = () => {
 }
 
 const updateNilaiRetribusiPrasarana = (indexPrasarana, index) => {
-  dataPrasarana[indexPrasarana].data[index].nilaiRetribusi = dataPrasarana[indexPrasarana].data[index].hspbg * dataPrasarana[indexPrasarana].data[index].luasPrasarana
+  dataPrasarana[indexPrasarana].data[index].nilaiRetribusi = dataPrasarana[indexPrasarana].data[index].hspbg * dataPrasarana[indexPrasarana].data[index].luasPrasarana * dataPrasarana[indexPrasarana].data[index].indeksBGTerbangun
   form.jumlahRetribusiPrasarana = dataPrasarana.reduce((total, prasarana) => {
     return total + prasarana.data.reduce((subtotal, item) => {
       return subtotal + item.nilaiRetribusi;
