@@ -2,7 +2,16 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 // Layouts
 import LayoutDefault from "@/layouts/default.vue"
+import LayoutAdmin from '@/layouts/admin.vue'
+
 import LandingPage from '@/views/LandingPage.vue'
+
+// Admin
+import Dashboard from '@/views/admin/dashboard/Index.vue'
+import DataMaster from '@/views/admin/data-master/Index.vue'
+import Indeks from '@/views/admin/indeks/Index.vue'
+import Kalkulator from '@/views/admin/kalkulator/Index.vue'
+import Pengaturan from '@/views/admin/pengaturan/Index.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -22,6 +31,35 @@ const router = createRouter({
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/AboutView.vue')
+    },
+    {
+      path: '/admin/',
+      component: LayoutAdmin,
+      meta: {
+        title: 'Dashboard Admin'
+      },
+      children: [
+        {
+          path: "dashboard",
+          component: Dashboard
+        },
+        {
+          path: "data-master",
+          component: DataMaster
+        },
+        {
+          path: "indeks",
+          component: Indeks
+        },
+        {
+          path: "kalkulator",
+          component: Kalkulator
+        },
+        {
+          path: "pengaturan",
+          component: Pengaturan
+        }
+      ]
     }
   ],
   scrollBehavior(to, from, savedPosition) {
