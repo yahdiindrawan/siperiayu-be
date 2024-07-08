@@ -106,7 +106,7 @@
                     <tr>
                       <td scope="col" class="px-3 border-2 border-gray-200 py-2.5 text-center text-sm text-gray-900">
                         <div class="mt-2 flex rounded-md shadow-sm">
-                          <input v-model="formIndeksKegiatan.luasBangunan" @change="updatePerhitungan" type="number" name="company-website" id="company-website" class="block w-full px-4 min-w-0 flex-1 rounded-none rounded-l-3xl border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6" placeholder="" />
+                          <input v-model="formIndeksKegiatan.luasBangunan" @change="updatePerhitungan" type="number" min="0" name="company-website" id="company-website" class="block w-full px-4 min-w-0 flex-1 rounded-none rounded-l-3xl border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6" placeholder="" />
                           <span class="inline-flex bg-gray-200 items-center rounded-r-3xl border border-l-0 border-gray-300 px-3 text-gray-500 sm:text-sm">M <sup>2</sup></span>
                         </div>
                       </td>
@@ -163,8 +163,15 @@
                         <td scope="col" class="px-3 border-2 border-gray-200 py-2.5 text-right text-sm text-gray-900">{{ toCurrency(data.hspbg) || 0.000 }}</td>
                         <td scope="col" class="px-3 border-2 border-gray-200 py-2.5 text-left text-sm text-gray-900">
                           <div class="mt-2 flex rounded-md shadow-sm">
-                            <input v-model="data.luasPrasarana" @change="updateNilaiRetribusiPrasarana(indexPrasarana, index)" type="number" name="company-website" id="company-website" class="block w-full pl-4 pr-1 min-w-16 flex-1 rounded-none rounded-l-3xl border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6" placeholder="" />
+                            <input v-model="data.luasPrasarana" @change="updateNilaiRetribusiPrasarana(indexPrasarana, index)" type="number" min="0" name="company-website" id="company-website" class="block w-full pl-4 pr-1 min-w-16 flex-1 rounded-none rounded-l-3xl border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6" placeholder="" />
                             <span v-html="data.satuanLuas" class="inline-flex bg-gray-200 items-center rounded-r-3xl border border-l-0 border-gray-300 px-3 text-gray-500 sm:text-sm"></span>
+                          </div>
+                          <div v-if="data.satuanLuas === 'Unit' && data.luasPrasarana > 0" class="mt-2">
+                            <p class="mt-4 text-xs">Isi luas per unitnya:</p>
+                            <div v-for="(indexPerUnit) in data.luasPrasarana" :key="indexPerUnit" class="mt-2 flex rounded-md shadow-sm">
+                              <input v-model="data.luasPerUnit[indexPerUnit]" @change="updateNilaiRetribusiPrasarana(indexPrasarana, index)" type="number" min="0" name="company-website" id="company-website" class="block w-full pl-4 pr-1 min-w-16 flex-1 rounded-none rounded-l-3xl border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6" placeholder="" />
+                              <span class="inline-flex bg-gray-200 items-center rounded-r-3xl border border-l-0 border-gray-300 px-3 text-gray-500 sm:text-sm">M <sup>2</sup></span>
+                            </div>
                           </div>
                         </td>
                         <td scope="col" class="px-3 border-2 border-gray-200 py-2.5 text-left text-sm text-gray-900">
@@ -294,7 +301,7 @@
                       <div class="py-3 px-4 text-gray-900 text-sm space-y-3">
                         <h6 class="uppercase font-semibold">Luas Bangunan</h6>
                         <div class="mt-2 flex rounded-md shadow-sm">
-                          <input v-model="formIndeksKegiatan.luasBangunan" @change="updatePerhitungan" type="number" name="company-website" id="company-website" class="block w-full px-4 min-w-0 flex-1 rounded-none rounded-l-3xl border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6" placeholder="" />
+                          <input v-model="formIndeksKegiatan.luasBangunan" @change="updatePerhitungan" type="number" min="0" name="company-website" id="company-website" class="block w-full px-4 min-w-0 flex-1 rounded-none rounded-l-3xl border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6" placeholder="" />
                           <span class="inline-flex bg-gray-200 items-center rounded-r-3xl border border-l-0 border-gray-300 px-3 text-gray-500 sm:text-sm">M <sup>2</sup></span>
                         </div>
                       </div>
@@ -371,9 +378,16 @@
                       <div class="py-3 px-4 text-gray-900 text-sm space-y-3">
                         <h6 class="uppercase font-semibold">Luas Prasarana Bangunan</h6>
                         <div class="mt-2 flex rounded-md shadow-sm">
-                          <input v-model="data.luasPrasarana" @change="updateNilaiRetribusiPrasarana(indexPrasarana, index)" type="number" name="company-website" id="company-website" class="block w-full px-4 min-w-0 flex-1 rounded-none rounded-l-3xl border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6" placeholder="" />
+                          <input v-model="data.luasPrasarana" @change="updateNilaiRetribusiPrasarana(indexPrasarana, index)" type="number" min="0" name="company-website" id="company-website" class="block w-full px-4 min-w-0 flex-1 rounded-none rounded-l-3xl border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6" placeholder="" />
                             <span v-html="data.satuanLuas" class="inline-flex bg-gray-200 items-center rounded-r-3xl border border-l-0 border-gray-300 px-3 text-gray-500 sm:text-sm"></span>
                         </div>
+                        <div v-if="data.satuanLuas === 'Unit' && data.luasPrasarana > 0" class="mt-2">
+                            <p class="mt-4 text-xs">Isi luas per unitnya:</p>
+                            <div v-for="(indexPerUnit) in data.luasPrasarana" :key="indexPerUnit" class="mt-2 flex rounded-md shadow-sm">
+                              <input v-model="data.luasPerUnit[indexPerUnit]" @change="updateNilaiRetribusiPrasarana(indexPrasarana, index)" type="number" min="0" name="company-website" id="company-website" class="block w-full pl-4 pr-1 min-w-16 flex-1 rounded-none rounded-l-3xl border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6" placeholder="" />
+                              <span class="inline-flex bg-gray-200 items-center rounded-r-3xl border border-l-0 border-gray-300 px-3 text-gray-500 sm:text-sm">M <sup>2</sup></span>
+                            </div>
+                          </div>
                       </div>
                       <div class="py-3 px-4 text-gray-900 text-sm space-y-3">
                         <h6 class="uppercase font-semibold">Indeks BG Terbangun</h6>
@@ -649,6 +663,9 @@ const dataPrasarana = reactive([
         luasPrasarana: 0,
         satuanLuas: 'M<sup>2</sup>',
         indeksBGTerbangun: null,
+        luasPerUnit: [],
+        biayaTambahan: 0,
+        maksimumPerUnit: null,
         nilaiRetribusi: 0
       }
     ]
@@ -663,6 +680,9 @@ const dataPrasarana = reactive([
         luasPrasarana: 0,
         satuanLuas: 'M<sup>2</sup>',
         indeksBGTerbangun: null,
+        luasPerUnit: [],
+        biayaTambahan: 0,
+        maksimumPerUnit: null,
         nilaiRetribusi: 0
       }
     ],
@@ -677,6 +697,9 @@ const dataPrasarana = reactive([
         luasPrasarana: 0,
         satuanLuas: 'Unit',
         indeksBGTerbangun: null,
+        luasPerUnit: [],
+        biayaTambahan: 500000,
+        maksimumPerUnit: 12,
         nilaiRetribusi: 0
       },
       {
@@ -686,6 +709,9 @@ const dataPrasarana = reactive([
         luasPrasarana: 0,
         satuanLuas: 'Unit',
         indeksBGTerbangun: null,
+        luasPerUnit: [],
+        biayaTambahan: 150000,
+        maksimumPerUnit: 2,
         nilaiRetribusi: 0
       }
     ]
@@ -740,7 +766,27 @@ const updateJumlahLuasBangunan = () => {
 }
 
 const updateNilaiRetribusiPrasarana = (indexPrasarana, index) => {
-  dataPrasarana[indexPrasarana].data[index].nilaiRetribusi = dataPrasarana[indexPrasarana].data[index].hspbg * dataPrasarana[indexPrasarana].data[index].luasPrasarana * dataPrasarana[indexPrasarana].data[index].indeksBGTerbangun
+  if (dataPrasarana[indexPrasarana].data[index].satuanLuas === 'Unit') {
+    if (dataPrasarana[indexPrasarana].data[index].luasPerUnit.length > 0 && dataPrasarana[indexPrasarana].data[index].luasPrasarana > 0) {
+      let retribusiPerUnit = 0
+      dataPrasarana[indexPrasarana].data[index].luasPerUnit.forEach((perUnit, indexPerUnit) => {
+        if (indexPerUnit <= dataPrasarana[indexPrasarana].data[index].luasPrasarana) {
+          if (perUnit > 0) {
+            retribusiPerUnit = retribusiPerUnit + (dataPrasarana[indexPrasarana].data[index].hspbg * dataPrasarana[indexPrasarana].data[index].indeksBGTerbangun * 1 * 1)  
+          }
+          if (perUnit > dataPrasarana[indexPrasarana].data[index].maksimumPerUnit) {
+            retribusiPerUnit = retribusiPerUnit + ((perUnit - dataPrasarana[indexPrasarana].data[index].maksimumPerUnit) * 1 * dataPrasarana[indexPrasarana].data[index].indeksBGTerbangun * dataPrasarana[indexPrasarana].data[index].biayaTambahan)
+          } 
+        }
+      })
+      dataPrasarana[indexPrasarana].data[index].nilaiRetribusi = retribusiPerUnit  
+    } else {
+      dataPrasarana[indexPrasarana].data[index].nilaiRetribusi = 0
+      dataPrasarana[indexPrasarana].data[index].luasPerUnit = []
+    }
+  } else {
+    dataPrasarana[indexPrasarana].data[index].nilaiRetribusi = dataPrasarana[indexPrasarana].data[index].hspbg * dataPrasarana[indexPrasarana].data[index].luasPrasarana * dataPrasarana[indexPrasarana].data[index].indeksBGTerbangun
+  }
   form.jumlahRetribusiPrasarana = dataPrasarana.reduce((total, prasarana) => {
     return total + prasarana.data.reduce((subtotal, item) => {
       return subtotal + item.nilaiRetribusi;
