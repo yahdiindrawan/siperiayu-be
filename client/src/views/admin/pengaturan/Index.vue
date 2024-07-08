@@ -1,7 +1,7 @@
 <template>
     <div class="pb-16 pt-10">
         <div class="px-4 sm:px-6 lg:px-0">
-        <h1 class="text-3xl font-bold tracking-tight text-gray-900">Dashboard</h1>
+        <h1 class="text-3xl font-bold tracking-tight text-gray-900">Indeks</h1>
         </div>
         <div class="px-4 sm:px-6 lg:px-0">
         <div class="py-6">
@@ -21,9 +21,14 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-
+import { ref } from 'vue'  
 const tabs = [
-
+    { name: 'Hero', href: '#', current: true },
+    { name: 'File Peraturan', href: '#', current: false },
+    { name: 'Logo', href: '#', current: false },   
+    { name: 'Sosial Media', href: '#', current: false },
+    { name: 'Kontak', href: '#', current: false },
+    { name: 'Tautan', href: '#', current: false },   
 ]
+
 </script>

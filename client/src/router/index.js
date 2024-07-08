@@ -7,7 +7,11 @@ import LayoutAdmin from '@/layouts/admin.vue'
 import LandingPage from '@/views/LandingPage.vue'
 
 // Admin
-import DashboardAdmin from '@/views/admin/dashboard/Index.vue'
+import Dashboard from '@/views/admin/dashboard/Index.vue'
+import DataMaster from '@/views/admin/data-master/Index.vue'
+import Indeks from '@/views/admin/indeks/Index.vue'
+import Kalkulator from '@/views/admin/kalkulator/Index.vue'
+import Pengaturan from '@/views/admin/pengaturan/Index.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -37,7 +41,23 @@ const router = createRouter({
       children: [
         {
           path: "dashboard",
-          component: DashboardAdmin
+          component: Dashboard
+        },
+        {
+          path: "data-master",
+          component: DataMaster
+        },
+        {
+          path: "indeks",
+          component: Indeks
+        },
+        {
+          path: "kalkulator",
+          component: Kalkulator
+        },
+        {
+          path: "pengaturan",
+          component: Pengaturan
         }
       ]
     }
