@@ -2,7 +2,12 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 // Layouts
 import LayoutDefault from "@/layouts/default.vue"
+import LayoutAdmin from '@/layouts/admin.vue'
+
 import LandingPage from '@/views/LandingPage.vue'
+
+// Admin
+import DashboardAdmin from '@/views/admin/dashboard/Index.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -22,6 +27,19 @@ const router = createRouter({
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/AboutView.vue')
+    },
+    {
+      path: '/admin/',
+      component: LayoutAdmin,
+      meta: {
+        title: 'Dashboard Admin'
+      },
+      children: [
+        {
+          path: "dashboard",
+          component: DashboardAdmin
+        }
+      ]
     }
   ],
   scrollBehavior(to, from, savedPosition) {
