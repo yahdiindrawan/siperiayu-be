@@ -1,7 +1,7 @@
 <template>
     <div class="pb-16 pt-10">
         <div class="px-4 sm:px-6 lg:px-0">
-        <h1 class="text-3xl font-bold tracking-tight text-gray-900">Kalkulatpr</h1>
+        <h1 class="text-3xl font-bold tracking-tight text-gray-900">Kalkulator</h1>
         </div>
         <div class="px-4 sm:px-6 lg:px-0">
         <div class="py-6">
