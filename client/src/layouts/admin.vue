@@ -103,7 +103,7 @@
             </div>
             <main class="flex-1">
               <div class="relative mx-auto w-full">
-                <router-view/>
+                <slot/>
               </div>
             </main>
           </div>
