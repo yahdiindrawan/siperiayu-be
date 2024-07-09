@@ -3,7 +3,7 @@
         <!-- <TheHeader/> -->
         <TheNavbar/>
         <main>
-            <router-view />
+            <slot />
         </main>
         <TheFooter/>
     </div>
