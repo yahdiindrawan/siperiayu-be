@@ -25,41 +25,52 @@ const router = createRouter({
       }
     },
     {
+      path: '/admin/dashboard',
+      component: Dashboard,
+      meta: {
+        layout: LayoutAdmin,
+        title: "Dashboard Admin"
+      }
+    },
+    {
+      path: '/admin/data-master',
+      component: DataMaster,
+      meta: {
+        layout: LayoutAdmin,
+        title: "Data Master"
+      }
+    },
+    {
+      path: '/admin/indeks',
+      component: Indeks,
+      meta: {
+        layout: LayoutAdmin,
+        title: "Indeks"
+      }
+    },
+    {
+      path: '/admin/kalkulator',
+      component: Kalkulator,
+      meta: {
+        layout: LayoutAdmin,
+        title: "Kalkulator"
+      }
+    },
+    {
+      path: '/admin/pengaturan',
+      component: Pengaturan,
+      meta: {
+        layout: LayoutAdmin,
+        title: "Pengaturan"
+      }
+    },
+    {
       path: '/about',
       name: 'about',
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/AboutView.vue')
-    },
-    {
-      path: '/admin/',
-      component: LayoutAdmin,
-      meta: {
-        title: 'Dashboard Admin'
-      },
-      children: [
-        {
-          path: "dashboard",
-          component: Dashboard
-        },
-        {
-          path: "data-master",
-          component: DataMaster
-        },
-        {
-          path: "indeks",
-          component: Indeks
-        },
-        {
-          path: "kalkulator",
-          component: Kalkulator
-        },
-        {
-          path: "pengaturan",
-          component: Pengaturan
-        }
-      ]
     }
   ],
   scrollBehavior(to, from, savedPosition) {
