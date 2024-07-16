@@ -1,12 +1,12 @@
 <template>
   <div class="">
     <!-- Hero Section -->
-     <section class="relative mt-2 sm:mt-4 lg:mt-6 min-h-screen lg:max-h-screen scroll-mt-8">
-      <img src="@/assets/icons/building.gif" alt="Animation" class="hidden lg:block md:absolute bottom-28 inset-x-0 bg-cover w-full">
-      <div class="max-w-7xl mx-auto p-4 md:py-4 lg:py-6">
+     <section class="relative grid place-items-center mt-2 sm:mt-4 lg:mt-6 min-h-[calc(100vh-88px)] lg:max-h-screen scroll-mt-8">
+      <img src="@/assets/icons/building.gif" alt="Animation" class="hidden lg:block md:absolute bottom-6 inset-x-0 bg-cover w-full">
+      <div class="max-w-7xl mx-auto p-4 md:py-4 lg:py-6 lg:-mt-24">
         <div class="grid grid-cols-1 lg:grid-cols-2 lg:gap-4 content-center">
-          <div class="lg:p-8 xl:p-12 order-last lg:order-first">
-            <img src="@/assets/illustrations/hero-img.svg" alt="Hero Illustration" class="w-full max-w-2xl mx-auto">
+          <div class="p-4 lg:p-8 xl:p-12 order-last lg:order-first">
+            <img src="@/assets/illustrations/hero-img.svg" alt="Hero Illustration" class="w-full max-w-md lg:max-w-2xl mx-auto">
           </div>
           <div class="flex 2xl:items-center">
             <div class="p-4 lg:p-4 xl:p-4 space-y-4 lg:space-y-4 max-w-2xl mx-auto">
