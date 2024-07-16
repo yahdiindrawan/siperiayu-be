@@ -3,6 +3,7 @@ import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 import cors from 'cors'
 import authRouter from './router/authRouter.js'
+import cookieParser from 'cookie-parser'
 
 dotenv.config()
 
@@ -12,7 +13,8 @@ const port = 3000
 // Middleware
 app.use(cors())
 app.use(express.json())
-app.use(express.urlencoded({extended: true}))
+app.use(express.urlencoded({ extended: true }))
+app.use()
 
 app.get('/', (req, res) => {
     res.status(200).json({

@@ -134,12 +134,12 @@
                       <th scope="col" class="px-3 border-2 border-gray-200 py-3.5 text-right text-sm text-gray-900">{{ toCurrency(formIndeksKegiatan.jumlah) || 0.000 }}</th>
                     </tr>
                   </table>
-                  <div class="p-4 text-sm italic">*SHST (Standar Harga Satuan Tertinggi) Bangunan Gedung dan Harga Satuan Prasarana Bangunan Gedung menggunakan SHST sesuai peraturan yang berlaku saat ini. <a href="/perbup641-2024.pdf" download target="_blank" class="hover:underline text-blue-600">Klik disini</a> untuk melihat SHST yang berlaku saat ini.</div>
+                  <div class="p-4 text-sm italic">*SHST (Standar Harga Satuan Tertinggi) Bangunan Gedung dan Harga Satuan Prasarana Bangunan Gedung menggunakan SHST sesuai peraturan yang berlaku saat ini. <a href="/perbup641-2024.pdf" target="_blank" class="hover:underline text-blue-600">Klik disini</a> untuk melihat SHST yang berlaku saat ini.</div>
                 </div>
               </div>
 
               <div class="bg-white rounded-lg p-2">
-                <div class="p-4">
+                <div class="p-4 overflow-x-scroll lg:overflow-x-hidden">
                   <table class="min-w-full border-2 border-gray-200 rounded-lg p-4">
                     <tr>
                       <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">No</th>
@@ -202,6 +202,7 @@
                     </tr>
                   </table>
                 </div>
+                <div class="p-4 text-sm italic">*Perhitungan retribusi ini berdasarkan Peraturan Pemerintah No.16 Tahun 2021 tentang Peraturan Pelaksanaan Undang-Undang Nomor 28 Tahun 2002 tentang Bangunan Gedung. <a href="/pp16-2021.pdf" target="_blank" class="hover:underline text-blue-600">Klik disini</a> untuk melihat peraturan yang berlaku saat ini.</div>
               </div>
             </div>
 
@@ -352,7 +353,8 @@
                     </div>                             
   
                   </div>
-  
+
+                  <div class="p-4 text-sm italic">*SHST (Standar Harga Satuan Tertinggi) Bangunan Gedung dan Harga Satuan Prasarana Bangunan Gedung menggunakan SHST sesuai peraturan yang berlaku saat ini. <a href="/perbup641-2024.pdf" target="_blank" class="hover:underline text-blue-600">Klik disini</a> untuk melihat SHST yang berlaku saat ini.</div>
               </div>
 
               <div class="bg-white rounded-lg p-2">
@@ -418,6 +420,7 @@
                       </div>
                     </div>                             
                 </div>
+                <div class="p-4 text-sm italic">*Perhitungan retribusi ini berdasarkan Peraturan Pemerintah No.16 Tahun 2021 tentang Peraturan Pelaksanaan Undang-Undang Nomor 28 Tahun 2002 tentang Bangunan Gedung. <a href="/pp16-2021.pdf" target="_blank" class="hover:underline text-blue-600">Klik disini</a> untuk melihat peraturan yang berlaku saat ini.</div>
               </div>
 
             </div>
