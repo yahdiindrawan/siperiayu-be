@@ -8,12 +8,19 @@ export default defineConfig({
   plugins: [
     vue(),
   ],
+  server: {
+    historyApiFallback: true,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3000/api',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      }
+    }
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
-  },
-  server: {
-    historyApiFallback: true
   }
 })
