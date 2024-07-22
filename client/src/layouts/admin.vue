@@ -309,7 +309,6 @@ const sidebarOpen = ref(true);
 
 const getUser = async () => {
   const { data } = await customFetch.get("/auth/getUser");
-  console.log(data);
   user.value = data.user;
 };
 

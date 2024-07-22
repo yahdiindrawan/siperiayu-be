@@ -40,23 +40,23 @@
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-200 bg-white">
-            <tr v-for="(data, index) in FungsiBangunan" :key="index">
+            <tr v-for="(data, index) in fungsiBangunanData" :key="data._id">
               <td class="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">
                 {{ index + 1 }}
               </td>
               <td
                 class="w-full max-w-0 py-4 px-2 text-sm font-medium text-gray-900 sm:w-auto sm:max-w-none"
               >
-                {{ data.name }}
+                {{ data.category }}
                 <dl class="font-normal lg:hidden">
                   <dt class="sr-only sm:hidden">Indeks</dt>
                   <dd class="mt-1 truncate text-gray-500 sm:hidden">
-                    {{ data.value }}
+                    {{ data.indeks }}
                   </dd>
                 </dl>
               </td>
               <td class="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">
-                {{ data.value }}
+                {{ data.category }}
               </td>
               <td class="py-4 px-2 text-center text-sm font-medium">
                 <button
@@ -199,7 +199,7 @@
 </template>
 
 <script setup>
-import { reactive, ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import {
   PencilSquareIcon,
   TrashIcon,
@@ -225,6 +225,18 @@ const fungsiBangunan = reactive({
   indeks: null,
 });
 
+const fungsiBangunanData = ref(null);
+
+const allFungsiBangunan = async () => {
+  try {
+    const { data } = await customFetch.get("/fungsi-bangunan");
+    fungsiBangunanData.value = data.data;
+    console.log(fungsiBangunanData);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const clearInput = () => {
   isModal.value = false;
   fungsiBangunan.category = null;
@@ -237,22 +249,29 @@ const handleSubmit = async () => {
       category: fungsiBangunan.category,
       indeks: fungsiBangunan.indeks,
     });
-    if (FungsiBangunanData) clearInput();
+    if (FungsiBangunanData) {
+      clearInput();
+      allFungsiBangunan();
+    }
   } catch (error) {
     errorAlert.value = true;
     errorMessage.value = error.response.data.message;
   }
 };
 
-const FungsiBangunan = reactive([
-  { name: "Hunian (< 100 m2 dan < 2 lantai)", value: 0.15 },
-  { name: "Hunian (> 100 m2 dan > 2 lantai)", value: 0.17 },
-  { name: "Keagamaan", value: 0 },
-  { name: "Usaha", value: 0.7 },
-  { name: "Usaha UMKM", value: 0.5 },
-  { name: "Sosial & Budaya", value: 0.3 },
-  { name: "Khusus", value: 1 },
-  { name: "Ganda/Campuran (≤ 500 m2 dan ≤ 2 lantai)", value: 0.6 },
-  { name: "Ganda/Campuran (> 500 m2 dan > 2 lantai)", value: 0.8 },
-]);
+onMounted(() => {
+  allFungsiBangunan();
+});
+
+// const FungsiBangunan = reactive([
+//   { name: "Hunian (< 100 m2 dan < 2 lantai)", value: 0.15 },
+//   { name: "Hunian (> 100 m2 dan > 2 lantai)", value: 0.17 },
+//   { name: "Keagamaan", value: 0 },
+//   { name: "Usaha", value: 0.7 },
+//   { name: "Usaha UMKM", value: 0.5 },
+//   { name: "Sosial & Budaya", value: 0.3 },
+//   { name: "Khusus", value: 1 },
+//   { name: "Ganda/Campuran (≤ 500 m2 dan ≤ 2 lantai)", value: 0.6 },
+//   { name: "Ganda/Campuran (> 500 m2 dan > 2 lantai)", value: 0.8 },
+// ]);
 </script>

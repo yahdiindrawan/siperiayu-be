@@ -21,7 +21,6 @@ export const useAuthStore = defineStore("user", () => {
       currentUser.value = data.data;
       localStorage.setItem("user", JSON.stringify(data.data));
       router.push("/admin/dashboard");
-      console.log(data);
     } catch (error) {
       errorAlert.value = true;
       errorMessage.value = error.response.data.message;
