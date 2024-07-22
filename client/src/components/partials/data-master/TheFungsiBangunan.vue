@@ -39,7 +39,10 @@
               </th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-gray-200 bg-white">
+          <tbody
+            v-if="fungsiBangunanData"
+            class="divide-y divide-gray-200 bg-white"
+          >
             <tr v-for="(data, index) in fungsiBangunanData" :key="data._id">
               <td class="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">
                 {{ index + 1 }}
@@ -76,6 +79,13 @@
                   <span class="sr-only">Hapus</span>
                   <TrashIcon class="h-4 w-4 lg:h-5 lg:w-5" aria-hidden="true" />
                 </button>
+              </td>
+            </tr>
+          </tbody>
+          <tbody v-else>
+            <tr>
+              <td colspan="4">
+                <CLoadingSpinner />
               </td>
             </tr>
           </tbody>
@@ -213,6 +223,7 @@ import {
   TransitionRoot,
 } from "@headlessui/vue";
 import CAlert from "@/components/base/CAlert.vue";
+import CLoadingSpinner from "@/components/base/CLoadingSpinner.vue";
 import { CheckIcon } from "@heroicons/vue/24/outline";
 import customFetch from "@/api";
 
