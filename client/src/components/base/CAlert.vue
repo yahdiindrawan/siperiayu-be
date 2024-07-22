@@ -11,6 +11,7 @@
         <div class="-mx-1.5 -my-1.5">
           <button
             type="button"
+            @click="$emit('close')"
             class="inline-flex rounded-md bg-red-50 p-1.5 text-red-500 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2 focus:ring-offset-red-50"
           >
             <span class="sr-only">Dismiss</span>

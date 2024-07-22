@@ -13,6 +13,7 @@
         :message="authStores.errorMessage"
         type="error"
         class="mt-4"
+        @close="authStores.errorAlert = false"
       />
       <form @submit.prevent="handleSubmit" class="mt-6 my-4 mx-2">
         <div>

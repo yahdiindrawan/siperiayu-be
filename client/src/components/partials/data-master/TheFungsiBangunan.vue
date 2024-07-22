@@ -116,67 +116,79 @@
               <DialogPanel
                 class="relative transform overflow-hidden rounded-lg bg-white px-4 py-2 text-left shadow-xl transition-all sm:my-4 sm:w-full sm:max-w-lg sm:p-6"
               >
-                <div>
-                  <div class="sm:mt-5">
-                    <DialogTitle
-                      as="h3"
-                      class="text-base text-center font-semibold leading-6 text-gray-900"
-                    >
-                      Tambah Data
-                    </DialogTitle>
-                    <div class="mt-6 space-y-3">
-                      <div>
-                        <label
-                          for="kategori"
-                          class="block text-sm font-medium leading-6 text-gray-900"
-                          >Kategori</label
-                        >
-                        <div class="mt-2">
-                          <input
-                            id="kategori"
-                            name="kategori"
-                            type="text"
-                            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6"
-                          />
+                <form @submit.prevent="handleSubmit">
+                  <div>
+                    <div class="sm:mt-5">
+                      <DialogTitle
+                        as="h3"
+                        class="text-base text-center font-semibold leading-6 text-gray-900"
+                      >
+                        Tambah Data
+                      </DialogTitle>
+                      <CAlert
+                        v-if="errorAlert"
+                        :message="errorMessage"
+                        type="error"
+                        class="mt-4"
+                        @close="errorAlert = false"
+                      />
+                      <div class="mt-6 space-y-3">
+                        <div>
+                          <label
+                            for="kategori"
+                            class="block text-sm font-medium leading-6 text-gray-900"
+                            >Kategori</label
+                          >
+                          <div class="mt-2">
+                            <input
+                              v-model="fungsiBangunan.category"
+                              id="kategori"
+                              name="kategori"
+                              type="text"
+                              class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6"
+                            />
+                          </div>
                         </div>
-                      </div>
-                      <div>
-                        <label
-                          for="indeks"
-                          class="block text-sm font-medium leading-6 text-gray-900"
-                          >Indeks</label
-                        >
-                        <div class="mt-2">
-                          <input
-                            id="indeks"
-                            name="indeks"
-                            type="text"
-                            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6"
-                          />
+                        <div>
+                          <label
+                            for="indeks"
+                            class="block text-sm font-medium leading-6 text-gray-900"
+                            >Indeks</label
+                          >
+                          <div class="mt-2">
+                            <input
+                              v-model="fungsiBangunan.indeks"
+                              id="indeks"
+                              name="indeks"
+                              type="number"
+                              min="0"
+                              step="0.01"
+                              class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6"
+                            />
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-                <div
-                  class="mt-5 sm:mt-8 sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-3"
-                >
-                  <button
-                    type="button"
-                    class="inline-flex w-full justify-center rounded-md bg-secondary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:col-start-2"
-                    @click="isModal = false"
+                  <div
+                    class="mt-5 sm:mt-8 sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-3"
                   >
-                    Save
-                  </button>
-                  <button
-                    type="button"
-                    class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-100 sm:col-start-1 sm:mt-0"
-                    @click="isModal = false"
-                    ref="cancelButtonRef"
-                  >
-                    Cancel
-                  </button>
-                </div>
+                    <button
+                      type="submit"
+                      class="inline-flex w-full justify-center rounded-md bg-secondary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:col-start-2"
+                    >
+                      Save
+                    </button>
+                    <button
+                      type="button"
+                      class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-100 sm:col-start-1 sm:mt-0"
+                      @click="clearInput"
+                      ref="cancelButtonRef"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </form>
               </DialogPanel>
             </TransitionChild>
           </div>
@@ -200,9 +212,37 @@ import {
   TransitionChild,
   TransitionRoot,
 } from "@headlessui/vue";
+import CAlert from "@/components/base/CAlert.vue";
 import { CheckIcon } from "@heroicons/vue/24/outline";
+import customFetch from "@/api";
 
 const isModal = ref(false);
+const errorMessage = ref("");
+const errorAlert = ref(false);
+
+const fungsiBangunan = reactive({
+  category: null,
+  indeks: null,
+});
+
+const clearInput = () => {
+  isModal.value = false;
+  fungsiBangunan.category = null;
+  fungsiBangunan.indeks = null;
+};
+
+const handleSubmit = async () => {
+  try {
+    const FungsiBangunanData = await customFetch.post("/fungsi-bangunan", {
+      category: fungsiBangunan.category,
+      indeks: fungsiBangunan.indeks,
+    });
+    if (FungsiBangunanData) clearInput();
+  } catch (error) {
+    errorAlert.value = true;
+    errorMessage.value = error.response.data.message;
+  }
+};
 
 const FungsiBangunan = reactive([
   { name: "Hunian (< 100 m2 dan < 2 lantai)", value: 0.15 },
