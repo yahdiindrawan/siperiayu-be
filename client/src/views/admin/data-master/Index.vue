@@ -31,6 +31,7 @@
         <!-- {{ currentTab }} -->
         <div>
           <TheFungsiBangunan v-if="currentTab === 'Fungsi Bangunan'" />
+          <ThePermanensi v-if="currentTab === 'Permanensi'" />
         </div>
       </div>
     </div>
@@ -40,12 +41,13 @@
 <script setup>
 import { ref } from "vue";
 import TheFungsiBangunan from "@/components/partials/data-master/TheFungsiBangunan.vue";
+import ThePermanensi from "@/components/partials/data-master/ThePermanensi.vue";
 const tabs = [
-  { name: "Fungsi Bangunan", href: "#", current: true },
-  { name: "Kompleksitas", href: "#", current: false },
-  { name: "Permanensi", href: "#", current: false },
-  { name: "Ketinggian", href: "#", current: false },
-  { name: "Faktor Kepemilikan", href: "#", current: false },
+  { name: "Fungsi Bangunan" },
+  { name: "Kompleksitas" },
+  { name: "Permanensi" },
+  { name: "Ketinggian" },
+  { name: "Faktor Kepemilikan" },
 ];
 
 let currentTab = ref("Fungsi Bangunan");
