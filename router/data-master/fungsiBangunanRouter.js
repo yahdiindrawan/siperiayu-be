@@ -5,11 +5,11 @@ import {
   DetailFungsiBangunan,
   UpdateFungsiBangunan,
   DeleteFungsiBangunan,
-} from "../controllers/fungsiBangunanController.js";
+} from "../../controllers/fungsiBangunanController.js";
 import {
   authMiddleware,
   permissionUser,
-} from "../middleware/authMiddleware.js";
+} from "../../middleware/authMiddleware.js";
 
 const router = express.Router();
 
@@ -18,6 +18,7 @@ router.post("/", authMiddleware, CreateFungsiBangunan);
 
 // get /api/v1/fungsi-bangunan
 router.get("/", authMiddleware, AllFungsiBangunan);
+
 // get /api/v1/fungsi-bangunan/:id
 router.get("/:id", authMiddleware, DetailFungsiBangunan);
 

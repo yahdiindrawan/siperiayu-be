@@ -256,7 +256,7 @@ const fungsiBangunanData = ref(null);
 
 const allFungsiBangunan = async () => {
   try {
-    const { data } = await customFetch.get("/fungsi-bangunan");
+    const { data } = await customFetch.get("/data-master/fungsi-bangunan");
     fungsiBangunanData.value = data.data;
   } catch (error) {
     console.log(error);
@@ -268,6 +268,8 @@ const clearInput = () => {
   fungsiBangunan._id = null;
   fungsiBangunan.category = null;
   fungsiBangunan.indeks = null;
+  errorAlert.value = false;
+  errorMessage.value = "";
 };
 
 const clearToast = () => {
@@ -286,7 +288,7 @@ const handleEdit = (data) => {
 const handleDelete = async (_id) => {
   try {
     const tempFungsiBangunan = await customFetch.delete(
-      "/fungsi-bangunan/" + _id
+      "/data-master/fungsi-bangunan/" + _id
     );
     toast.message = tempFungsiBangunan.data.message;
     if (tempFungsiBangunan) {
@@ -308,15 +310,18 @@ const handleSubmit = async () => {
   try {
     let tempFungsiBangunan;
     if (!fungsiBangunan._id) {
-      tempFungsiBangunan = await customFetch.post("/fungsi-bangunan", {
-        category: fungsiBangunan.category,
-        indeks: fungsiBangunan.indeks,
-      });
+      tempFungsiBangunan = await customFetch.post(
+        "/data-master/fungsi-bangunan",
+        {
+          category: fungsiBangunan.category,
+          indeks: fungsiBangunan.indeks,
+        }
+      );
 
       toast.message = tempFungsiBangunan.data.message;
     } else {
       tempFungsiBangunan = await customFetch.put(
-        "/fungsi-bangunan/" + fungsiBangunan._id,
+        "/data-master/fungsi-bangunan/" + fungsiBangunan._id,
         {
           category: fungsiBangunan.category,
           indeks: fungsiBangunan.indeks,
