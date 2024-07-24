@@ -12,16 +12,16 @@
             <nav class="-mb-px flex space-x-8">
               <button
                 v-for="tab in tabs"
-                :key="tab.name"
-                @click="handleTab(tab.name)"
+                :key="tab"
+                @click="handleTab(tab)"
                 :class="[
-                  tab.name === currentTab
+                  tab === currentTab
                     ? 'border-primary text-secondary'
                     : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700',
                   'whitespace-nowrap border-b-2 px-1 py-4 text-sm font-medium',
                 ]"
               >
-                {{ tab.name }}
+                {{ tab }}
               </button>
             </nav>
           </div>
@@ -31,6 +31,7 @@
         <!-- {{ currentTab }} -->
         <div>
           <TheFungsiBangunan v-if="currentTab === 'Fungsi Bangunan'" />
+          <TheKompleksitas v-if="currentTab === 'Kompleksitas'" />
           <ThePermanensi v-if="currentTab === 'Permanensi'" />
         </div>
       </div>
@@ -41,13 +42,14 @@
 <script setup>
 import { ref } from "vue";
 import TheFungsiBangunan from "@/components/partials/data-master/TheFungsiBangunan.vue";
+import TheKompleksitas from "@/components/partials/data-master/TheKompleksitas.vue";
 import ThePermanensi from "@/components/partials/data-master/ThePermanensi.vue";
 const tabs = [
-  { name: "Fungsi Bangunan" },
-  { name: "Kompleksitas" },
-  { name: "Permanensi" },
-  { name: "Ketinggian" },
-  { name: "Faktor Kepemilikan" },
+  "Fungsi Bangunan",
+  "Kompleksitas",
+  "Permanensi",
+  "Ketinggian",
+  "Faktor Kepemilikan",
 ];
 
 let currentTab = ref("Fungsi Bangunan");
