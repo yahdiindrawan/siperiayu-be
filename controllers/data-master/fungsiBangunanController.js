@@ -1,5 +1,5 @@
-import FungsiBangunan from "../models/FungsiBangunan.js";
-import asyncHandler from "../middleware/asyncHandler.js";
+import FungsiBangunan from "../../models/data-master/FungsiBangunan.js";
+import asyncHandler from "../../middleware/asyncHandler.js";
 
 export const CreateFungsiBangunan = asyncHandler(async (req, res) => {
   const { category, indeks } = req.body;

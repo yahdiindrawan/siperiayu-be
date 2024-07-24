@@ -5,7 +5,7 @@ import {
   DetailFungsiBangunan,
   UpdateFungsiBangunan,
   DeleteFungsiBangunan,
-} from "../../controllers/fungsiBangunanController.js";
+} from "../../controllers/data-master/fungsiBangunanController.js";
 import {
   authMiddleware,
   permissionUser,

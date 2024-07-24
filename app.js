@@ -6,6 +6,7 @@ import cors from "cors";
 // Router
 import authRouter from "./router/authRouter.js";
 import fungsiBangunanRouter from "./router/data-master/fungsiBangunanRouter.js";
+import kompleksitasRouter from "./router/data-master/kompleksitasRouter.js";
 
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
@@ -29,6 +30,7 @@ if (process.env.NODE_ENV === "development") {
 app.use("/api/v1/auth", authRouter);
 // data-master
 app.use("/api/v1/data-master/fungsi-bangunan", fungsiBangunanRouter);
+app.use("/api/v1/data-master/kompleksitas", kompleksitasRouter);
 
 app.use(notFound);
 app.use(errorHandler);
