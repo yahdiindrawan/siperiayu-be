@@ -7,6 +7,7 @@ import cors from "cors";
 import authRouter from "./router/authRouter.js";
 import fungsiBangunanRouter from "./router/data-master/fungsiBangunanRouter.js";
 import kompleksitasRouter from "./router/data-master/kompleksitasRouter.js";
+import permanensiRouter from "./router/data-master/permanensiRouter.js";
 
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
@@ -31,6 +32,7 @@ app.use("/api/v1/auth", authRouter);
 // data-master
 app.use("/api/v1/data-master/fungsi-bangunan", fungsiBangunanRouter);
 app.use("/api/v1/data-master/kompleksitas", kompleksitasRouter);
+app.use("/api/v1/data-master/permanensi", permanensiRouter);
 
 app.use(notFound);
 app.use(errorHandler);
