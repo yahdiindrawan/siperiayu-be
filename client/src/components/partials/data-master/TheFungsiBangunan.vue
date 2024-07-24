@@ -1,5 +1,11 @@
 <template>
   <div class="my-6">
+    <CToast
+      v-if="isToast"
+      :title="toast.title"
+      :message="toast.message"
+      @close="isToast = false"
+    />
     <div class="flex justify-end">
       <button
         type="button"
@@ -59,12 +65,13 @@
                 </dl>
               </td>
               <td class="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">
-                {{ data.category }}
+                {{ data.indeks }}
               </td>
               <td class="py-4 px-2 text-center text-sm font-medium">
                 <button
                   type="button"
-                  class="inline-flex rounded-md p-1.5 text-gray-400 hover:text-blue-400 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2 focus:ring-offset-red-50"
+                  @click="handleEdit(data)"
+                  class="inline-flex rounded-md p-1.5 text-gray-400 hover:text-blue-400 hover:scale-105"
                 >
                   <span class="sr-only">Edit</span>
                   <PencilSquareIcon
@@ -74,7 +81,8 @@
                 </button>
                 <button
                   type="button"
-                  class="inline-flex rounded-md p-1.5 text-gray-400 hover:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2 focus:ring-offset-red-50"
+                  @click="handleDelete(data._id)"
+                  class="inline-flex rounded-md p-1.5 text-gray-400 hover:text-red-400 hover:scale-105"
                 >
                   <span class="sr-only">Hapus</span>
                   <TrashIcon class="h-4 w-4 lg:h-5 lg:w-5" aria-hidden="true" />
@@ -112,7 +120,7 @@
 
         <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
           <div
-            class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0"
+            class="flex min-h-full items-end justify-center p-4 text-center items-center"
           >
             <TransitionChild
               as="template"
@@ -124,16 +132,16 @@
               leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
               <DialogPanel
-                class="relative transform overflow-hidden rounded-lg bg-white px-4 py-2 text-left shadow-xl transition-all sm:my-4 sm:w-full sm:max-w-lg sm:p-6"
+                class="relative transform overflow-hidden rounded-lg bg-white px-4 py-2 text-left shadow-xl transition-all w-full max-w-sm my-4 lg:max-w-md p-6"
               >
-                <form @submit.prevent="handleSubmit">
+                <form @submit.prevent="handleSubmit" class="my-4">
                   <div>
-                    <div class="sm:mt-5">
+                    <div class="mt-5">
                       <DialogTitle
                         as="h3"
                         class="text-base text-center font-semibold leading-6 text-gray-900"
                       >
-                        Tambah Data
+                        {{ !fungsiBangunan._id ? "Tambah Data" : "Edit Data" }}
                       </DialogTitle>
                       <CAlert
                         v-if="errorAlert"
@@ -187,7 +195,7 @@
                       type="submit"
                       class="inline-flex w-full justify-center rounded-md bg-secondary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:col-start-2"
                     >
-                      Save
+                      {{ !fungsiBangunan._id ? "Save" : "Update" }}
                     </button>
                     <button
                       type="button"
@@ -222,18 +230,26 @@ import {
   TransitionChild,
   TransitionRoot,
 } from "@headlessui/vue";
-import CAlert from "@/components/base/CAlert.vue";
-import CLoadingSpinner from "@/components/base/CLoadingSpinner.vue";
+import { CAlert, CToast, CLoadingSpinner } from "@/components/base";
+// import CAlert from "@/components/base/CAlert.vue";
+// import CLoadingSpinner from "@/components/base/CLoadingSpinner.vue";
 import { CheckIcon } from "@heroicons/vue/24/outline";
 import customFetch from "@/api";
 
 const isModal = ref(false);
+const isToast = ref(false);
 const errorMessage = ref("");
 const errorAlert = ref(false);
 
 const fungsiBangunan = reactive({
+  _id: null,
   category: null,
   indeks: null,
+});
+
+const toast = reactive({
+  title: "",
+  message: "",
 });
 
 const fungsiBangunanData = ref(null);
@@ -242,7 +258,6 @@ const allFungsiBangunan = async () => {
   try {
     const { data } = await customFetch.get("/fungsi-bangunan");
     fungsiBangunanData.value = data.data;
-    console.log(fungsiBangunanData);
   } catch (error) {
     console.log(error);
   }
@@ -250,19 +265,75 @@ const allFungsiBangunan = async () => {
 
 const clearInput = () => {
   isModal.value = false;
+  fungsiBangunan._id = null;
   fungsiBangunan.category = null;
   fungsiBangunan.indeks = null;
 };
 
+const clearToast = () => {
+  isToast.value = false;
+  toast.title = "";
+  toast.message = "";
+};
+
+const handleEdit = (data) => {
+  isModal.value = true;
+  fungsiBangunan._id = data._id;
+  fungsiBangunan.category = data.category;
+  fungsiBangunan.indeks = data.indeks;
+};
+
+const handleDelete = async (_id) => {
+  try {
+    const tempFungsiBangunan = await customFetch.delete(
+      "/fungsi-bangunan/" + _id
+    );
+    toast.message = tempFungsiBangunan.data.message;
+    if (tempFungsiBangunan) {
+      allFungsiBangunan();
+
+      toast.title = "Berhasil";
+      isToast.value = true;
+
+      setTimeout(() => {
+        clearToast();
+      }, 3000);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const handleSubmit = async () => {
   try {
-    const FungsiBangunanData = await customFetch.post("/fungsi-bangunan", {
-      category: fungsiBangunan.category,
-      indeks: fungsiBangunan.indeks,
-    });
-    if (FungsiBangunanData) {
+    let tempFungsiBangunan;
+    if (!fungsiBangunan._id) {
+      tempFungsiBangunan = await customFetch.post("/fungsi-bangunan", {
+        category: fungsiBangunan.category,
+        indeks: fungsiBangunan.indeks,
+      });
+
+      toast.message = tempFungsiBangunan.data.message;
+    } else {
+      tempFungsiBangunan = await customFetch.put(
+        "/fungsi-bangunan/" + fungsiBangunan._id,
+        {
+          category: fungsiBangunan.category,
+          indeks: fungsiBangunan.indeks,
+        }
+      );
+
+      toast.message = tempFungsiBangunan.data.message;
+    }
+    if (tempFungsiBangunan) {
       clearInput();
       allFungsiBangunan();
+      toast.title = "Berhasil";
+      isToast.value = true;
+
+      setTimeout(() => {
+        clearToast();
+      }, 3000);
     }
   } catch (error) {
     errorAlert.value = true;
