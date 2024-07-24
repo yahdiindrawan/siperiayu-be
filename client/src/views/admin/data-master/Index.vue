@@ -34,6 +34,7 @@
           <TheKompleksitas v-if="currentTab === 'Kompleksitas'" />
           <ThePermanensi v-if="currentTab === 'Permanensi'" />
           <TheKetinggian v-if="currentTab === 'Ketinggian'" />
+          <TheFaktorKepemilikan v-if="currentTab === 'Faktor Kepemilikan'" />
         </div>
       </div>
     </div>
@@ -46,6 +47,8 @@ import TheFungsiBangunan from "@/components/partials/data-master/TheFungsiBangun
 import TheKompleksitas from "@/components/partials/data-master/TheKompleksitas.vue";
 import ThePermanensi from "@/components/partials/data-master/ThePermanensi.vue";
 import TheKetinggian from "@/components/partials/data-master/TheKetinggian.vue";
+import TheFaktorKepemilikan from "@/components/partials/data-master/TheFaktorKepemilikan.vue";
+
 const tabs = [
   "Fungsi Bangunan",
   "Kompleksitas",
