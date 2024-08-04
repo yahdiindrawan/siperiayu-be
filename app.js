@@ -14,6 +14,7 @@ import faktorKepemilikanRouter from "./router/data-master/faktorKepemilikanRoute
 // Indeks Router
 import IndeksLokalitasRouter from "./router/indeks/indeksLokalitasRouter.js";
 import IndeksBGTerbangunRouter from "./router/indeks/indeksBGTerbangunRouter.js";
+import IndeksBGTerbangunPrasaranaRouter from "./router/indeks/indeksBGTerbangunPrasaranaRouter.js";
 
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
@@ -44,6 +45,10 @@ app.use("/api/v1/data-master/faktor-kepemilikan", faktorKepemilikanRouter);
 // indeks
 app.use("/api/v1/indeks/indeks-lokalitas", IndeksLokalitasRouter);
 app.use("/api/v1/indeks/indeks-bg-terbangun", IndeksBGTerbangunRouter);
+app.use(
+  "/api/v1/indeks/indeks-bg-terbangun-prasarana",
+  IndeksBGTerbangunPrasaranaRouter
+);
 
 app.use(notFound);
 app.use(errorHandler);
