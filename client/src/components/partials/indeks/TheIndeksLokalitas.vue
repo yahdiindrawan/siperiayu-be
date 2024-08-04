@@ -30,15 +30,9 @@
               </th>
               <th
                 scope="col"
-                class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell"
               >
-                Kategori
-              </th>
-              <th
-                scope="col"
-                class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell"
-              >
-                Indeks
+                Value
               </th>
               <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-0">
                 <span class="sr-only">Aksi</span>
@@ -46,28 +40,25 @@
             </tr>
           </thead>
           <tbody
-            v-if="fungsiBangunanData"
+            v-if="indeksLokalitasData"
             class="divide-y divide-gray-200 bg-white"
           >
-            <tr v-for="(data, index) in fungsiBangunanData" :key="data._id">
+            <tr v-for="(data, index) in indeksLokalitasData" :key="data._id">
               <td class="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">
                 {{ index + 1 }}
               </td>
               <td
                 class="w-full max-w-0 py-4 px-2 text-sm font-medium text-gray-900 sm:w-auto sm:max-w-none"
               >
-                {{ data.category }}
-                <dl class="font-normal lg:hidden">
-                  <dt class="sr-only sm:hidden">Indeks</dt>
+                {{ data.value }}
+                <!-- <dl class="font-normal lg:hidden">
+                  <dt class="sr-only sm:hidden">Value</dt>
                   <dd class="mt-1 truncate text-gray-500 sm:hidden">
                     {{ data.indeks }}
                   </dd>
-                </dl>
+                </dl> -->
               </td>
-              <td class="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">
-                {{ data.indeks }}
-              </td>
-              <td class="py-4 px-2 text-center text-sm font-medium">
+              <td class="py-4 px-2 text-center text-sm font-medium max-w-8">
                 <button
                   type="button"
                   @click="handleEdit(data)"
@@ -141,7 +132,7 @@
                         as="h3"
                         class="text-base text-center font-semibold leading-6 text-gray-900"
                       >
-                        {{ !fungsiBangunan._id ? "Tambah Data" : "Edit Data" }}
+                        {{ !indeksLokalitas._id ? "Tambah Data" : "Edit Data" }}
                       </DialogTitle>
                       <CAlert
                         v-if="errorAlert"
@@ -153,31 +144,15 @@
                       <div class="mt-6 space-y-3">
                         <div>
                           <label
-                            for="kategori"
+                            for="value"
                             class="block text-sm font-medium leading-6 text-gray-900"
-                            >Kategori</label
+                            >Value</label
                           >
                           <div class="mt-2">
                             <input
-                              v-model="fungsiBangunan.category"
-                              id="kategori"
-                              name="kategori"
-                              type="text"
-                              class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6"
-                            />
-                          </div>
-                        </div>
-                        <div>
-                          <label
-                            for="indeks"
-                            class="block text-sm font-medium leading-6 text-gray-900"
-                            >Indeks</label
-                          >
-                          <div class="mt-2">
-                            <input
-                              v-model="fungsiBangunan.indeks"
-                              id="indeks"
-                              name="indeks"
+                              v-model="indeksLokalitas.value"
+                              id="value"
+                              name="value"
                               type="number"
                               min="0"
                               step="0.01"
@@ -195,7 +170,7 @@
                       type="submit"
                       class="inline-flex w-full justify-center rounded-md bg-secondary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary sm:col-start-2"
                     >
-                      {{ !fungsiBangunan._id ? "Save" : "Update" }}
+                      {{ !indeksLokalitas._id ? "Save" : "Update" }}
                     </button>
                     <button
                       type="button"
@@ -241,10 +216,9 @@ const isToast = ref(false);
 const errorMessage = ref("");
 const errorAlert = ref(false);
 
-const fungsiBangunan = reactive({
+const indeksLokalitas = reactive({
   _id: null,
-  category: null,
-  indeks: null,
+  value: null,
 });
 
 const toast = reactive({
@@ -252,12 +226,12 @@ const toast = reactive({
   message: "",
 });
 
-const fungsiBangunanData = ref(null);
+const indeksLokalitasData = ref(null);
 
-const allFungsiBangunan = async () => {
+const allIndeksLokalitas = async () => {
   try {
-    const { data } = await customFetch.get("/data-master/fungsi-bangunan");
-    fungsiBangunanData.value = data.data;
+    const { data } = await customFetch.get("/indeks/indeks-lokalitas");
+    indeksLokalitasData.value = data.data;
   } catch (error) {
     console.log(error);
   }
@@ -265,9 +239,8 @@ const allFungsiBangunan = async () => {
 
 const clearInput = () => {
   isModal.value = false;
-  fungsiBangunan._id = null;
-  fungsiBangunan.category = null;
-  fungsiBangunan.indeks = null;
+  indeksLokalitas._id = null;
+  indeksLokalitas.value = null;
   errorAlert.value = false;
   errorMessage.value = "";
 };
@@ -280,19 +253,18 @@ const clearToast = () => {
 
 const handleEdit = (data) => {
   isModal.value = true;
-  fungsiBangunan._id = data._id;
-  fungsiBangunan.category = data.category;
-  fungsiBangunan.indeks = data.indeks;
+  indeksLokalitas._id = data._id;
+  indeksLokalitas.value = data.value;
 };
 
 const handleDelete = async (_id) => {
   try {
-    const tempFungsiBangunan = await customFetch.delete(
-      "/data-master/fungsi-bangunan/" + _id
+    const tempIndeksLokalitas = await customFetch.delete(
+      "/indeks/indeks-lokalitas/" + _id
     );
-    toast.message = tempFungsiBangunan.data.message;
-    if (tempFungsiBangunan) {
-      allFungsiBangunan();
+    toast.message = tempIndeksLokalitas.data.message;
+    if (tempIndeksLokalitas) {
+      allIndeksLokalitas();
 
       toast.title = "Berhasil";
       isToast.value = true;
@@ -308,31 +280,26 @@ const handleDelete = async (_id) => {
 
 const handleSubmit = async () => {
   try {
-    let tempFungsiBangunan;
-    if (!fungsiBangunan._id) {
-      tempFungsiBangunan = await customFetch.post(
-        "/data-master/fungsi-bangunan",
-        {
-          category: fungsiBangunan.category,
-          indeks: fungsiBangunan.indeks,
-        }
-      );
+    let tempIndeksLokalitas;
+    if (!indeksLokalitas._id) {
+      tempIndeksLokalitas = await customFetch.post("/indeks/indeks-lokalitas", {
+        value: indeksLokalitas.value,
+      });
 
-      toast.message = tempFungsiBangunan.data.message;
+      toast.message = tempIndeksLokalitas.data.message;
     } else {
-      tempFungsiBangunan = await customFetch.put(
-        "/data-master/fungsi-bangunan/" + fungsiBangunan._id,
+      tempIndeksLokalitas = await customFetch.put(
+        "/indeks/indeks-lokalitas/" + indeksLokalitas._id,
         {
-          category: fungsiBangunan.category,
-          indeks: fungsiBangunan.indeks,
+          value: indeksLokalitas.value,
         }
       );
 
-      toast.message = tempFungsiBangunan.data.message;
+      toast.message = tempIndeksLokalitas.data.message;
     }
-    if (tempFungsiBangunan) {
+    if (tempIndeksLokalitas) {
       clearInput();
-      allFungsiBangunan();
+      allIndeksLokalitas();
       toast.title = "Berhasil";
       isToast.value = true;
 
@@ -347,18 +314,6 @@ const handleSubmit = async () => {
 };
 
 onMounted(() => {
-  allFungsiBangunan();
+  allIndeksLokalitas();
 });
-
-// const FungsiBangunan = reactive([
-//   { name: "Hunian (< 100 m2 dan < 2 lantai)", value: 0.15 },
-//   { name: "Hunian (> 100 m2 dan > 2 lantai)", value: 0.17 },
-//   { name: "Keagamaan", value: 0 },
-//   { name: "Usaha", value: 0.7 },
-//   { name: "Usaha UMKM", value: 0.5 },
-//   { name: "Sosial & Budaya", value: 0.3 },
-//   { name: "Khusus", value: 1 },
-//   { name: "Ganda/Campuran (≤ 500 m2 dan ≤ 2 lantai)", value: 0.6 },
-//   { name: "Ganda/Campuran (> 500 m2 dan > 2 lantai)", value: 0.8 },
-// ]);
 </script>
