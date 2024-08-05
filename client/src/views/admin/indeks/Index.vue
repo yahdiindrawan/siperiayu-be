@@ -29,6 +29,10 @@
         <!-- {{ currentTab }} -->
         <div>
           <TheIndeksLokalitas v-if="currentTab === 'Indeks Lokalitas'" />
+          <TheIndeksBGTerbangun v-if="currentTab === 'Indeks BG Terbangun'" />
+          <TheIndeksBGTerbangunPrasarana
+            v-if="currentTab === 'Indeks BG Terbangun Prasarana'"
+          />
         </div>
       </div>
     </div>
@@ -38,6 +42,8 @@
 <script setup>
 import { ref } from "vue";
 import TheIndeksLokalitas from "@/components/partials/indeks/TheIndeksLokalitas.vue";
+import TheIndeksBGTerbangun from "@/components/partials/indeks/TheIndeksBGTerbangun.vue";
+import TheIndeksBGTerbangunPrasarana from "@/components/partials/indeks/TheIndeksBGTerbangunPrasarana.vue";
 
 const tabs = [
   "Indeks Lokalitas",
