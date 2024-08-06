@@ -15,7 +15,40 @@ export const CreateFungsiBangunan = asyncHandler(async (req, res) => {
 });
 
 export const AllFungsiBangunan = asyncHandler(async (req, res) => {
-  const FungsiBangunanData = await FungsiBangunan.find();
+  // req query
+  const queryObj = { ...req.query };
+
+  // berfungsi mengabaikan page dan sort
+  const excludeField = ["page", "sort"];
+  excludeField.forEach((element) => delete queryObj[element]);
+
+  // Testing console.log
+  // console.log(req.query, queryObj);
+
+  const page = req.query.page * 1 || 1;
+  const limitData = 5;
+  const skipData = (page - 1) * limitData;
+
+  let query = FungsiBangunan.find(queryObj).skip(skipData).limit(limitData);
+
+  // Sorting berdasarkan field
+  if (req.query.sort) {
+    const sortBy = req.query.sort.split(",").join(" ");
+    query = query.sort(sortBy);
+  } else {
+    // filter urutan berdasarkan data terbaru
+    query = query.sort("createdAt");
+  }
+
+  if (req.query.page) {
+    const numFungsiBangunan = await FungsiBangunan.countDocuments();
+    if (skipData >= numFungsiBangunan) {
+      throw new Error("This page doesn't not exist");
+    }
+  }
+  const FungsiBangunanData = await query;
+
+  // const FungsiBangunanData = await FungsiBangunan.find();
 
   return res.status(200).json({
     message: "Data berhasil ditampilkan",
