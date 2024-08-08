@@ -15,6 +15,8 @@ import faktorKepemilikanRouter from "./router/data-master/faktorKepemilikanRoute
 import IndeksLokalitasRouter from "./router/indeks/indeksLokalitasRouter.js";
 import IndeksBGTerbangunRouter from "./router/indeks/indeksBGTerbangunRouter.js";
 import IndeksBGTerbangunPrasaranaRouter from "./router/indeks/indeksBGTerbangunPrasaranaRouter.js";
+// Kalkulator Router
+import klasifikasiRouter from "./router/kalkulator/klasifikasiRouter.js";
 
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
@@ -49,6 +51,8 @@ app.use(
   "/api/v1/indeks/indeks-bg-terbangun-prasarana",
   IndeksBGTerbangunPrasaranaRouter
 );
+// kalkulator
+app.use("/api/v1/kalkulator/klasifikasi", klasifikasiRouter);
 
 app.use(notFound);
 app.use(errorHandler);
