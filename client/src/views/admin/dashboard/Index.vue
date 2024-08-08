@@ -1,29 +1,38 @@
 <template>
-    <div class="pb-16 pt-10">
-        <div class="px-4 sm:px-6 lg:px-0">
-        <h1 class="text-3xl font-bold tracking-tight text-gray-900">Dashboard</h1>
+  <div class="pb-16 pt-10">
+    <div class="relative isolate px-6 pt-4 md:pt-14 lg:px-8">
+      <div class="mx-auto max-w-2xl">
+        <div class="mb-8 flex justify-center">
+          <div
+            class="relative rounded-full px-4 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10"
+          >
+            Dashboard Admin
+          </div>
         </div>
-        <div class="px-4 sm:px-6 lg:px-0">
-        <div class="py-6">
-            <div class="overflow-auto">
-                <div class="border-b border-gray-200">
-                    <nav class="-mb-px flex space-x-8">
-                    <a v-for="tab in tabs" :key="tab.name" :href="tab.href" :class="[tab.current ? 'border-primary text-secondary' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700', 'whitespace-nowrap border-b-2 px-1 py-4 text-sm font-medium']">{{ tab.name }}</a>
-                    </nav>
-                </div>
-            </div>
-
-            <!-- Description list with inline editing -->
-             
+        <div class="text-center">
+          <h1
+            class="text-2xl font-bold tracking-tight text-gray-900 sm:text-5xl"
+          >
+            Simulasi Perhitungan<br />
+            Retribusi PBG <br />
+            Kabupaten Indramayu
+          </h1>
+          <p class="mt-6 text-base leading-8 text-gray-600">
+            Simulasi perhitungan retribusi Persetujuan Bangunan Gedung (PBG)
+            untuk Bangunan Baru/Renovasi, membantu anda dalam menghitung
+            perkiraan pembayaran retribusi PBG.
+          </p>
+          <div class="mt-10 flex items-center justify-center gap-x-6">
+            <router-link
+              to="data-master"
+              class="text-sm font-semibold leading-6 text-gray-900"
+              >Coba Kelola Data <span aria-hidden="true"> →</span></router-link
+            >
+          </div>
         </div>
-        </div>
+      </div>
     </div>
+  </div>
 </template>
 
-<script setup>
-import { ref } from 'vue'
-
-const tabs = [
-
-]
-</script>
+<script setup></script>
