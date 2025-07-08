@@ -1,725 +1,1646 @@
 <template>
-    <section id="kalkulator" class="bg-beige">
-        <div class="max-w-7xl mx-auto py-8 md:py-12 px-4 md:px-8">
-          <div class="flex">
-            <h2 class="text-primary font-bold text-3xl flex">
-              <p class="underline underline-offset-8 decoration-black">K</p>
-              alkulator PBG
-            </h2>
+  <section id="kalkulator" class="bg-beige">
+    <div class="max-w-7xl mx-auto py-8 md:py-12 px-4 md:px-8">
+      <div class="flex">
+        <h2 class="text-primary font-bold text-3xl flex">
+          <p class="underline underline-offset-8 decoration-black">K</p>
+          alkulator PBG
+        </h2>
+      </div>
+      <p class="pt-2">Simulasi perhitungan retribusi PBG</p>
+      <div class="py-4">
+        <!-- Desktop Display -->
+        <div class="space-y-6 hidden md:block">
+          <div class="bg-white rounded-lg p-2">
+            <div class="p-4">
+              <table class="min-w-full border-2 border-gray-200 rounded-lg p-4">
+                <tr>
+                  <td
+                    colspan="3"
+                    rowspan="2"
+                    scope="col"
+                    class="uppercase border-2 border-gray-200 py-3.5 pl-4 pr-3 text-center text-sm font-semibold text-gray-900 sm:pl-0"
+                  ></td>
+                  <th
+                    scope="col"
+                    class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900"
+                  >
+                    Fungsi Bangunan
+                  </th>
+                  <th
+                    scope="col"
+                    class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900"
+                  >
+                    Indeks
+                  </th>
+                  <th
+                    scope="col"
+                    class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900"
+                  >
+                    Nilai (A)
+                  </th>
+                </tr>
+                <tr>
+                  <td
+                    scope="col"
+                    class="px-3 border-2 border-gray-200 py-2.5 text-center text-sm text-gray-900"
+                  >
+                    <select
+                      v-model="form.fungsiBangunan"
+                      @change="changeHandle('Fungsi Bangunan')"
+                      id="location"
+                      name="location"
+                      class="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-gray-600 sm:text-sm sm:leading-6"
+                    >
+                      <option :value="null">- Pilih Fungsi Bangunan -</option>
+                      <option
+                        v-for="(list, index) in dataFungsiBangunan"
+                        :key="index"
+                        :value="list"
+                        class="py-4"
+                      >
+                        {{ list.name }}
+                      </option>
+                    </select>
+                  </td>
+                  <td
+                    scope="col"
+                    class="px-3 border-2 border-gray-200 py-2.5 text-center text-sm text-gray-900"
+                  >
+                    {{ form.fungsiBangunan?.value || 0 }}
+                  </td>
+                  <td
+                    scope="col"
+                    class="px-3 border-2 border-gray-200 py-2.5 text-center text-sm text-gray-900"
+                  >
+                    {{ form.valueFungsiBangunan || 0 }}
+                  </td>
+                </tr>
+                <tr>
+                  <th
+                    scope="col"
+                    class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900"
+                  >
+                    No
+                  </th>
+                  <th
+                    scope="col"
+                    class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900"
+                  >
+                    Klasifikasi
+                  </th>
+                  <th
+                    scope="col"
+                    class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900"
+                  >
+                    Bobot
+                  </th>
+                  <th
+                    scope="col"
+                    class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900"
+                  >
+                    Parameter
+                  </th>
+                  <th
+                    scope="col"
+                    class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900"
+                  >
+                    Indeks
+                  </th>
+                  <th
+                    scope="col"
+                    class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900"
+                  >
+                    Nilai (B)
+                  </th>
+                </tr>
+                <tr v-for="(data, index) in dataClasifications" :key="index">
+                  <td
+                    scope="col"
+                    class="px-3 border-2 border-gray-200 py-2.5 text-center text-sm text-gray-900"
+                  >
+                    {{ index + 1 }}
+                  </td>
+                  <td
+                    scope="col"
+                    class="px-3 border-2 border-gray-200 py-2.5 text-center text-sm text-gray-900"
+                  >
+                    {{ data.clasification }}
+                  </td>
+                  <td
+                    scope="col"
+                    class="px-3 border-2 border-gray-200 py-2.5 text-center text-sm text-gray-900"
+                  >
+                    {{ data.weight }}
+                  </td>
+                  <td
+                    scope="col"
+                    class="px-3 border-2 border-gray-200 py-2.5 text-center text-sm text-gray-900"
+                  >
+                    <select
+                      v-model="dataClasifications[index].selectedParameter"
+                      @change="changeHandle('Klasifikasi', index)"
+                      id="location"
+                      name="location"
+                      class="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-gray-600 sm:text-sm sm:leading-6"
+                    >
+                      <option :value="null">
+                        - Pilih {{ data.clasification }} -
+                      </option>
+                      <option
+                        v-for="(list, index) in data.parameters"
+                        :key="index"
+                        :value="list"
+                        class="py-4"
+                      >
+                        {{ list.name }}
+                      </option>
+                    </select>
+                  </td>
+                  <td
+                    scope="col"
+                    class="px-3 border-2 border-gray-200 py-2.5 text-center text-sm text-gray-900"
+                  >
+                    {{
+                      dataClasifications[index].selectedParameter?.value || 0
+                    }}
+                  </td>
+                  <td
+                    scope="col"
+                    class="px-3 border-2 border-gray-200 py-2.5 text-center text-sm text-gray-900"
+                  >
+                    {{ dataClasifications[index].value || 0 }}
+                  </td>
+                </tr>
+
+                <tr>
+                  <th
+                    colspan="5"
+                    scope="col"
+                    class="px-8 uppercase border-2 border-gray-200 py-3.5 text-right text-sm font-semibold text-gray-900"
+                  >
+                    Jumlah (B)
+                  </th>
+                  <th
+                    scope="col"
+                    class="px-3 border-2 border-gray-200 py-3.5 text-center text-sm text-gray-900"
+                  >
+                    {{ form.valueClassification || 0.0 }}
+                  </th>
+                </tr>
+                <tr>
+                  <td
+                    colspan="3"
+                    rowspan="2"
+                    scope="col"
+                    class="uppercase border-2 border-gray-200 py-3.5 pl-4 pr-3 text-center text-sm font-semibold text-gray-900 sm:pl-0"
+                  ></td>
+                  <th
+                    scope="col"
+                    class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900"
+                  >
+                    Faktor Kepemilikan
+                  </th>
+                  <th
+                    scope="col"
+                    class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900"
+                  >
+                    Indeks
+                  </th>
+                  <th
+                    scope="col"
+                    class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900"
+                  >
+                    Nilai (C)
+                  </th>
+                </tr>
+                <tr>
+                  <td
+                    scope="col"
+                    class="px-3 border-2 border-gray-200 py-2.5 text-center text-sm text-gray-900"
+                  >
+                    <select
+                      v-model="form.faktorKepemilikan"
+                      @change="changeHandle('Faktor Kepemilikan')"
+                      id="location"
+                      name="location"
+                      class="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-gray-600 sm:text-sm sm:leading-6"
+                    >
+                      <option :value="null">
+                        - Pilih Faktor Kepemilikan -
+                      </option>
+                      <option
+                        v-for="(list, index) in dataFaktorKepemilikan"
+                        :key="index"
+                        :value="list"
+                        class="py-4"
+                      >
+                        {{ list.name }}
+                      </option>
+                    </select>
+                  </td>
+                  <td
+                    scope="col"
+                    class="px-3 border-2 border-gray-200 py-2.5 text-center text-sm text-gray-900"
+                  >
+                    {{ form.faktorKepemilikan?.value || 0 }}
+                  </td>
+                  <td
+                    scope="col"
+                    class="px-3 border-2 border-gray-200 py-2.5 text-center text-sm text-gray-900"
+                  >
+                    {{ form.valueFaktorKepemilikan || 0 }}
+                  </td>
+                </tr>
+                <tr>
+                  <th
+                    colspan="5"
+                    scope="col"
+                    class="px-8 border-2 border-gray-200 py-3.5 text-right text-sm font-semibold text-gray-900"
+                  >
+                    Indeks Terintegrasi (IT) = A x B x C
+                  </th>
+                  <th
+                    scope="col"
+                    class="px-3 border-2 border-gray-200 py-3.5 text-center text-sm text-gray-900"
+                  >
+                    {{ form.indeksTerintegrasi || 0.0 }}
+                  </th>
+                </tr>
+              </table>
+            </div>
           </div>
-          <p class="pt-2">Simulasi perhitungan retribusi PBG</p>
-          <div class="py-4">
-            <!-- Desktop Display -->
-            <div class="space-y-6 hidden md:block">
-              <div class="bg-white rounded-lg p-2">
-                <div class="p-4">
-                  <table class="min-w-full border-2 border-gray-200 rounded-lg p-4">
-                    <tr>
-                      <td colspan="3" rowspan="2" scope="col" class="uppercase border-2 border-gray-200 py-3.5 pl-4 pr-3 text-center text-sm font-semibold text-gray-900 sm:pl-0"></td>
-                      <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">Fungsi Bangunan</th>
-                      <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">Indeks</th>
-                      <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">Nilai (A)</th>
-                    </tr>
-                    <tr>
-                      <td scope="col" class="px-3 border-2 border-gray-200 py-2.5 text-center text-sm text-gray-900">
-                        <select v-model="form.fungsiBangunan" @change="changeHandle('Fungsi Bangunan')" id="location" name="location" class="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-gray-600 sm:text-sm sm:leading-6">
-                          <option :value="null">- Pilih Fungsi Bangunan -</option>
-                          <option v-for="(list, index) in dataFungsiBangunan" :key="index" :value="list" class="py-4">
-                            {{list.name}}
-                          </option>
-                        </select>
-                      </td>
-                      <td scope="col" class="px-3 border-2 border-gray-200 py-2.5 text-center text-sm text-gray-900">{{ form.fungsiBangunan?.value || 0 }}</td>
-                      <td scope="col" class="px-3 border-2 border-gray-200 py-2.5 text-center text-sm text-gray-900">{{ form.valueFungsiBangunan || 0 }}</td>
-                    </tr>
-                    <tr>
-                      <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">No</th>
-                      <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">Klasifikasi</th>
-                      <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">Bobot</th>
-                      <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">Parameter</th>
-                      <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">Indeks</th>
-                      <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">Nilai (B)</th>
-                    </tr>
-                    <tr v-for="(data, index) in dataClasifications" :key="index">
-                      <td scope="col" class="px-3 border-2 border-gray-200 py-2.5 text-center text-sm text-gray-900">{{index + 1}}</td>
-                      <td scope="col" class="px-3 border-2 border-gray-200 py-2.5 text-center text-sm text-gray-900">{{ data.clasification}}</td>
-                      <td scope="col" class="px-3 border-2 border-gray-200 py-2.5 text-center text-sm text-gray-900">{{ data.weight }}</td>
-                      <td scope="col" class="px-3 border-2 border-gray-200 py-2.5 text-center text-sm text-gray-900">
-                        <select v-model="dataClasifications[index].selectedParameter" @change="changeHandle('Klasifikasi', index)" id="location" name="location" class="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-gray-600 sm:text-sm sm:leading-6">
-                          <option :value="null">- Pilih {{ data.clasification }} -</option>
-                          <option v-for="(list, index) in data.parameters" :key="index" :value="list" class="py-4">
-                            {{list.name}}
-                          </option>
-                        </select>
-                      </td>
-                      <td scope="col" class="px-3 border-2 border-gray-200 py-2.5 text-center text-sm text-gray-900">{{ dataClasifications[index].selectedParameter?.value || 0 }}</td>
-                      <td scope="col" class="px-3 border-2 border-gray-200 py-2.5 text-center text-sm text-gray-900">{{ dataClasifications[index].value || 0 }}</td>
-                    </tr>
-  
-                    <tr>
-                      <th colspan="5" scope="col" class="px-8 uppercase border-2 border-gray-200 py-3.5 text-right text-sm font-semibold text-gray-900">Jumlah (B)</th>
-                      <th scope="col" class="px-3 border-2 border-gray-200 py-3.5 text-center text-sm text-gray-900">{{ form.valueClassification || 0.00 }}</th>
-                    </tr>
-                    <tr>
-                      <td colspan="3" rowspan="2" scope="col" class="uppercase border-2 border-gray-200 py-3.5 pl-4 pr-3 text-center text-sm font-semibold text-gray-900 sm:pl-0"></td>
-                      <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">Faktor Kepemilikan</th>
-                      <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">Indeks</th>
-                      <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">Nilai (C)</th>
-                    </tr>
-                    <tr>
-                      <td scope="col" class="px-3 border-2 border-gray-200 py-2.5 text-center text-sm text-gray-900">
-                        <select v-model="form.faktorKepemilikan" @change="changeHandle('Faktor Kepemilikan')" id="location" name="location" class="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-gray-600 sm:text-sm sm:leading-6">
-                          <option :value="null">- Pilih Faktor Kepemilikan -</option>
-                          <option v-for="(list, index) in dataFaktorKepemilikan" :key="index" :value="list" class="py-4">
-                            {{list.name}}
-                          </option>
-                        </select>
-                      </td>
-                      <td scope="col" class="px-3 border-2 border-gray-200 py-2.5 text-center text-sm text-gray-900">{{ form.faktorKepemilikan?.value || 0 }}</td>
-                      <td scope="col" class="px-3 border-2 border-gray-200 py-2.5 text-center text-sm text-gray-900">{{ form.valueFaktorKepemilikan || 0 }}</td>
-                    </tr>
-                    <tr>
-                      <th colspan="5" scope="col" class="px-8 border-2 border-gray-200 py-3.5 text-right text-sm font-semibold text-gray-900">Indeks Terintegrasi (IT) = A x B x C</th>
-                      <th scope="col" class="px-3 border-2 border-gray-200 py-3.5 text-center text-sm text-gray-900">{{ form.indeksTerintegrasi || 0.00 }}</th>
-                    </tr>
-                  </table>
-                </div>
-              </div>
 
-              <div class="bg-white rounded-lg p-2">
-                <div class="p-4">
-                  <table class="min-w-full border-2 border-gray-200 rounded-lg p-4">
-                    <tr>
-                      <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">Luas Bangunan</th>
-                      <th scope="col" class="px-3 relative uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">
-                        Indeks Lokalitas
-                        <button @click="isOpen = !isOpen" class="absolute top-2 right-2 transition ease-in-out hover:scale-110">
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
-                          </svg>
-                        </button>
-                      </th>
-                      <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">Indeks BG Terbangun</th>
-                      <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">SHST*</th>
-                      <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">Jumlah</th>
-                    </tr>
-                    <tr>
-                      <td scope="col" class="px-3 border-2 border-gray-200 py-2.5 text-center text-sm text-gray-900">
-                        <div class="mt-2 flex rounded-md shadow-sm">
-                          <input v-model="formIndeksKegiatan.luasBangunan" @change="updatePerhitungan" type="number" min="0" name="company-website" id="company-website" class="block w-full px-4 min-w-0 flex-1 rounded-none rounded-l-3xl border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6" placeholder="" />
-                          <span class="inline-flex bg-gray-200 items-center rounded-r-3xl border border-l-0 border-gray-300 px-3 text-gray-500 sm:text-sm">M <sup>2</sup></span>
-                        </div>
-                      </td>
-                      <td scope="col" class="px-3 border-2 border-gray-200 py-2.5 text-center text-sm text-gray-900">
-                        <select v-model="formIndeksKegiatan.indeksLokalitas" @change="changeHandle('Indeks BG Terbangun')" id="location" name="location" class="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-gray-600 sm:text-sm sm:leading-6">
-                          <option :value="null">- Pilih Indeks Lokalitas -</option>
-                          <option v-for="(list, index) in dataIndeksLokalitas" :key="index" :value="list" class="py-4">
-                            {{list}}
-                          </option>
-                        </select>
-                      </td>
-                      <td scope="col" class="px-3 border-2 border-gray-200 py-2.5 text-center text-sm text-gray-900">
-                        <select v-model="formIndeksKegiatan.indeksKegiatan" @change="changeHandle('Indeks BG Terbangun')" id="location" name="location" class="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-gray-600 sm:text-sm sm:leading-6">
-                          <option :value="null">- Pilih Indeks BG Terbangun -</option>
-                          <option v-for="(list, index) in dataIndeksKegiatan" :key="index" :value="list" class="py-4">
-                            {{list.name}}
-                          </option>
-                        </select>
-                      </td>
-                      <td scope="col" class="px-3 border-2 border-gray-200 py-2.5 text-right text-sm text-gray-900">{{ toCurrency(formIndeksKegiatan.shst) }}</td>
-                      <td scope="col" class="px-3 border-2 border-gray-200 py-2.5 text-right text-sm text-gray-900">{{ toCurrency(formIndeksKegiatan.jumlah) || 0.000 }}</td>
-                    </tr>
-                    <tr>
-                      <th colspan="4" scope="col" class="px-8 border-2 border-gray-200 py-3.5 text-right text-sm font-semibold text-gray-900">Jumlah Retribusi Bangunan Gedung</th>
-                      <th scope="col" class="px-3 border-2 border-gray-200 py-3.5 text-right text-sm text-gray-900">{{ toCurrency(formIndeksKegiatan.jumlah) || 0.000 }}</th>
-                    </tr>
-                  </table>
-                  <div class="p-4 text-sm italic">*SHST (Standar Harga Satuan Tertinggi) Bangunan Gedung dan Harga Satuan Prasarana Bangunan Gedung menggunakan SHST sesuai peraturan yang berlaku saat ini. <a href="/perbup641-2024.pdf" target="_blank" class="hover:underline text-blue-600">Klik disini</a> untuk melihat SHST yang berlaku saat ini.</div>
-                </div>
-              </div>
-
-              <div class="bg-white rounded-lg p-2">
-                <div class="p-4 overflow-x-scroll lg:overflow-x-hidden">
-                  <table class="min-w-full border-2 border-gray-200 rounded-lg p-4">
-                    <tr>
-                      <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">No</th>
-                      <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">Jenis Prasarana</th>
-                      <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">Bangunan</th>
-                      <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">Satuan</th>
-                      <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">Harga Satuan Prasarana (HSPBG)</th>
-                      <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">Luas Prasarana Bangunan</th>
-                      <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">Indeks BG Terbangun</th>
-                      <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900">Nilai Retribusi</th>
-                    </tr>
-                    <template v-for="(prasarana, indexPrasarana) in dataPrasarana">
-                      <tr v-for="(data, index) in prasarana.data" :key="index">
-                        <!-- {{ prasarana.data.length }} -->
-                        <td v-if="index===0" :rowspan="prasarana.data.length" scope="col" class="px-3 border-2 border-gray-200 py-2.5 text-center text-sm text-gray-900">{{  indexPrasarana + 1 }}</td>
-                        <td v-if="index===0" :rowspan="prasarana.data.length" scope="col" class="px-3 border-2 border-gray-200 py-2.5 text-left text-sm text-gray-900">{{ prasarana.jenis }}</td>
-                        <td scope="col" class="px-3 border-2 border-gray-200 py-2.5 text-left text-sm text-gray-900">{{ data.bangunan }}</td>
-                        <td scope="col" class="px-3 border-2 border-gray-200 py-2.5 text-left text-sm text-gray-900">
-                          <span v-html="data.satuan"></span>
-                        </td>
-                        <td scope="col" class="px-3 border-2 border-gray-200 py-2.5 text-right text-sm text-gray-900">{{ toCurrency(data.hspbg) || 0.000 }}</td>
-                        <td scope="col" class="px-3 border-2 border-gray-200 py-2.5 text-left text-sm text-gray-900">
-                          <div class="mt-2 flex rounded-md shadow-sm">
-                            <input v-model="data.luasPrasarana" @change="updateNilaiRetribusiPrasarana(indexPrasarana, index)" type="number" min="0" name="company-website" id="company-website" class="block w-full pl-4 pr-1 min-w-16 flex-1 rounded-none rounded-l-3xl border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6" placeholder="" />
-                            <span v-html="data.satuanLuas" class="inline-flex bg-gray-200 items-center rounded-r-3xl border border-l-0 border-gray-300 px-3 text-gray-500 sm:text-sm"></span>
-                          </div>
-                          <div v-if="data.satuanLuas === 'Unit' && data.luasPrasarana > 0" class="mt-2">
-                            <p class="mt-4 text-xs">Isi luas per unitnya:</p>
-                            <div v-for="(indexPerUnit) in data.luasPrasarana" :key="indexPerUnit" class="mt-2 flex rounded-md shadow-sm">
-                              <input v-model="data.luasPerUnit[indexPerUnit]" @change="updateNilaiRetribusiPrasarana(indexPrasarana, index)" type="number" min="0" name="company-website" id="company-website" class="block w-full pl-4 pr-1 min-w-16 flex-1 rounded-none rounded-l-3xl border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6" placeholder="" />
-                              <span class="inline-flex bg-gray-200 items-center rounded-r-3xl border border-l-0 border-gray-300 px-3 text-gray-500 sm:text-sm">M <sup>2</sup></span>
-                            </div>
-                          </div>
-                        </td>
-                        <td scope="col" class="px-3 border-2 border-gray-200 py-2.5 text-left text-sm text-gray-900">
-                          <select v-model="data.indeksBGTerbangun" @change="updateNilaiRetribusiPrasarana(indexPrasarana, index)" id="location" name="location" class="block w-full rounded-md border-0 py-1.5 pl-3 pr-3 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-gray-600 sm:text-sm sm:leading-6">
-                            <option :value="null">- Pilih -</option>
-                            <option v-for="(list, index) in dataIndeksBGTerbangun" :key="index" :value="list.value" class="py-4">
-                              {{list.name}}
-                            </option>
-                          </select>
-                        </td>
-                        <td scope="col" class="px-3 border-2 border-gray-200 py-2.5 text-right text-sm text-gray-900">{{ toCurrency(data.nilaiRetribusi) || 0.000 }}</td>
-                      </tr>
-                    </template>
-                    <tr>
-                      <th colspan="6" scope="col" class="px-8 border-2 border-gray-200 py-3.5 text-right text-sm font-semibold text-gray-900">Jumlah Retribusi Prasarana Bangunan Gedung</th>
-                      <th scope="col" class="px-3 border-2 border-gray-200 py-3.5 text-right text-sm text-gray-900">{{ toCurrency(form.jumlahRetribusiPrasarana) || 0.000 }}</th>
-                    </tr>
-                  </table>
-                </div>
-              </div>
-
-              <div class="bg-white rounded-lg p-2">
-                <div class="p-4">
-                  <table class="min-w-full border-2 border-gray-200 rounded-lg p-4">
-                    <tr>
-                      <th scope="col" class="px-3 uppercase border-2 border-gray-200 py-3.5 text-right text-sm font-semibold text-gray-900">TOTAL NILAI RETRIBUSI</th>
-                      <th scope="col" class="px-3 border-2 border-gray-200 py-3.5 text-left text-sm font-semibold text-gray-900">{{ toCurrency(form.jumlahRetribusiSeluruhnya) || 0.000 }}</th>
-                    </tr>
-                  </table>
-                </div>
-                <div class="p-4 text-sm italic">*Perhitungan retribusi ini berdasarkan Peraturan Pemerintah No.16 Tahun 2021 tentang Peraturan Pelaksanaan Undang-Undang Nomor 28 Tahun 2002 tentang Bangunan Gedung. <a href="/pp16-2021.pdf" target="_blank" class="hover:underline text-blue-600">Klik disini</a> untuk melihat peraturan yang berlaku saat ini.</div>
+          <div class="bg-white rounded-lg p-2">
+            <div class="p-4">
+              <table class="min-w-full border-2 border-gray-200 rounded-lg p-4">
+                <tr>
+                  <th
+                    scope="col"
+                    class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900"
+                  >
+                    Luas Bangunan
+                  </th>
+                  <th
+                    scope="col"
+                    class="px-3 relative uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900"
+                  >
+                    Indeks Lokalitas
+                    <button
+                      @click="isOpen = !isOpen"
+                      class="absolute top-2 right-2 transition ease-in-out hover:scale-110"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="currentColor"
+                        class="size-4"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"
+                        />
+                      </svg>
+                    </button>
+                  </th>
+                  <th
+                    scope="col"
+                    class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900"
+                  >
+                    Indeks BG Terbangun
+                  </th>
+                  <th
+                    scope="col"
+                    class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900"
+                  >
+                    SHST*
+                  </th>
+                  <th
+                    scope="col"
+                    class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900"
+                  >
+                    Jumlah
+                  </th>
+                </tr>
+                <tr>
+                  <td
+                    scope="col"
+                    class="px-3 border-2 border-gray-200 py-2.5 text-center text-sm text-gray-900"
+                  >
+                    <div class="mt-2 flex rounded-md shadow-sm">
+                      <input
+                        v-model="formIndeksKegiatan.luasBangunan"
+                        @change="updatePerhitungan"
+                        type="number"
+                        min="0"
+                        name="company-website"
+                        id="company-website"
+                        class="block w-full px-4 min-w-0 flex-1 rounded-none rounded-l-3xl border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+                        placeholder=""
+                      />
+                      <span
+                        class="inline-flex bg-gray-200 items-center rounded-r-3xl border border-l-0 border-gray-300 px-3 text-gray-500 sm:text-sm"
+                        >M <sup>2</sup></span
+                      >
+                    </div>
+                  </td>
+                  <td
+                    scope="col"
+                    class="px-3 border-2 border-gray-200 py-2.5 text-center text-sm text-gray-900"
+                  >
+                    <select
+                      v-model="formIndeksKegiatan.indeksLokalitas"
+                      @change="changeHandle('Indeks BG Terbangun')"
+                      id="location"
+                      name="location"
+                      class="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-gray-600 sm:text-sm sm:leading-6"
+                    >
+                      <option :value="null">- Pilih Indeks Lokalitas -</option>
+                      <option
+                        v-for="(list, index) in dataIndeksLokalitas"
+                        :key="index"
+                        :value="list"
+                        class="py-4"
+                      >
+                        {{ list }}
+                      </option>
+                    </select>
+                  </td>
+                  <td
+                    scope="col"
+                    class="px-3 border-2 border-gray-200 py-2.5 text-center text-sm text-gray-900"
+                  >
+                    <select
+                      v-model="formIndeksKegiatan.indeksKegiatan"
+                      @change="changeHandle('Indeks BG Terbangun')"
+                      id="location"
+                      name="location"
+                      class="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-gray-600 sm:text-sm sm:leading-6"
+                    >
+                      <option :value="null">
+                        - Pilih Indeks BG Terbangun -
+                      </option>
+                      <option
+                        v-for="(list, index) in dataIndeksKegiatan"
+                        :key="index"
+                        :value="list"
+                        class="py-4"
+                      >
+                        {{ list.name }}
+                      </option>
+                    </select>
+                  </td>
+                  <td
+                    scope="col"
+                    class="px-3 border-2 border-gray-200 py-2.5 text-right text-sm text-gray-900"
+                  >
+                    {{ toCurrency(formIndeksKegiatan.shst) }}
+                  </td>
+                  <td
+                    scope="col"
+                    class="px-3 border-2 border-gray-200 py-2.5 text-right text-sm text-gray-900"
+                  >
+                    {{ toCurrency(formIndeksKegiatan.jumlah) || 0.0 }}
+                  </td>
+                </tr>
+                <tr>
+                  <th
+                    colspan="4"
+                    scope="col"
+                    class="px-8 border-2 border-gray-200 py-3.5 text-right text-sm font-semibold text-gray-900"
+                  >
+                    Jumlah Retribusi Bangunan Gedung
+                  </th>
+                  <th
+                    scope="col"
+                    class="px-3 border-2 border-gray-200 py-3.5 text-right text-sm text-gray-900"
+                  >
+                    {{ toCurrency(formIndeksKegiatan.jumlah) || 0.0 }}
+                  </th>
+                </tr>
+              </table>
+              <div class="p-4 text-sm italic">
+                *SHST (Standar Harga Satuan Tertinggi) Bangunan Gedung dan Harga
+                Satuan Prasarana Bangunan Gedung menggunakan SHST sesuai
+                peraturan yang berlaku saat ini.
+                <a
+                  href="/perbup641-2024.pdf"
+                  target="_blank"
+                  class="hover:underline text-blue-600"
+                  >Klik disini</a
+                >
+                untuk melihat SHST yang berlaku saat ini.
               </div>
             </div>
+          </div>
 
-            <!-- Mobile Display -->
-            <div class="md:hidden space-y-6">
-              <div class="bg-white rounded-lg p-2">
-                <div class="p-4 space-y-3">
-                    <div class="min-w-full border-2 border-gray-200 rounded-lg divide-y-2">
-                      <div class="py-3 px-4 text-gray-900 text-sm space-y-3">
-                        <h6 class="uppercase font-semibold">Fungsi Bangunan</h6>
-                        <select v-model="form.fungsiBangunan" @change="changeHandle('Fungsi Bangunan')" id="location" name="location" class="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-gray-600 sm:text-sm sm:leading-6">
-                          <option :value="null">- Pilih Fungsi Bangunan -</option>
-                          <option v-for="(list, index) in dataFungsiBangunan" :key="index" :value="list" class="py-4">
-                            {{list.name}}
-                          </option>
-                        </select>
+          <div class="bg-white rounded-lg p-2">
+            <div class="p-4 overflow-x-scroll lg:overflow-x-hidden">
+              <table class="min-w-full border-2 border-gray-200 rounded-lg p-4">
+                <tr>
+                  <th
+                    scope="col"
+                    class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900"
+                  >
+                    No
+                  </th>
+                  <th
+                    scope="col"
+                    class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900"
+                  >
+                    Jenis Prasarana
+                  </th>
+                  <th
+                    scope="col"
+                    class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900"
+                  >
+                    Bangunan
+                  </th>
+                  <th
+                    scope="col"
+                    class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900"
+                  >
+                    Satuan
+                  </th>
+                  <th
+                    scope="col"
+                    class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900"
+                  >
+                    Harga Satuan Prasarana (HSPBG)
+                  </th>
+                  <th
+                    scope="col"
+                    class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900"
+                  >
+                    Luas Prasarana Bangunan
+                  </th>
+                  <th
+                    scope="col"
+                    class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900"
+                  >
+                    Indeks BG Terbangun
+                  </th>
+                  <th
+                    scope="col"
+                    class="px-3 uppercase border-2 border-gray-200 py-3.5 text-center text-sm font-semibold text-gray-900"
+                  >
+                    Nilai Retribusi
+                  </th>
+                </tr>
+                <template v-for="(prasarana, indexPrasarana) in dataPrasarana">
+                  <tr v-for="(data, index) in prasarana.data" :key="index">
+                    <!-- {{ prasarana.data.length }} -->
+                    <td
+                      v-if="index === 0"
+                      :rowspan="prasarana.data.length"
+                      scope="col"
+                      class="px-3 border-2 border-gray-200 py-2.5 text-center text-sm text-gray-900"
+                    >
+                      {{ indexPrasarana + 1 }}
+                    </td>
+                    <td
+                      v-if="index === 0"
+                      :rowspan="prasarana.data.length"
+                      scope="col"
+                      class="px-3 border-2 border-gray-200 py-2.5 text-left text-sm text-gray-900"
+                    >
+                      {{ prasarana.jenis }}
+                    </td>
+                    <td
+                      scope="col"
+                      class="px-3 border-2 border-gray-200 py-2.5 text-left text-sm text-gray-900"
+                    >
+                      {{ data.bangunan }}
+                    </td>
+                    <td
+                      scope="col"
+                      class="px-3 border-2 border-gray-200 py-2.5 text-left text-sm text-gray-900"
+                    >
+                      <span v-html="data.satuan"></span>
+                    </td>
+                    <td
+                      scope="col"
+                      class="px-3 border-2 border-gray-200 py-2.5 text-right text-sm text-gray-900"
+                    >
+                      {{ toCurrency(data.hspbg) || 0.0 }}
+                    </td>
+                    <td
+                      scope="col"
+                      class="px-3 border-2 border-gray-200 py-2.5 text-left text-sm text-gray-900"
+                    >
+                      <div class="mt-2 flex rounded-md shadow-sm">
+                        <input
+                          v-model="data.luasPrasarana"
+                          @change="
+                            updateNilaiRetribusiPrasarana(indexPrasarana, index)
+                          "
+                          type="number"
+                          min="0"
+                          name="company-website"
+                          id="company-website"
+                          class="block w-full pl-4 pr-1 min-w-16 flex-1 rounded-none rounded-l-3xl border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+                          placeholder=""
+                        />
+                        <span
+                          v-html="data.satuanLuas"
+                          class="inline-flex bg-gray-200 items-center rounded-r-3xl border border-l-0 border-gray-300 px-3 text-gray-500 sm:text-sm"
+                        ></span>
                       </div>
-                      <div class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2">
-                        <h6 class="uppercase font-semibold">Indeks</h6>
-                        <p>{{ form.fungsiBangunan?.value || 0 }}</p>
-                      </div>
-                      <div class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2">
-                        <h6 class="uppercase font-semibold">Nilai (A)</h6>
-                        <p>{{ form.valueFungsiBangunan || 0 }}</p>
-                      </div>
-                    </div>
-  
-                    <div v-for="(data, index) in dataClasifications" :key="index" class="min-w-full border-2 border-gray-200 rounded-lg divide-y-2">
-                      <div class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2">
-                        <h6 class="uppercase font-semibold">Klasifikasi</h6>
-                        <p>{{ data.clasification}}</p>
-                      </div>
-                      <div class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2">
-                        <h6 class="uppercase font-semibold">Bobot</h6>
-                        <p>{{ data.weight}}</p>
-                      </div>
-                      <div class="py-3 px-4 text-gray-900 text-sm space-y-3">
-                        <h6 class="uppercase font-semibold">Parameter</h6>
-                        <select v-model="dataClasifications[index].selectedParameter" @change="changeHandle('Klasifikasi', index)" id="location" name="location" class="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-gray-600 sm:text-sm sm:leading-6">
-                          <option :value="null">- Pilih {{ data.clasification }} -</option>
-                          <option v-for="(list, index) in data.parameters" :key="index" :value="list" class="py-4">
-                            {{list.name}}
-                          </option>
-                        </select>
-                      </div>
-                      <div class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2">
-                        <h6 class="uppercase font-semibold">Indeks</h6>
-                        <p>{{ dataClasifications[index].selectedParameter?.value || 0 }}</p>
-                      </div>
-                      <div class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2">
-                        <h6 class="uppercase font-semibold">Nilai (B)</h6>
-                        <p>{{ dataClasifications[index].value || 0 }}</p>
-                      </div>
-                    </div>
-  
-                    <div class="min-w-full border-2 border-gray-200 rounded-lg divide-y-2">
-                      <div class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2">
-                        <h6 class="uppercase font-semibold">Jumlah (B)</h6>
-                        <p>{{ form.valueClassification || 0.00 }}</p>
-                      </div>
-                    </div>
-  
-                    <div class="min-w-full border-2 border-gray-200 rounded-lg divide-y-2">
-                      <div class="py-3 px-4 text-gray-900 text-sm space-y-3">
-                        <h6 class="uppercase font-semibold">Faktor Kepemilikan</h6>
-                        <select v-model="form.faktorKepemilikan" @change="changeHandle('Faktor Kepemilikan')" id="location" name="location" class="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-gray-600 sm:text-sm sm:leading-6">
-                          <option :value="null">- Pilih Faktor Kepemilikan -</option>
-                          <option v-for="(list, index) in dataFaktorKepemilikan" :key="index" :value="list" class="py-4">
-                            {{list.name}}
-                          </option>
-                        </select>
-                      </div>
-                      <div class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2">
-                        <h6 class="uppercase font-semibold">Indeks</h6>
-                        <p>{{ form.faktorKepemilikan?.value || 0 }}</p>
-                      </div>
-                      <div class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2">
-                        <h6 class="uppercase font-semibold">Nilai (C)</h6>
-                        <p>{{ form.valueFaktorKepemilikan || 0 }}</p>
-                      </div>
-                    </div>
-  
-                    <div class="min-w-full border-2 border-gray-200 rounded-lg divide-y-2">
-                      <div class="py-3 px-4 text-gray-900 font-semibold flex justify-between items-center text-sm space-y-2">
-                        <h6 class="uppercase font-semibold">Indeks Terintegrasi (IT) = A x B x C</h6>
-                        <p>{{ form.indeksTerintegrasi || 0.00 }}</p>
-                      </div>
-                    </div>                  
-  
-                  </div>
-  
-              </div>
-
-              <div class="bg-white rounded-lg p-2">
-                <div class="p-4 space-y-3">
-                    <div class="min-w-full border-2 border-gray-200 rounded-lg divide-y-2">
-                      <div class="py-3 px-4 text-gray-900 text-sm space-y-3">
-                        <h6 class="uppercase font-semibold">Luas Bangunan</h6>
-                        <div class="mt-2 flex rounded-md shadow-sm">
-                          <input v-model="formIndeksKegiatan.luasBangunan" @change="updatePerhitungan" type="number" min="0" name="company-website" id="company-website" class="block w-full px-4 min-w-0 flex-1 rounded-none rounded-l-3xl border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6" placeholder="" />
-                          <span class="inline-flex bg-gray-200 items-center rounded-r-3xl border border-l-0 border-gray-300 px-3 text-gray-500 sm:text-sm">M <sup>2</sup></span>
+                      <div
+                        v-if="
+                          data.satuanLuas === 'Unit' && data.luasPrasarana > 0
+                        "
+                        class="mt-2"
+                      >
+                        <p class="mt-4 text-xs">Isi luas per unitnya:</p>
+                        <div
+                          v-for="indexPerUnit in data.luasPrasarana"
+                          :key="indexPerUnit"
+                          class="mt-2 flex rounded-md shadow-sm"
+                        >
+                          <input
+                            v-model="data.luasPerUnit[indexPerUnit]"
+                            @change="
+                              updateNilaiRetribusiPrasarana(
+                                indexPrasarana,
+                                index
+                              )
+                            "
+                            type="number"
+                            min="0"
+                            name="company-website"
+                            id="company-website"
+                            class="block w-full pl-4 pr-1 min-w-16 flex-1 rounded-none rounded-l-3xl border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+                            placeholder=""
+                          />
+                          <span
+                            class="inline-flex bg-gray-200 items-center rounded-r-3xl border border-l-0 border-gray-300 px-3 text-gray-500 sm:text-sm"
+                            >M <sup>2</sup></span
+                          >
                         </div>
                       </div>
-                      <div class="relative py-3 px-4 text-gray-900 items-center text-sm space-y-2">
-                        <button @click="isOpen = !isOpen" class="absolute top-2 right-2 transition ease-in-out hover:scale-110">
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
-                          </svg>
-                        </button>
-                        <h6 class="uppercase font-semibold">Indeks Lokalitas</h6>
-                        <select v-model="formIndeksKegiatan.indeksLokalitas" @change="changeHandle('Indeks BG Terbangun')" id="location" name="location" class="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-gray-600 sm:text-sm sm:leading-6">
-                          <option :value="null">- Pilih Indeks Lokalitas -</option>
-                          <option v-for="(list, index) in dataIndeksLokalitas" :key="index" :value="list" class="py-4">
-                            {{list}}
-                          </option>
-                        </select>
-                      </div>
-                      <div class="py-3 px-4 text-gray-900 text-sm space-y-2">
-                        <h6 class="uppercase font-semibold">Indeks BG Terbangun</h6>
-                        <select v-model="formIndeksKegiatan.indeksKegiatan" @change="changeHandle('Indeks BG Terbangun')" id="location" name="location" class="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-gray-600 sm:text-sm sm:leading-6">
-                          <option :value="null">- Pilih Indeks BG Terbangun -</option>
-                          <option v-for="(list, index) in dataIndeksKegiatan" :key="index" :value="list" class="py-4">
-                            {{list.name}}
-                          </option>
-                        </select>
-                      </div>
-                      <div class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2">
-                        <h6 class="uppercase font-semibold">SHST</h6>
-                        <div>
-                          <p>{{ toCurrency(formIndeksKegiatan.shst) }}</p>
-                        </div>
-                      </div>
-                      <div class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2">
-                        <h6 class="uppercase font-semibold">Jumlah</h6>
-                        <div>
-                          <p>{{ toCurrency(formIndeksKegiatan.jumlah) || 0.000 }}</p>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="min-w-full border-2 border-gray-200 rounded-lg divide-y-2">
-                      <div class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2">
-                        <h6 class="uppercase font-semibold">Jumlah Retribusi Bangunan Gedung</h6>
-                        <div class="font-semibold text-right">
-                          <p>{{ toCurrency(formIndeksKegiatan.jumlah) || 0.000 }}</p>
-                        </div>
-                      </div>
-                    </div>                             
-  
-                  </div>
-
-                  <div class="p-4 text-sm italic">*SHST (Standar Harga Satuan Tertinggi) Bangunan Gedung dan Harga Satuan Prasarana Bangunan Gedung menggunakan SHST sesuai peraturan yang berlaku saat ini. <a href="/perbup641-2024.pdf" target="_blank" class="hover:underline text-blue-600">Klik disini</a> untuk melihat SHST yang berlaku saat ini.</div>
-              </div>
-
-              <div class="bg-white rounded-lg p-2">
-                <div class="p-4 space-y-3">
-                  <template v-for="(prasarana, indexPrasarana) in dataPrasarana">
-                    <div v-for="(data, index) in prasarana.data" :key="index" class="min-w-full border-2 border-gray-200 rounded-lg divide-y-2">
-                      <div class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2">
-                        <h6 class="uppercase font-semibold">Jenis Prasarana</h6>
-                        <p >{{ prasarana.jenis }}</p>
-                      </div>
-                      <div class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2">
-                        <h6 class="uppercase font-semibold">Bangunan</h6>
-                        <p>{{data.bangunan}}</p>
-                      </div>
-                      <div class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2">
-                        <h6 class="uppercase font-semibold">Satuan</h6>
-                        <span v-html="data.satuan"></span>
-                      </div>
-                      <div class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2">
-                        <h6 class="uppercase font-semibold">Harga Satuan Prasarana (HSPBG)</h6>
-                        <p>{{ toCurrency(data.hspbg) || 0.000 }}</p>
-                      </div>
-                      <div class="py-3 px-4 text-gray-900 text-sm space-y-3">
-                        <h6 class="uppercase font-semibold">Luas Prasarana Bangunan</h6>
-                        <div class="mt-2 flex rounded-md shadow-sm">
-                          <input v-model="data.luasPrasarana" @change="updateNilaiRetribusiPrasarana(indexPrasarana, index)" type="number" min="0" name="company-website" id="company-website" class="block w-full px-4 min-w-0 flex-1 rounded-none rounded-l-3xl border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6" placeholder="" />
-                            <span v-html="data.satuanLuas" class="inline-flex bg-gray-200 items-center rounded-r-3xl border border-l-0 border-gray-300 px-3 text-gray-500 sm:text-sm"></span>
-                        </div>
-                        <div v-if="data.satuanLuas === 'Unit' && data.luasPrasarana > 0" class="mt-2">
-                            <p class="mt-4 text-xs">Isi luas per unitnya:</p>
-                            <div v-for="(indexPerUnit) in data.luasPrasarana" :key="indexPerUnit" class="mt-2 flex rounded-md shadow-sm">
-                              <input v-model="data.luasPerUnit[indexPerUnit]" @change="updateNilaiRetribusiPrasarana(indexPrasarana, index)" type="number" min="0" name="company-website" id="company-website" class="block w-full pl-4 pr-1 min-w-16 flex-1 rounded-none rounded-l-3xl border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6" placeholder="" />
-                              <span class="inline-flex bg-gray-200 items-center rounded-r-3xl border border-l-0 border-gray-300 px-3 text-gray-500 sm:text-sm">M <sup>2</sup></span>
-                            </div>
-                          </div>
-                      </div>
-                      <div class="py-3 px-4 text-gray-900 text-sm space-y-3">
-                        <h6 class="uppercase font-semibold">Indeks BG Terbangun</h6>
-                        <select v-model="data.indeksBGTerbangun" @change="updateNilaiRetribusiPrasarana(indexPrasarana, index)" id="location" name="location" class="block w-full rounded-md border-0 py-1.5 pl-3 pr-3 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-gray-600 sm:text-sm sm:leading-6">
-                            <option :value="null">- Pilih -</option>
-                            <option v-for="(list, index) in dataIndeksBGTerbangun" :key="index" :value="list.value" class="py-4">
-                              {{list.name}}
-                            </option>
-                          </select>
-                      </div>
-                      <div class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2">
-                        <h6 class="uppercase font-semibold">Nilai Retribusi</h6>
-                        <p>{{ toCurrency(data.nilaiRetribusi) || 0.000 }}</p>
-                      </div>
-                    </div>
-                  </template>
-                </div>
-              </div>
-
-              <div class="bg-white rounded-lg p-2">
-                <div class="p-4 space-y-3">
-                  <div class="min-w-full border-2 border-gray-200 rounded-lg divide-y-2">
-                      <div class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2">
-                        <h6 class="uppercase font-semibold">TOTAL NILAI RETRIBUSI</h6>
-                        <div class="font-semibold text-right">
-                          <p>{{ toCurrency(form.jumlahRetribusiSeluruhnya) || 0.000 }}</p>
-                        </div>
-                      </div>
-                    </div>                             
-                </div>
-                <div class="p-4 text-sm italic">*Perhitungan retribusi ini berdasarkan Peraturan Pemerintah No.16 Tahun 2021 tentang Peraturan Pelaksanaan Undang-Undang Nomor 28 Tahun 2002 tentang Bangunan Gedung. <a href="/pp16-2021.pdf" target="_blank" class="hover:underline text-blue-600">Klik disini</a> untuk melihat peraturan yang berlaku saat ini.</div>
-              </div>
-
+                    </td>
+                    <td
+                      scope="col"
+                      class="px-3 border-2 border-gray-200 py-2.5 text-left text-sm text-gray-900"
+                    >
+                      <select
+                        v-model="data.indeksBGTerbangun"
+                        @change="
+                          updateNilaiRetribusiPrasarana(indexPrasarana, index)
+                        "
+                        id="location"
+                        name="location"
+                        class="block w-full rounded-md border-0 py-1.5 pl-3 pr-3 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-gray-600 sm:text-sm sm:leading-6"
+                      >
+                        <option :value="null">- Pilih -</option>
+                        <option
+                          v-for="(list, index) in dataIndeksBGTerbangun"
+                          :key="index"
+                          :value="list.value"
+                          class="py-4"
+                        >
+                          {{ list.name }}
+                        </option>
+                      </select>
+                    </td>
+                    <td
+                      scope="col"
+                      class="px-3 border-2 border-gray-200 py-2.5 text-right text-sm text-gray-900"
+                    >
+                      {{ toCurrency(data.nilaiRetribusi) || 0.0 }}
+                    </td>
+                  </tr>
+                </template>
+                <tr>
+                  <th
+                    colspan="6"
+                    scope="col"
+                    class="px-8 border-2 border-gray-200 py-3.5 text-right text-sm font-semibold text-gray-900"
+                  >
+                    Jumlah Retribusi Prasarana Bangunan Gedung
+                  </th>
+                  <th
+                    scope="col"
+                    class="px-3 border-2 border-gray-200 py-3.5 text-right text-sm text-gray-900"
+                  >
+                    {{ toCurrency(form.jumlahRetribusiPrasarana) || 0.0 }}
+                  </th>
+                </tr>
+              </table>
             </div>
+          </div>
 
-            <div class="mt-6 bg-white rounded-lg p-5 flex">
-              <div class="bg-primary-200 p-4 rounded-lg">
-                <div class="flex items-start text-sm md:text-base text-justify">
-                  <img src="@/assets/icons/info.svg" class="w-9 mt-1 pr-2"/>
-                    Informasi yang diperoleh dari Simulasi Perhitungan Retribusi PBG ini tidak bisa menjadi patokan nilai retribusi sebenarnya karena simulasi ini hanya membantu menghitung perkiraan nilai retribusi. Data final besaran nilai retribusi PBG akan mengacu pada Surat Ketetapan Retribusi Daerah (SKRD) yang akan diterbitkan melalui SIMBG.
-                </div>
-              </div>
-              </div>
+          <div class="bg-white rounded-lg p-2">
+            <div class="p-4">
+              <table class="min-w-full border-2 border-gray-200 rounded-lg p-4">
+                <tr>
+                  <th
+                    scope="col"
+                    class="px-3 uppercase border-2 border-gray-200 py-3.5 text-right text-sm font-semibold text-gray-900"
+                  >
+                    TOTAL NILAI RETRIBUSI
+                  </th>
+                  <th
+                    scope="col"
+                    class="px-3 border-2 border-gray-200 py-3.5 text-left text-sm font-semibold text-gray-900"
+                  >
+                    {{ toCurrency(form.jumlahRetribusiSeluruhnya) || 0.0 }}
+                  </th>
+                </tr>
+              </table>
+            </div>
+            <div class="p-4 text-sm italic">
+              *Perhitungan retribusi ini berdasarkan Peraturan Pemerintah No.16
+              Tahun 2021 tentang Peraturan Pelaksanaan Undang-Undang Nomor 28
+              Tahun 2002 tentang Bangunan Gedung.
+              <a
+                href="/pp16-2021.pdf"
+                target="_blank"
+                class="hover:underline text-blue-600"
+                >Klik disini</a
+              >
+              untuk melihat peraturan yang berlaku saat ini.
+            </div>
           </div>
         </div>
 
-        <TransitionRoot appear :show="isOpen" as="template">
-          <Dialog as="div" @close="closeModal" class="relative z-50">
+        <!-- Mobile Display -->
+        <div class="md:hidden space-y-6">
+          <div class="bg-white rounded-lg p-2">
+            <div class="p-4 space-y-3">
+              <div
+                class="min-w-full border-2 border-gray-200 rounded-lg divide-y-2"
+              >
+                <div class="py-3 px-4 text-gray-900 text-sm space-y-3">
+                  <h6 class="uppercase font-semibold">Fungsi Bangunan</h6>
+                  <select
+                    v-model="form.fungsiBangunan"
+                    @change="changeHandle('Fungsi Bangunan')"
+                    id="location"
+                    name="location"
+                    class="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-gray-600 sm:text-sm sm:leading-6"
+                  >
+                    <option :value="null">- Pilih Fungsi Bangunan -</option>
+                    <option
+                      v-for="(list, index) in dataFungsiBangunan"
+                      :key="index"
+                      :value="list"
+                      class="py-4"
+                    >
+                      {{ list.name }}
+                    </option>
+                  </select>
+                </div>
+                <div
+                  class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2"
+                >
+                  <h6 class="uppercase font-semibold">Indeks</h6>
+                  <p>{{ form.fungsiBangunan?.value || 0 }}</p>
+                </div>
+                <div
+                  class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2"
+                >
+                  <h6 class="uppercase font-semibold">Nilai (A)</h6>
+                  <p>{{ form.valueFungsiBangunan || 0 }}</p>
+                </div>
+              </div>
+
+              <div
+                v-for="(data, index) in dataClasifications"
+                :key="index"
+                class="min-w-full border-2 border-gray-200 rounded-lg divide-y-2"
+              >
+                <div
+                  class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2"
+                >
+                  <h6 class="uppercase font-semibold">Klasifikasi</h6>
+                  <p>{{ data.clasification }}</p>
+                </div>
+                <div
+                  class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2"
+                >
+                  <h6 class="uppercase font-semibold">Bobot</h6>
+                  <p>{{ data.weight }}</p>
+                </div>
+                <div class="py-3 px-4 text-gray-900 text-sm space-y-3">
+                  <h6 class="uppercase font-semibold">Parameter</h6>
+                  <select
+                    v-model="dataClasifications[index].selectedParameter"
+                    @change="changeHandle('Klasifikasi', index)"
+                    id="location"
+                    name="location"
+                    class="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-gray-600 sm:text-sm sm:leading-6"
+                  >
+                    <option :value="null">
+                      - Pilih {{ data.clasification }} -
+                    </option>
+                    <option
+                      v-for="(list, index) in data.parameters"
+                      :key="index"
+                      :value="list"
+                      class="py-4"
+                    >
+                      {{ list.name }}
+                    </option>
+                  </select>
+                </div>
+                <div
+                  class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2"
+                >
+                  <h6 class="uppercase font-semibold">Indeks</h6>
+                  <p>
+                    {{
+                      dataClasifications[index].selectedParameter?.value || 0
+                    }}
+                  </p>
+                </div>
+                <div
+                  class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2"
+                >
+                  <h6 class="uppercase font-semibold">Nilai (B)</h6>
+                  <p>{{ dataClasifications[index].value || 0 }}</p>
+                </div>
+              </div>
+
+              <div
+                class="min-w-full border-2 border-gray-200 rounded-lg divide-y-2"
+              >
+                <div
+                  class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2"
+                >
+                  <h6 class="uppercase font-semibold">Jumlah (B)</h6>
+                  <p>{{ form.valueClassification || 0.0 }}</p>
+                </div>
+              </div>
+
+              <div
+                class="min-w-full border-2 border-gray-200 rounded-lg divide-y-2"
+              >
+                <div class="py-3 px-4 text-gray-900 text-sm space-y-3">
+                  <h6 class="uppercase font-semibold">Faktor Kepemilikan</h6>
+                  <select
+                    v-model="form.faktorKepemilikan"
+                    @change="changeHandle('Faktor Kepemilikan')"
+                    id="location"
+                    name="location"
+                    class="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-gray-600 sm:text-sm sm:leading-6"
+                  >
+                    <option :value="null">- Pilih Faktor Kepemilikan -</option>
+                    <option
+                      v-for="(list, index) in dataFaktorKepemilikan"
+                      :key="index"
+                      :value="list"
+                      class="py-4"
+                    >
+                      {{ list.name }}
+                    </option>
+                  </select>
+                </div>
+                <div
+                  class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2"
+                >
+                  <h6 class="uppercase font-semibold">Indeks</h6>
+                  <p>{{ form.faktorKepemilikan?.value || 0 }}</p>
+                </div>
+                <div
+                  class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2"
+                >
+                  <h6 class="uppercase font-semibold">Nilai (C)</h6>
+                  <p>{{ form.valueFaktorKepemilikan || 0 }}</p>
+                </div>
+              </div>
+
+              <div
+                class="min-w-full border-2 border-gray-200 rounded-lg divide-y-2"
+              >
+                <div
+                  class="py-3 px-4 text-gray-900 font-semibold flex justify-between items-center text-sm space-y-2"
+                >
+                  <h6 class="uppercase font-semibold">
+                    Indeks Terintegrasi (IT) = A x B x C
+                  </h6>
+                  <p>{{ form.indeksTerintegrasi || 0.0 }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg p-2">
+            <div class="p-4 space-y-3">
+              <div
+                class="min-w-full border-2 border-gray-200 rounded-lg divide-y-2"
+              >
+                <div class="py-3 px-4 text-gray-900 text-sm space-y-3">
+                  <h6 class="uppercase font-semibold">Luas Bangunan</h6>
+                  <div class="mt-2 flex rounded-md shadow-sm">
+                    <input
+                      v-model="formIndeksKegiatan.luasBangunan"
+                      @change="updatePerhitungan"
+                      type="number"
+                      min="0"
+                      name="company-website"
+                      id="company-website"
+                      class="block w-full px-4 min-w-0 flex-1 rounded-none rounded-l-3xl border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+                      placeholder=""
+                    />
+                    <span
+                      class="inline-flex bg-gray-200 items-center rounded-r-3xl border border-l-0 border-gray-300 px-3 text-gray-500 sm:text-sm"
+                      >M <sup>2</sup></span
+                    >
+                  </div>
+                </div>
+                <div
+                  class="relative py-3 px-4 text-gray-900 items-center text-sm space-y-2"
+                >
+                  <button
+                    @click="isOpen = !isOpen"
+                    class="absolute top-2 right-2 transition ease-in-out hover:scale-110"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      class="size-4"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"
+                      />
+                    </svg>
+                  </button>
+                  <h6 class="uppercase font-semibold">Indeks Lokalitas</h6>
+                  <select
+                    v-model="formIndeksKegiatan.indeksLokalitas"
+                    @change="changeHandle('Indeks BG Terbangun')"
+                    id="location"
+                    name="location"
+                    class="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-gray-600 sm:text-sm sm:leading-6"
+                  >
+                    <option :value="null">- Pilih Indeks Lokalitas -</option>
+                    <option
+                      v-for="(list, index) in dataIndeksLokalitas"
+                      :key="index"
+                      :value="list"
+                      class="py-4"
+                    >
+                      {{ list }}
+                    </option>
+                  </select>
+                </div>
+                <div class="py-3 px-4 text-gray-900 text-sm space-y-2">
+                  <h6 class="uppercase font-semibold">Indeks BG Terbangun</h6>
+                  <select
+                    v-model="formIndeksKegiatan.indeksKegiatan"
+                    @change="changeHandle('Indeks BG Terbangun')"
+                    id="location"
+                    name="location"
+                    class="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-gray-600 sm:text-sm sm:leading-6"
+                  >
+                    <option :value="null">- Pilih Indeks BG Terbangun -</option>
+                    <option
+                      v-for="(list, index) in dataIndeksKegiatan"
+                      :key="index"
+                      :value="list"
+                      class="py-4"
+                    >
+                      {{ list.name }}
+                    </option>
+                  </select>
+                </div>
+                <div
+                  class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2"
+                >
+                  <h6 class="uppercase font-semibold">SHST</h6>
+                  <div>
+                    <p>{{ toCurrency(formIndeksKegiatan.shst) }}</p>
+                  </div>
+                </div>
+                <div
+                  class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2"
+                >
+                  <h6 class="uppercase font-semibold">Jumlah</h6>
+                  <div>
+                    <p>{{ toCurrency(formIndeksKegiatan.jumlah) || 0.0 }}</p>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="min-w-full border-2 border-gray-200 rounded-lg divide-y-2"
+              >
+                <div
+                  class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2"
+                >
+                  <h6 class="uppercase font-semibold">
+                    Jumlah Retribusi Bangunan Gedung
+                  </h6>
+                  <div class="font-semibold text-right">
+                    <p>{{ toCurrency(formIndeksKegiatan.jumlah) || 0.0 }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="p-4 text-sm italic">
+              *SHST (Standar Harga Satuan Tertinggi) Bangunan Gedung dan Harga
+              Satuan Prasarana Bangunan Gedung menggunakan SHST sesuai peraturan
+              yang berlaku saat ini.
+              <a
+                href="/perbup641-2024.pdf"
+                target="_blank"
+                class="hover:underline text-blue-600"
+                >Klik disini</a
+              >
+              untuk melihat SHST yang berlaku saat ini.
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg p-2">
+            <div class="p-4 space-y-3">
+              <template v-for="(prasarana, indexPrasarana) in dataPrasarana">
+                <div
+                  v-for="(data, index) in prasarana.data"
+                  :key="index"
+                  class="min-w-full border-2 border-gray-200 rounded-lg divide-y-2"
+                >
+                  <div
+                    class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2"
+                  >
+                    <h6 class="uppercase font-semibold">Jenis Prasarana</h6>
+                    <p>{{ prasarana.jenis }}</p>
+                  </div>
+                  <div
+                    class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2"
+                  >
+                    <h6 class="uppercase font-semibold">Bangunan</h6>
+                    <p>{{ data.bangunan }}</p>
+                  </div>
+                  <div
+                    class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2"
+                  >
+                    <h6 class="uppercase font-semibold">Satuan</h6>
+                    <span v-html="data.satuan"></span>
+                  </div>
+                  <div
+                    class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2"
+                  >
+                    <h6 class="uppercase font-semibold">
+                      Harga Satuan Prasarana (HSPBG)
+                    </h6>
+                    <p>{{ toCurrency(data.hspbg) || 0.0 }}</p>
+                  </div>
+                  <div class="py-3 px-4 text-gray-900 text-sm space-y-3">
+                    <h6 class="uppercase font-semibold">
+                      Luas Prasarana Bangunan
+                    </h6>
+                    <div class="mt-2 flex rounded-md shadow-sm">
+                      <input
+                        v-model="data.luasPrasarana"
+                        @change="
+                          updateNilaiRetribusiPrasarana(indexPrasarana, index)
+                        "
+                        type="number"
+                        min="0"
+                        name="company-website"
+                        id="company-website"
+                        class="block w-full px-4 min-w-0 flex-1 rounded-none rounded-l-3xl border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+                        placeholder=""
+                      />
+                      <span
+                        v-html="data.satuanLuas"
+                        class="inline-flex bg-gray-200 items-center rounded-r-3xl border border-l-0 border-gray-300 px-3 text-gray-500 sm:text-sm"
+                      ></span>
+                    </div>
+                    <div
+                      v-if="
+                        data.satuanLuas === 'Unit' && data.luasPrasarana > 0
+                      "
+                      class="mt-2"
+                    >
+                      <p class="mt-4 text-xs">Isi luas per unitnya:</p>
+                      <div
+                        v-for="indexPerUnit in data.luasPrasarana"
+                        :key="indexPerUnit"
+                        class="mt-2 flex rounded-md shadow-sm"
+                      >
+                        <input
+                          v-model="data.luasPerUnit[indexPerUnit]"
+                          @change="
+                            updateNilaiRetribusiPrasarana(indexPrasarana, index)
+                          "
+                          type="number"
+                          min="0"
+                          name="company-website"
+                          id="company-website"
+                          class="block w-full pl-4 pr-1 min-w-16 flex-1 rounded-none rounded-l-3xl border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+                          placeholder=""
+                        />
+                        <span
+                          class="inline-flex bg-gray-200 items-center rounded-r-3xl border border-l-0 border-gray-300 px-3 text-gray-500 sm:text-sm"
+                          >M <sup>2</sup></span
+                        >
+                      </div>
+                    </div>
+                  </div>
+                  <div class="py-3 px-4 text-gray-900 text-sm space-y-3">
+                    <h6 class="uppercase font-semibold">Indeks BG Terbangun</h6>
+                    <select
+                      v-model="data.indeksBGTerbangun"
+                      @change="
+                        updateNilaiRetribusiPrasarana(indexPrasarana, index)
+                      "
+                      id="location"
+                      name="location"
+                      class="block w-full rounded-md border-0 py-1.5 pl-3 pr-3 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-gray-600 sm:text-sm sm:leading-6"
+                    >
+                      <option :value="null">- Pilih -</option>
+                      <option
+                        v-for="(list, index) in dataIndeksBGTerbangun"
+                        :key="index"
+                        :value="list.value"
+                        class="py-4"
+                      >
+                        {{ list.name }}
+                      </option>
+                    </select>
+                  </div>
+                  <div
+                    class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2"
+                  >
+                    <h6 class="uppercase font-semibold">Nilai Retribusi</h6>
+                    <p>{{ toCurrency(data.nilaiRetribusi) || 0.0 }}</p>
+                  </div>
+                </div>
+              </template>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg p-2">
+            <div class="p-4 space-y-3">
+              <div
+                class="min-w-full border-2 border-gray-200 rounded-lg divide-y-2"
+              >
+                <div
+                  class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2"
+                >
+                  <h6 class="uppercase font-semibold">TOTAL NILAI RETRIBUSI</h6>
+                  <div class="font-semibold text-right">
+                    <p>
+                      {{ toCurrency(form.jumlahRetribusiSeluruhnya) || 0.0 }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="p-4 text-sm italic">
+              *Perhitungan retribusi ini berdasarkan Peraturan Pemerintah No.16
+              Tahun 2021 tentang Peraturan Pelaksanaan Undang-Undang Nomor 28
+              Tahun 2002 tentang Bangunan Gedung.
+              <a
+                href="/pp16-2021.pdf"
+                target="_blank"
+                class="hover:underline text-blue-600"
+                >Klik disini</a
+              >
+              untuk melihat peraturan yang berlaku saat ini.
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-6 bg-white rounded-lg p-5 flex">
+          <div class="bg-blue-100 p-4 rounded-lg">
+            <div class="flex items-start text-sm md:text-base text-justify">
+              <img src="@/assets/icons/info.svg" class="w-9 mt-1 pr-2" />
+              Informasi yang diperoleh dari Simulasi Perhitungan Retribusi PBG
+              ini tidak bisa menjadi patokan nilai retribusi sebenarnya karena
+              simulasi ini hanya membantu menghitung perkiraan nilai retribusi.
+              Data final besaran nilai retribusi PBG akan mengacu pada Surat
+              Ketetapan Retribusi Daerah (SKRD) yang akan diterbitkan melalui
+              SIMBG.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <TransitionRoot appear :show="isOpen" as="template">
+      <Dialog as="div" @close="closeModal" class="relative z-50">
+        <TransitionChild
+          as="template"
+          enter="duration-300 ease-out"
+          enter-from="opacity-0"
+          enter-to="opacity-100"
+          leave="duration-200 ease-in"
+          leave-from="opacity-100"
+          leave-to="opacity-0"
+        >
+          <div class="fixed inset-0 bg-black/25" />
+        </TransitionChild>
+
+        <div class="fixed inset-0 overflow-y-auto">
+          <div
+            class="flex min-h-full items-center justify-center p-4 text-center"
+          >
             <TransitionChild
               as="template"
               enter="duration-300 ease-out"
-              enter-from="opacity-0"
-              enter-to="opacity-100"
+              enter-from="opacity-0 scale-95"
+              enter-to="opacity-100 scale-100"
               leave="duration-200 ease-in"
-              leave-from="opacity-100"
-              leave-to="opacity-0"
+              leave-from="opacity-100 scale-100"
+              leave-to="opacity-0 scale-95"
             >
-              <div class="fixed inset-0 bg-black/25" />
-            </TransitionChild>
-
-            <div class="fixed inset-0 overflow-y-auto">
-              <div
-                class="flex min-h-full items-center justify-center p-4 text-center"
+              <DialogPanel
+                class="w-full relative max-w-2xl transform overflow-hidden rounded-2xl bg-white p-8 text-left align-middle shadow-xl transition-all"
               >
-                <TransitionChild
-                  as="template"
-                  enter="duration-300 ease-out"
-                  enter-from="opacity-0 scale-95"
-                  enter-to="opacity-100 scale-100"
-                  leave="duration-200 ease-in"
-                  leave-from="opacity-100 scale-100"
-                  leave-to="opacity-0 scale-95"
+                <button
+                  type="button"
+                  class="absolute top-2 right-2 inline-flex justify-center px-4 py-2 text-lg font-medium text-gray-900 transtition ease-in-out hover:scale-110 hover:font-medium"
+                  @click="isOpen = !isOpen"
                 >
-                  <DialogPanel
-                    class="w-full relative max-w-2xl transform overflow-hidden rounded-2xl bg-white p-8 text-left align-middle shadow-xl transition-all"
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="size-4"
                   >
-                      <button
-                        type="button"
-                        class="absolute top-2 right-2 inline-flex justify-center px-4 py-2 text-lg font-medium text-gray-900 transtition ease-in-out hover:scale-110 hover:font-medium"
-                        @click="isOpen = !isOpen"
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M6 18 18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+                <DialogTitle
+                  as="h3"
+                  class="text-lg font-medium leading-6 text-gray-900 text-center"
+                >
+                  Daftar Indeks Lokalitas
+                </DialogTitle>
+                <div class="mt-4 text-xs overflow-x-auto">
+                  <table class="border-2 border-gray-200 mx-auto">
+                    <tr>
+                      <td
+                        rowspan="2"
+                        class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 border-2 border-gray-200 font-semibold text-center"
                       >
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-                      </svg>
+                        Fungsi Bangunan
+                      </td>
+                      <td
+                        rowspan="2"
+                        class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 border-2 border-gray-200 font-semibold text-center"
+                      >
+                        Keterangan
+                      </td>
+                      <td
+                        colspan="4"
+                        class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 border-2 border-gray-200 font-semibold text-center"
+                      >
+                        Indeks Lokalitas
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 border-2 border-gray-200 font-semibold"
+                      >
+                        Jl. Nasional
+                      </td>
+                      <td
+                        class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 border-2 border-gray-200 font-semibold"
+                      >
+                        Jl. Provinsi
+                      </td>
+                      <td
+                        class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 border-2 border-gray-200 font-semibold"
+                      >
+                        Jl. Kabupaten
+                      </td>
+                      <td
+                        class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 border-2 border-gray-200 font-semibold"
+                      >
+                        Jl. Lingkungan
+                      </td>
+                    </tr>
 
-                      </button>
-                    <DialogTitle
-                      as="h3"
-                      class="text-lg font-medium leading-6 text-gray-900 text-center"
-                    >
-                      Daftar Indeks Lokalitas
-                    </DialogTitle>
-                    <div class="mt-4 text-xs overflow-x-auto">
-                      <table class="border-2 border-gray-200 mx-auto">
-                        <tr>
-                          <td rowspan="2" class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 border-2 border-gray-200 font-semibold text-center">Fungsi Bangunan</td>
-                          <td rowspan="2" class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 border-2 border-gray-200 font-semibold text-center">Keterangan</td>
-                          <td colspan="4" class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 border-2 border-gray-200 font-semibold text-center">Indeks Lokalitas</td>
-                        </tr>
-                        <tr>
-                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 border-2 border-gray-200 font-semibold">Jl. Nasional</td>
-                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 border-2 border-gray-200 font-semibold">Jl. Provinsi</td>
-                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 border-2 border-gray-200 font-semibold">Jl. Kabupaten</td>
-                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 border-2 border-gray-200 font-semibold">Jl. Lingkungan</td>
-                        </tr>
+                    <tr>
+                      <td
+                        rowspan="2"
+                        class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200"
+                      >
+                        Hunian
+                      </td>
+                      <td
+                        class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200"
+                      >
+                        Sederhana
+                      </td>
+                      <td
+                        class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center"
+                      >
+                        0.5
+                      </td>
+                      <td
+                        class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center"
+                      >
+                        0.5
+                      </td>
+                      <td
+                        class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center"
+                      >
+                        0.5
+                      </td>
+                      <td
+                        class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center"
+                      >
+                        0.4
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200"
+                      >
+                        Tidak Sederhana
+                      </td>
+                      <td
+                        class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center"
+                      >
+                        0.5
+                      </td>
+                      <td
+                        class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center"
+                      >
+                        0.5
+                      </td>
+                      <td
+                        class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center"
+                      >
+                        0.5
+                      </td>
+                      <td
+                        class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center"
+                      >
+                        0.4
+                      </td>
+                    </tr>
 
-                        <tr>
-                          <td rowspan="2" class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200">Hunian</td>
-                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200">Sederhana</td>
-                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.5</td>
-                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.5</td>
-                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.5</td>
-                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.4</td>
-                        </tr>
-                        <tr>
-                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200">Tidak Sederhana</td>
-                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.5</td>
-                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.5</td>
-                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.5</td>
-                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.4</td>
-                        </tr>
+                    <tr>
+                      <td
+                        rowspan="2"
+                        class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200"
+                      >
+                        Usaha
+                      </td>
+                      <td
+                        class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200"
+                      >
+                        Mikro
+                      </td>
+                      <td
+                        class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center"
+                      >
+                        0.4
+                      </td>
+                      <td
+                        class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center"
+                      >
+                        0.4
+                      </td>
+                      <td
+                        class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center"
+                      >
+                        0.4
+                      </td>
+                      <td
+                        class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center"
+                      >
+                        0.3
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200"
+                      >
+                        Non Mikro
+                      </td>
+                      <td
+                        class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center"
+                      >
+                        0.5
+                      </td>
+                      <td
+                        class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center"
+                      >
+                        0.5
+                      </td>
+                      <td
+                        class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center"
+                      >
+                        0.5
+                      </td>
+                      <td
+                        class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center"
+                      >
+                        0.5
+                      </td>
+                    </tr>
 
-                        <tr>
-                          <td rowspan="2" class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200">Usaha</td>
-                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200">Mikro</td>
-                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.4</td>
-                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.4</td>
-                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.4</td>
-                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.3</td>
-                        </tr>
-                        <tr>
-                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200">Non Mikro</td>
-                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.5</td>
-                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.5</td>
-                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.5</td>
-                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.5</td>
-                        </tr>
+                    <tr>
+                      <td
+                        rowspan="2"
+                        class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200"
+                      >
+                        Sosial Budaya
+                      </td>
+                      <td
+                        class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200"
+                      >
+                        PAUD s.d. SLTA
+                      </td>
+                      <td
+                        class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center"
+                      >
+                        0.1
+                      </td>
+                      <td
+                        class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center"
+                      >
+                        0.1
+                      </td>
+                      <td
+                        class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center"
+                      >
+                        0.1
+                      </td>
+                      <td
+                        class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center"
+                      >
+                        0.1
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200"
+                      >
+                        Perguruan Tinggi
+                      </td>
+                      <td
+                        class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center"
+                      >
+                        0.2
+                      </td>
+                      <td
+                        class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center"
+                      >
+                        0.2
+                      </td>
+                      <td
+                        class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center"
+                      >
+                        0.2
+                      </td>
+                      <td
+                        class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center"
+                      >
+                        0.2
+                      </td>
+                    </tr>
 
-                        <tr>
-                          <td rowspan="2" class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200">Sosial Budaya</td>
-                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200">PAUD s.d. SLTA</td>
-                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.1</td>
-                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.1</td>
-                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.1</td>
-                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.1</td>
-                        </tr>
-                        <tr>
-                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200">Perguruan Tinggi</td>
-                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.2</td>
-                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.2</td>
-                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.2</td>
-                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.2</td>
-                        </tr>
-
-                        <tr>
-                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200">Sosial Budaya</td>
-                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200"></td>
-                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.3</td>
-                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.3</td>
-                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.3</td>
-                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.3</td>
-                        </tr>
-                        <tr>
-                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200">Khusus</td>
-                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200"></td>
-                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.5</td>
-                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.5</td>
-                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.5</td>
-                          <td class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center">0.5</td>
-                        </tr>
-                      </table>
-                    </div>
-
-                  </DialogPanel>
-                </TransitionChild>
-              </div>
-            </div>
-          </Dialog>
-        </TransitionRoot>
-      </section>
+                    <tr>
+                      <td
+                        class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200"
+                      >
+                        Sosial Budaya
+                      </td>
+                      <td
+                        class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200"
+                      ></td>
+                      <td
+                        class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center"
+                      >
+                        0.3
+                      </td>
+                      <td
+                        class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center"
+                      >
+                        0.3
+                      </td>
+                      <td
+                        class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center"
+                      >
+                        0.3
+                      </td>
+                      <td
+                        class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center"
+                      >
+                        0.3
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200"
+                      >
+                        Khusus
+                      </td>
+                      <td
+                        class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200"
+                      ></td>
+                      <td
+                        class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center"
+                      >
+                        0.5
+                      </td>
+                      <td
+                        class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center"
+                      >
+                        0.5
+                      </td>
+                      <td
+                        class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center"
+                      >
+                        0.5
+                      </td>
+                      <td
+                        class="px-1.5 lg:px-2 py-0.5 lg:py-1 text-gray-900 font-light border-2 border-gray-200 text-center"
+                      >
+                        0.5
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </DialogPanel>
+            </TransitionChild>
+          </div>
+        </div>
+      </Dialog>
+    </TransitionRoot>
+  </section>
 </template>
 <script setup>
-import { toCurrency } from '@/helpers'
-import { reactive, ref } from 'vue'
-import { InformationCircleIcon } from '@heroicons/vue/24/outline'
-import { TransitionRoot, TransitionChild, Dialog, DialogPanel, DialogTitle } from '@headlessui/vue'
+import { toCurrency } from "@/helpers";
+import { reactive, ref } from "vue";
+import { InformationCircleIcon } from "@heroicons/vue/24/outline";
+import {
+  TransitionRoot,
+  TransitionChild,
+  Dialog,
+  DialogPanel,
+  DialogTitle,
+} from "@headlessui/vue";
 
-const isOpen = ref(false)
+const isOpen = ref(false);
 
 const dataFungsiBangunan = reactive([
-  { name: 'Hunian (< 100 m2 dan < 2 lantai)', value: 0.15 },
-  { name: 'Hunian (> 100 m2 dan > 2 lantai)', value: 0.17 },
-  { name: 'Keagamaan', value: 0 },
-  { name: 'Usaha', value: 0.7 },
-  { name: 'Usaha UMKM', value: 0.5 },
-  { name: 'Sosial & Budaya', value: 0.3 },
-  { name: 'Khusus', value: 1 },
-  { name: 'Ganda/Campuran (≤ 500 m2 dan ≤ 2 lantai)', value: 0.6 },
-  { name: 'Ganda/Campuran (> 500 m2 dan > 2 lantai)', value: 0.8 },
-])
+  { name: "Hunian (< 100 m2 dan < 2 lantai)", value: 0.15 },
+  { name: "Hunian (> 100 m2 dan > 2 lantai)", value: 0.17 },
+  { name: "Keagamaan", value: 0 },
+  { name: "Usaha", value: 0.7 },
+  { name: "Usaha UMKM", value: 0.5 },
+  { name: "Sosial & Budaya", value: 0.3 },
+  { name: "Khusus", value: 1 },
+  { name: "Ganda/Campuran (≤ 500 m2 dan ≤ 2 lantai)", value: 0.6 },
+  { name: "Ganda/Campuran (> 500 m2 dan > 2 lantai)", value: 0.8 },
+]);
 
 const dataClasifications = reactive([
   {
-    clasification: 'Kompleksitas', 
+    clasification: "Kompleksitas",
     weight: 0.3,
     parameters: [
-      { name: 'Sederhana', value: 1 },
-      { name: 'Tidak Sederhana', value: 2}
+      { name: "Sederhana", value: 1 },
+      { name: "Tidak Sederhana", value: 2 },
     ],
     selectedParameter: null,
-    value: null
+    value: null,
   },
   {
-    clasification: 'Permanensi', 
+    clasification: "Permanensi",
     weight: 0.2,
     parameters: [
-      { name: 'Non Permanaen', value: 1 },
-      { name: 'Permanen', value: 2}
+      { name: "Non Permanaen", value: 1 },
+      { name: "Permanen", value: 2 },
     ],
     selectedParameter: null,
-    value: null
+    value: null,
   },
   {
-    clasification: 'Ketinggian', 
+    clasification: "Ketinggian",
     weight: 0.5,
     parameters: [
-      { name: '1 Lantai', value: 1 },
-      { name: '2 Lantai', value: 1.09 },
-      { name: '3 Lantai', value: 1.12 },
-      { name: '4 Lantai', value: 1.135 },
-      { name: '5 Lantai', value: 1.162 },
-      { name: '6 Lantai', value: 1.197 },
-      { name: '7 Lantai', value: 1.236 },
-      { name: '8 Lantai', value: 1.265 },
-      { name: '9 Lantai', value: 1.299 },
-      { name: '10 Lantai', value: 1.333 },
+      { name: "1 Lantai", value: 1 },
+      { name: "2 Lantai", value: 1.09 },
+      { name: "3 Lantai", value: 1.12 },
+      { name: "4 Lantai", value: 1.135 },
+      { name: "5 Lantai", value: 1.162 },
+      { name: "6 Lantai", value: 1.197 },
+      { name: "7 Lantai", value: 1.236 },
+      { name: "8 Lantai", value: 1.265 },
+      { name: "9 Lantai", value: 1.299 },
+      { name: "10 Lantai", value: 1.333 },
     ],
     selectedParameter: null,
-    value: null
-  }
-])
+    value: null,
+  },
+]);
 
 const dataFaktorKepemilikan = reactive([
-  { name: 'Perorangan/Badan Usaha', value: 1 },
-  { name: 'Negara', value: 0 }
-])
+  { name: "Perorangan/Badan Usaha", value: 1 },
+  { name: "Negara", value: 0 },
+]);
 
-const dataIndeksLokalitas = reactive([0.1, 0.2, 0.3, 0.4, 0.5])
+const dataIndeksLokalitas = reactive([0.1, 0.2, 0.3, 0.4, 0.5]);
 
 const dataIndeksKegiatan = reactive([
-{ name: 'Rusak Sedang - Pelestarian Madya', value: 0.225 },
-  { name: 'Rusak Berat - Pelestarian Pratama', value: 0.325 },
-  { name: 'Pembangunan Gedung Baru', value: 1 },
-  { name: 'Pelestarian Utama', value: 0.15 }
-])
+  { name: "Rusak Sedang - Pelestarian Madya", value: 0.225 },
+  { name: "Rusak Berat - Pelestarian Pratama", value: 0.325 },
+  { name: "Pembangunan Gedung Baru", value: 1 },
+  { name: "Pelestarian Utama", value: 0.15 },
+]);
 
 const dataIndeksBGTerbangun = reactive([
-  { name: 'Pembangunan Gedung Baru', value: 1 },
-  { name: 'Sedang - Rehabilitasi BG', value: 0.225 },
-  { name: 'Berat - Rehabilitasi BG', value: 0.325 },
-  { name: 'Pelestarian Pratama', value: 0.325 },
-  { name: 'Pelestarian Madya', value: 0.225 },
-  { name: 'Pelestarian Utama', value: 0.15 }
-])
+  { name: "Pembangunan Gedung Baru", value: 1 },
+  { name: "Sedang - Rehabilitasi BG", value: 0.225 },
+  { name: "Berat - Rehabilitasi BG", value: 0.325 },
+  { name: "Pelestarian Pratama", value: 0.325 },
+  { name: "Pelestarian Madya", value: 0.225 },
+  { name: "Pelestarian Utama", value: 0.15 },
+]);
 
 const dataPrasarana = reactive([
   {
-    jenis: 'Konstruksi pembatas/ penahan/pengaman',
+    jenis: "Konstruksi pembatas/ penahan/pengaman",
     data: [
       {
-        bangunan: 'Pagar',
-        satuan: 'M',
+        bangunan: "Pagar",
+        satuan: "M",
         hspbg: 25200,
         luasPrasarana: 0,
-        satuanLuas: 'M<sup>2</sup>',
+        satuanLuas: "M<sup>2</sup>",
         indeksBGTerbangun: null,
         luasPerUnit: [],
         biayaTambahan: 0,
         maksimumPerUnit: null,
-        nilaiRetribusi: 0
-      }
-    ]
-  },
-  {
-    jenis: 'Konstruksi perkerasan aspal, beton',
-    data: [
-      {
-        bangunan: '',
-        satuan: 'M<sup>2</sup>',
-        hspbg: 2300,
-        luasPrasarana: 0,
-        satuanLuas: 'M<sup>2</sup>',
-        indeksBGTerbangun: null,
-        luasPerUnit: [],
-        biayaTambahan: 0,
-        maksimumPerUnit: null,
-        nilaiRetribusi: 0
-      }
+        nilaiRetribusi: 0,
+      },
     ],
   },
   {
-    jenis: 'Konstruksi reklame/ papan nama',
+    jenis: "Konstruksi perkerasan aspal, beton",
     data: [
       {
-        bangunan: 'Billboard papan iklan',
-        satuan: 'Unit dan penambahannya (Luas maksimum 12 m .Apabila ada penambahan luas unit, dikenakan biaya tambahan Rp 500.000,00/m )',
+        bangunan: "",
+        satuan: "M<sup>2</sup>",
+        hspbg: 2300,
+        luasPrasarana: 0,
+        satuanLuas: "M<sup>2</sup>",
+        indeksBGTerbangun: null,
+        luasPerUnit: [],
+        biayaTambahan: 0,
+        maksimumPerUnit: null,
+        nilaiRetribusi: 0,
+      },
+    ],
+  },
+  {
+    jenis: "Konstruksi reklame/ papan nama",
+    data: [
+      {
+        bangunan: "Billboard papan iklan",
+        satuan:
+          "Unit dan penambahannya (Luas maksimum 12 m .Apabila ada penambahan luas unit, dikenakan biaya tambahan Rp 500.000,00/m )",
         hspbg: 6600000,
         luasPrasarana: 0,
-        satuanLuas: 'Unit',
+        satuanLuas: "Unit",
         indeksBGTerbangun: null,
         luasPerUnit: [],
         biayaTambahan: 500000,
         maksimumPerUnit: 12,
-        nilaiRetribusi: 0
+        nilaiRetribusi: 0,
       },
       {
-        bangunan: 'Papan nama (berdiri sendiri atau berupa tembok pagar)',
-        satuan: 'Unit dan penambahannya (Luas maksimum 2 m<sup>2</sup>. Apabila ada penambahan luas unit, dikenakan biaya tambahan Rp 150.000,00/m )',
+        bangunan: "Papan nama (berdiri sendiri atau berupa tembok pagar)",
+        satuan:
+          "Unit dan penambahannya (Luas maksimum 2 m<sup>2</sup>. Apabila ada penambahan luas unit, dikenakan biaya tambahan Rp 150.000,00/m )",
         hspbg: 306000,
         luasPrasarana: 0,
-        satuanLuas: 'Unit',
+        satuanLuas: "Unit",
         indeksBGTerbangun: null,
         luasPerUnit: [],
         biayaTambahan: 150000,
         maksimumPerUnit: 2,
-        nilaiRetribusi: 0
-      }
-    ]
-  }
-])
+        nilaiRetribusi: 0,
+      },
+    ],
+  },
+]);
 
 const form = reactive({
   fungsiBangunan: null,
@@ -730,8 +1651,8 @@ const form = reactive({
   valueFaktorKepemilikan: null,
   indeksTerintegrasi: null,
   jumlahRetribusiPrasarana: 0,
-  jumlahRetribusiSeluruhnya: 0
-})
+  jumlahRetribusiSeluruhnya: 0,
+});
 
 const formIndeksKegiatan = reactive({
   luasBangunan: null,
@@ -739,72 +1660,123 @@ const formIndeksKegiatan = reactive({
   indeksKegiatan: null,
   valueIndeksKegiatan: null,
   shst: 5350000,
-  jumlah: 0
-})
+  jumlah: 0,
+});
 
 const changeHandle = (kategori, index) => {
-  if (kategori === 'Fungsi Bangunan') {
-    form.fungsiBangunan ? form.valueFungsiBangunan = form.fungsiBangunan.value : form.valueFungsiBangunan = 0  
-  } else if (kategori === 'Klasifikasi') {
+  if (kategori === "Fungsi Bangunan") {
+    form.fungsiBangunan
+      ? (form.valueFungsiBangunan = form.fungsiBangunan.value)
+      : (form.valueFungsiBangunan = 0);
+  } else if (kategori === "Klasifikasi") {
     if (dataClasifications[index].selectedParameter) {
-      dataClasifications[index].value = dataClasifications[index].selectedParameter.value * dataClasifications[index].weight
+      dataClasifications[index].value =
+        dataClasifications[index].selectedParameter.value *
+        dataClasifications[index].weight;
     } else {
-      dataClasifications[index].value = 0
+      dataClasifications[index].value = 0;
     }
-    form.valueClassification = dataClasifications.reduce((n, { value }) => n + value, 0).toFixed(2)  
-  } else if (kategori === 'Faktor Kepemilikan') {
-    form.faktorKepemilikan ? form.valueFaktorKepemilikan = form.faktorKepemilikan.value : form.valueFaktorKepemilikan = 0
-  } else if (kategori === 'Indeks BG Terbangun') {
-    formIndeksKegiatan.indeksKegiatan ? formIndeksKegiatan.valueIndeksKegiatan = formIndeksKegiatan.indeksKegiatan.value : formIndeksKegiatan.valueIndeksKegiatan = 0
+    form.valueClassification = dataClasifications
+      .reduce((n, { value }) => n + value, 0)
+      .toFixed(2);
+  } else if (kategori === "Faktor Kepemilikan") {
+    form.faktorKepemilikan
+      ? (form.valueFaktorKepemilikan = form.faktorKepemilikan.value)
+      : (form.valueFaktorKepemilikan = 0);
+  } else if (kategori === "Indeks BG Terbangun") {
+    formIndeksKegiatan.indeksKegiatan
+      ? (formIndeksKegiatan.valueIndeksKegiatan =
+          formIndeksKegiatan.indeksKegiatan.value)
+      : (formIndeksKegiatan.valueIndeksKegiatan = 0);
   }
-  updatePerhitungan()
-}
+  updatePerhitungan();
+};
 
 const updateIndeksTerintegrasi = () => {
-  form.indeksTerintegrasi = (form.valueFungsiBangunan * form.valueClassification * form.valueFaktorKepemilikan).toFixed(2)
-}
+  form.indeksTerintegrasi = (
+    form.valueFungsiBangunan *
+    form.valueClassification *
+    form.valueFaktorKepemilikan
+  ).toFixed(2);
+};
 
 const updateJumlahLuasBangunan = () => {
-  formIndeksKegiatan.jumlah = (form.indeksTerintegrasi * formIndeksKegiatan.luasBangunan * (formIndeksKegiatan.indeksLokalitas/100) * formIndeksKegiatan.valueIndeksKegiatan * formIndeksKegiatan.shst).toFixed(2)
-}
+  formIndeksKegiatan.jumlah = (
+    form.indeksTerintegrasi *
+    formIndeksKegiatan.luasBangunan *
+    (formIndeksKegiatan.indeksLokalitas / 100) *
+    formIndeksKegiatan.valueIndeksKegiatan *
+    formIndeksKegiatan.shst
+  ).toFixed(2);
+};
 
 const updateNilaiRetribusiPrasarana = (indexPrasarana, index) => {
-  if (dataPrasarana[indexPrasarana].data[index].satuanLuas === 'Unit') {
-    if (dataPrasarana[indexPrasarana].data[index].luasPerUnit.length > 0 && dataPrasarana[indexPrasarana].data[index].luasPrasarana > 0) {
-      let retribusiPerUnit = 0
-      dataPrasarana[indexPrasarana].data[index].luasPerUnit.forEach((perUnit, indexPerUnit) => {
-        if (indexPerUnit <= dataPrasarana[indexPrasarana].data[index].luasPrasarana) {
-          if (perUnit > 0) {
-            retribusiPerUnit = retribusiPerUnit + (dataPrasarana[indexPrasarana].data[index].hspbg * dataPrasarana[indexPrasarana].data[index].indeksBGTerbangun * 1 * 1)  
+  if (dataPrasarana[indexPrasarana].data[index].satuanLuas === "Unit") {
+    if (
+      dataPrasarana[indexPrasarana].data[index].luasPerUnit.length > 0 &&
+      dataPrasarana[indexPrasarana].data[index].luasPrasarana > 0
+    ) {
+      let retribusiPerUnit = 0;
+      dataPrasarana[indexPrasarana].data[index].luasPerUnit.forEach(
+        (perUnit, indexPerUnit) => {
+          if (
+            indexPerUnit <=
+            dataPrasarana[indexPrasarana].data[index].luasPrasarana
+          ) {
+            if (perUnit > 0) {
+              retribusiPerUnit =
+                retribusiPerUnit +
+                dataPrasarana[indexPrasarana].data[index].hspbg *
+                  dataPrasarana[indexPrasarana].data[index].indeksBGTerbangun *
+                  1 *
+                  1;
+            }
+            if (
+              perUnit >
+              dataPrasarana[indexPrasarana].data[index].maksimumPerUnit
+            ) {
+              retribusiPerUnit =
+                retribusiPerUnit +
+                (perUnit -
+                  dataPrasarana[indexPrasarana].data[index].maksimumPerUnit) *
+                  1 *
+                  dataPrasarana[indexPrasarana].data[index].indeksBGTerbangun *
+                  dataPrasarana[indexPrasarana].data[index].biayaTambahan;
+            }
           }
-          if (perUnit > dataPrasarana[indexPrasarana].data[index].maksimumPerUnit) {
-            retribusiPerUnit = retribusiPerUnit + ((perUnit - dataPrasarana[indexPrasarana].data[index].maksimumPerUnit) * 1 * dataPrasarana[indexPrasarana].data[index].indeksBGTerbangun * dataPrasarana[indexPrasarana].data[index].biayaTambahan)
-          } 
         }
-      })
-      dataPrasarana[indexPrasarana].data[index].nilaiRetribusi = retribusiPerUnit  
+      );
+      dataPrasarana[indexPrasarana].data[index].nilaiRetribusi =
+        retribusiPerUnit;
     } else {
-      dataPrasarana[indexPrasarana].data[index].nilaiRetribusi = 0
-      dataPrasarana[indexPrasarana].data[index].luasPerUnit = []
+      dataPrasarana[indexPrasarana].data[index].nilaiRetribusi = 0;
+      dataPrasarana[indexPrasarana].data[index].luasPerUnit = [];
     }
   } else {
-    dataPrasarana[indexPrasarana].data[index].nilaiRetribusi = dataPrasarana[indexPrasarana].data[index].hspbg * dataPrasarana[indexPrasarana].data[index].luasPrasarana * dataPrasarana[indexPrasarana].data[index].indeksBGTerbangun
+    dataPrasarana[indexPrasarana].data[index].nilaiRetribusi =
+      dataPrasarana[indexPrasarana].data[index].hspbg *
+      dataPrasarana[indexPrasarana].data[index].luasPrasarana *
+      dataPrasarana[indexPrasarana].data[index].indeksBGTerbangun;
   }
   form.jumlahRetribusiPrasarana = dataPrasarana.reduce((total, prasarana) => {
-    return total + prasarana.data.reduce((subtotal, item) => {
-      return subtotal + item.nilaiRetribusi;
-    }, 0);
+    return (
+      total +
+      prasarana.data.reduce((subtotal, item) => {
+        return subtotal + item.nilaiRetribusi;
+      }, 0)
+    );
   }, 0);
-  updateJumlahRetribusiSeluruhnya()
-}
+  updateJumlahRetribusiSeluruhnya();
+};
 
 const updateJumlahRetribusiSeluruhnya = () => {
-  form.jumlahRetribusiSeluruhnya = parseFloat(formIndeksKegiatan.jumlah) + form.jumlahRetribusiPrasarana
-}
+  form.jumlahRetribusiSeluruhnya =
+    parseFloat(formIndeksKegiatan.jumlah) + form.jumlahRetribusiPrasarana;
+};
 
 const updatePerhitungan = () => {
-  updateIndeksTerintegrasi()
-  updateJumlahLuasBangunan()
-  updateJumlahRetribusiSeluruhnya()
-}
+  updateIndeksTerintegrasi();
+  updateJumlahLuasBangunan();
+  updateJumlahRetribusiSeluruhnya();
+};
 </script>

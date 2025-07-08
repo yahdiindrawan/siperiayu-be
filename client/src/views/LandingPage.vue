@@ -5,7 +5,7 @@
       class="relative grid place-items-center mt-2 sm:mt-4 lg:mt-6 min-h-[calc(100vh-88px)] lg:max-h-screen scroll-mt-8"
     >
       <img
-        src="@/assets/icons/building.gif"
+        src="@/assets/icons/building-blue.gif"
         alt="Animation"
         class="hidden lg:block md:absolute bottom-6 inset-x-0 bg-cover w-full"
       />
@@ -13,7 +13,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 lg:gap-4 content-center">
           <div class="p-4 lg:p-8 xl:p-12 order-last lg:order-first">
             <img
-              src="@/assets/illustrations/hero.svg"
+              src="@/assets/illustrations/hero-blue.svg"
               alt="Hero Illustration"
               class="w-full max-w-md lg:max-w-2xl mx-auto"
             />
@@ -23,7 +23,7 @@
               class="p-4 lg:p-4 xl:p-4 space-y-4 lg:space-y-4 max-w-2xl mx-auto"
             >
               <img
-                src="@/assets/logos/calculator-pbg.svg"
+                src="@/assets/logos/calculator-pbg-blue.svg"
                 alt=""
                 class="h-10 md:h-12"
               />
@@ -50,7 +50,7 @@
       </div>
     </section>
     <img
-      src="@/assets/icons/building-mobile.gif"
+      src="@/assets/icons/building-mobile-blue.gif"
       alt="Animation"
       class="bg-cover lg:hidden w-full"
     />

@@ -1,31 +1,26 @@
-const defaultTheme = require("tailwindcss/defaultTheme");
+// import defaultTheme from "tailwindcss/defaultTheme";
+import forms from "@tailwindcss/forms";
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{vue,js,ts,jsx,tsx}",
-  ],
+  content: ["./index.html", "./src/**/*.{vue,js,ts,jsx,tsx}"],
   theme: {
     extend: {
       fontFamily: {
-        sans: ['"Glacial Indiff"']
+        sans: ['"Glacial Indiff"'],
       },
       colors: {
-        'primary': '#BB2727',
-        'secondary': '#ED2828',
-        'beige': '#F8F6F1',
-        'primary-200': '#FFE2E2'
+        primary: "#004e92",
+        secondary: "#0099f1",
+        beige: "#F8F6F1",
+        "primary-200": "#FFE2E2",
       },
       backgroundImage: {
-        'header-pattern': "url('./src/assets/backgrounds/navbar-navbar.png')",
+        "header-pattern": "url('./src/assets/backgrounds/navbar-navbar.png')",
       },
       screens: {
-        '3xl': '1920px'
-      }
+        "3xl": "1920px",
+      },
     },
   },
-  plugins: [
-    require('@tailwindcss/forms'),
-  ],
-}
-
+  plugins: [forms],
+};
