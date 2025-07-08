@@ -49,7 +49,7 @@
               </TransitionChild>
               <div class="flex flex-shrink-0 items-center px-4">
                 <img
-                  src="@/assets/logos/logo-siperiayu.svg"
+                  src="@/assets/logos/logo-siperiayu-blue.svg"
                   alt="Logo Siperiayu"
                   class="h-10 sm:h-11 md:h-12 lg:14"
                 />
@@ -116,7 +116,7 @@
       >
         <div class="flex flex-shrink-0 items-center px-4">
           <img
-            src="@/assets/logos/logo-siperiayu.svg"
+            src="@/assets/logos/logo-siperiayu-blue.svg"
             alt="Logo Siperiayu"
             class="h-10 sm:h-11 md:h-12 lg:14"
           />
