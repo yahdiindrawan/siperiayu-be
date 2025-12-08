@@ -8,13 +8,13 @@ export default defineConfig({
   plugins: [vue()],
   server: {
     historyApiFallback: true,
-    proxy: {
-      "/api": {
-        target: "https://siperiayu-be.vercel.app/api",
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ""),
-      },
-    },
+    // proxy: {
+    //   "/api": {
+    //     target: "https://siperiayu-be.vercel.app/api",
+    //     changeOrigin: true,
+    //     rewrite: (path) => path.replace(/^\/api/, ""),
+    //   },
+    // },
   },
   resolve: {
     alias: {
