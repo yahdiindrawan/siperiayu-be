@@ -26,7 +26,7 @@ export const AllFungsiBangunan = asyncHandler(async (req, res) => {
   // console.log(req.query, queryObj);
 
   const page = req.query.page * 1 || 1;
-  const limitData = 5;
+  const limitData = 100;
   const skipData = (page - 1) * limitData;
 
   let query = FungsiBangunan.find(queryObj).skip(skipData).limit(limitData);

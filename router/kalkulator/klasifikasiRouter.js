@@ -17,7 +17,7 @@ const router = express.Router();
 router.post("/", authMiddleware, CreateKlasifikasi);
 
 // get /api/v1/kalkulator/klasifikasi
-router.get("/", authMiddleware, AllKlasifikasi);
+router.get("/", AllKlasifikasi);
 
 // get /api/v1/kalkulator/klasifikasi/:id
 router.get("/:id", authMiddleware, DetailKlasifikasi);

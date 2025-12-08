@@ -17,7 +17,7 @@ const router = express.Router();
 router.post("/", authMiddleware, CreateKetinggian);
 
 // get /api/v1/fungsi-bangunan
-router.get("/", authMiddleware, AllKetinggian);
+router.get("/", AllKetinggian);
 
 // get /api/v1/fungsi-bangunan/:id
 router.get("/:id", authMiddleware, DetailKetinggian);

@@ -59,7 +59,7 @@
                         :value="list"
                         class="py-4"
                       >
-                        {{ list.name }}
+                        {{ list.category }}
                       </option>
                     </select>
                   </td>
@@ -67,7 +67,7 @@
                     scope="col"
                     class="px-3 border-2 border-gray-200 py-2.5 text-center text-sm text-gray-900"
                   >
-                    {{ form.fungsiBangunan?.value || 0 }}
+                    {{ form.fungsiBangunan?.indeks || 0 }}
                   </td>
                   <td
                     scope="col"
@@ -235,7 +235,7 @@
                         :value="list"
                         class="py-4"
                       >
-                        {{ list.name }}
+                        {{ list.category }}
                       </option>
                     </select>
                   </td>
@@ -243,7 +243,7 @@
                     scope="col"
                     class="px-3 border-2 border-gray-200 py-2.5 text-center text-sm text-gray-900"
                   >
-                    {{ form.faktorKepemilikan?.value || 0 }}
+                    {{ form.faktorKepemilikan?.indeks || 0 }}
                   </td>
                   <td
                     scope="col"
@@ -389,7 +389,7 @@
                         :value="list"
                         class="py-4"
                       >
-                        {{ list.name }}
+                        {{ list.category }}
                       </option>
                     </select>
                   </td>
@@ -600,10 +600,10 @@
                         <option
                           v-for="(list, index) in dataIndeksBGTerbangun"
                           :key="index"
-                          :value="list.value"
+                          :value="list.indeks"
                           class="py-4"
                         >
-                          {{ list.name }}
+                          {{ list.category }}
                         </option>
                       </select>
                     </td>
@@ -796,7 +796,7 @@
                       :value="list"
                       class="py-4"
                     >
-                      {{ list.name }}
+                      {{ list.category }}
                     </option>
                   </select>
                 </div>
@@ -804,7 +804,7 @@
                   class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2"
                 >
                   <h6 class="uppercase font-semibold">Indeks</h6>
-                  <p>{{ form.faktorKepemilikan?.value || 0 }}</p>
+                  <p>{{ form.faktorKepemilikan?.indeks || 0 }}</p>
                 </div>
                 <div
                   class="py-3 px-4 text-gray-900 flex justify-between items-center text-sm space-y-2"
@@ -910,7 +910,7 @@
                       :value="list"
                       class="py-4"
                     >
-                      {{ list.name }}
+                      {{ list.category }}
                     </option>
                   </select>
                 </div>
@@ -1486,7 +1486,7 @@
 </template>
 <script setup>
 import { toCurrency } from "@/helpers";
-import { reactive, ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import { InformationCircleIcon } from "@heroicons/vue/24/outline";
 import {
   TransitionRoot,
@@ -1495,152 +1495,309 @@ import {
   DialogPanel,
   DialogTitle,
 } from "@headlessui/vue";
+import customFetch from "@/api";
 
 const isOpen = ref(false);
+const dataFungsiBangunan = ref(null);
+const apiKlasifikasi = ref(null);
+const apiKompleksitas = ref(null);
+const apiPermanensi = ref(null);
+const apiKetinggian = ref(null);
+const dataClasifications = ref(null);
+const dataFaktorKepemilikan = ref(null);
+const dataIndeksLokalitas = ref(null);
+const dataIndeksKegiatan = ref(null);
+const dataIndeksBGTerbangun = ref(null);
+const dataPrasarana = ref(null);
 
-const dataFungsiBangunan = reactive([
-  { name: "Hunian (< 100 m2 dan < 2 lantai)", value: 0.15 },
-  { name: "Hunian (> 100 m2 dan > 2 lantai)", value: 0.17 },
-  { name: "Keagamaan", value: 0 },
-  { name: "Usaha", value: 0.7 },
-  { name: "Usaha UMKM", value: 0.5 },
-  { name: "Sosial & Budaya", value: 0.3 },
-  { name: "Khusus", value: 1 },
-  { name: "Ganda/Campuran (≤ 500 m2 dan ≤ 2 lantai)", value: 0.6 },
-  { name: "Ganda/Campuran (> 500 m2 dan > 2 lantai)", value: 0.8 },
-]);
+// const dataFungsiBangunan = reactive([
+//   { name: "Hunian (< 100 m2 dan < 2 lantai)", value: 0.15 },
+//   { name: "Hunian (> 100 m2 dan > 2 lantai)", value: 0.17 },
+//   { name: "Keagamaan", value: 0 },
+//   { name: "Usaha", value: 0.7 },
+//   { name: "Usaha UMKM", value: 0.5 },
+//   { name: "Sosial & Budaya", value: 0.3 },
+//   { name: "Khusus", value: 1 },
+//   { name: "Ganda/Campuran (≤ 500 m2 dan ≤ 2 lantai)", value: 0.6 },
+//   { name: "Ganda/Campuran (> 500 m2 dan > 2 lantai)", value: 0.8 },
+// ]);
 
-const dataClasifications = reactive([
-  {
-    clasification: "Kompleksitas",
-    weight: 0.3,
-    parameters: [
-      { name: "Sederhana", value: 1 },
-      { name: "Tidak Sederhana", value: 2 },
-    ],
+const allFungsiBangunan = async () => {
+  try {
+    const { data } = await customFetch.get("/data-master/fungsi-bangunan");
+    dataFungsiBangunan.value = data.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const allKlasifikasi = async () => {
+  try {
+    const { data } = await customFetch.get("/kalkulator/klasifikasi");
+    apiKlasifikasi.value = data.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const allKompleksitas = async () => {
+  try {
+    const { data } = await customFetch.get("/data-master/kompleksitas");
+    apiKompleksitas.value = data.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const allPermanensi = async () => {
+  try {
+    const { data } = await customFetch.get("/data-master/permanensi");
+    apiPermanensi.value = data.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const allKetinggian = async () => {
+  try {
+    const { data } = await customFetch.get("/data-master/ketinggian");
+    apiKetinggian.value = data.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const parameterMap = {
+  Kompleksitas: apiKompleksitas,
+  Permanensi: apiPermanensi,
+  Ketinggian: apiKetinggian,
+};
+
+const transformClassification = () => {
+  dataClasifications.value = apiKlasifikasi.value.map((cls) => ({
+    clasification: cls.classification,
+    weight: cls.weight,
+    parameters: (parameterMap[cls.classification] || []).value.map((p) => ({
+      name: p.category,
+      value: p.indeks,
+    })),
     selectedParameter: null,
     value: null,
-  },
-  {
-    clasification: "Permanensi",
-    weight: 0.2,
-    parameters: [
-      { name: "Non Permanaen", value: 1 },
-      { name: "Permanen", value: 2 },
-    ],
-    selectedParameter: null,
-    value: null,
-  },
-  {
-    clasification: "Ketinggian",
-    weight: 0.5,
-    parameters: [
-      { name: "1 Lantai", value: 1 },
-      { name: "2 Lantai", value: 1.09 },
-      { name: "3 Lantai", value: 1.12 },
-      { name: "4 Lantai", value: 1.135 },
-      { name: "5 Lantai", value: 1.162 },
-      { name: "6 Lantai", value: 1.197 },
-      { name: "7 Lantai", value: 1.236 },
-      { name: "8 Lantai", value: 1.265 },
-      { name: "9 Lantai", value: 1.299 },
-      { name: "10 Lantai", value: 1.333 },
-    ],
-    selectedParameter: null,
-    value: null,
-  },
-]);
+  }));
+};
 
-const dataFaktorKepemilikan = reactive([
-  { name: "Perorangan/Badan Usaha", value: 1 },
-  { name: "Negara", value: 0 },
-]);
+// const dataClasifications = reactive([
+//   {
+//     clasification: "Kompleksitas",
+//     weight: 0.3,
+//     parameters: [
+//       { name: "Sederhana", value: 1 },
+//       { name: "Tidak Sederhana", value: 2 },
+//     ],
+//     selectedParameter: null,
+//     value: null,
+//   },
+//   {
+//     clasification: "Permanensi",
+//     weight: 0.2,
+//     parameters: [
+//       { name: "Non Permanaen", value: 1 },
+//       { name: "Permanen", value: 2 },
+//     ],
+//     selectedParameter: null,
+//     value: null,
+//   },
+//   {
+//     clasification: "Ketinggian",
+//     weight: 0.5,
+//     parameters: [
+//       { name: "1 Lantai", value: 1 },
+//       { name: "2 Lantai", value: 1.09 },
+//       { name: "3 Lantai", value: 1.12 },
+//       { name: "4 Lantai", value: 1.135 },
+//       { name: "5 Lantai", value: 1.162 },
+//       { name: "6 Lantai", value: 1.197 },
+//       { name: "7 Lantai", value: 1.236 },
+//       { name: "8 Lantai", value: 1.265 },
+//       { name: "9 Lantai", value: 1.299 },
+//       { name: "10 Lantai", value: 1.333 },
+//     ],
+//     selectedParameter: null,
+//     value: null,
+//   },
+// ]);
 
-const dataIndeksLokalitas = reactive([0.1, 0.2, 0.3, 0.4, 0.5]);
+// const dataFaktorKepemilikan = reactive([
+//   { name: "Perorangan/Badan Usaha", value: 1 },
+//   { name: "Negara", value: 0 },
+// ]);
 
-const dataIndeksKegiatan = reactive([
-  { name: "Rusak Sedang - Pelestarian Madya", value: 0.225 },
-  { name: "Rusak Berat - Pelestarian Pratama", value: 0.325 },
-  { name: "Pembangunan Gedung Baru", value: 1 },
-  { name: "Pelestarian Utama", value: 0.15 },
-]);
+const allFaktorKepemilikan = async () => {
+  try {
+    const { data } = await customFetch.get("/data-master/faktor-kepemilikan");
+    dataFaktorKepemilikan.value = data.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
 
-const dataIndeksBGTerbangun = reactive([
-  { name: "Pembangunan Gedung Baru", value: 1 },
-  { name: "Sedang - Rehabilitasi BG", value: 0.225 },
-  { name: "Berat - Rehabilitasi BG", value: 0.325 },
-  { name: "Pelestarian Pratama", value: 0.325 },
-  { name: "Pelestarian Madya", value: 0.225 },
-  { name: "Pelestarian Utama", value: 0.15 },
-]);
+const allIndeksLokalitas = async () => {
+  try {
+    const { data } = await customFetch.get("/indeks/indeks-lokalitas");
+    dataIndeksLokalitas.value = data.data.map((item) => item.value);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
-const dataPrasarana = reactive([
-  {
-    jenis: "Konstruksi pembatas/ penahan/pengaman",
-    data: [
-      {
-        bangunan: "Pagar",
-        satuan: "M",
-        hspbg: 25200,
-        luasPrasarana: 0,
-        satuanLuas: "M<sup>2</sup>",
-        indeksBGTerbangun: null,
-        luasPerUnit: [],
-        biayaTambahan: 0,
-        maksimumPerUnit: null,
-        nilaiRetribusi: 0,
-      },
-    ],
-  },
-  {
-    jenis: "Konstruksi perkerasan aspal, beton",
-    data: [
-      {
-        bangunan: "",
-        satuan: "M<sup>2</sup>",
-        hspbg: 2300,
-        luasPrasarana: 0,
-        satuanLuas: "M<sup>2</sup>",
-        indeksBGTerbangun: null,
-        luasPerUnit: [],
-        biayaTambahan: 0,
-        maksimumPerUnit: null,
-        nilaiRetribusi: 0,
-      },
-    ],
-  },
-  {
-    jenis: "Konstruksi reklame/ papan nama",
-    data: [
-      {
-        bangunan: "Billboard papan iklan",
-        satuan:
-          "Unit dan penambahannya (Luas maksimum 12 m .Apabila ada penambahan luas unit, dikenakan biaya tambahan Rp 500.000,00/m )",
-        hspbg: 6600000,
-        luasPrasarana: 0,
-        satuanLuas: "Unit",
-        indeksBGTerbangun: null,
-        luasPerUnit: [],
-        biayaTambahan: 500000,
-        maksimumPerUnit: 12,
-        nilaiRetribusi: 0,
-      },
-      {
-        bangunan: "Papan nama (berdiri sendiri atau berupa tembok pagar)",
-        satuan:
-          "Unit dan penambahannya (Luas maksimum 2 m<sup>2</sup>. Apabila ada penambahan luas unit, dikenakan biaya tambahan Rp 150.000,00/m )",
-        hspbg: 306000,
-        luasPrasarana: 0,
-        satuanLuas: "Unit",
-        indeksBGTerbangun: null,
-        luasPerUnit: [],
-        biayaTambahan: 150000,
-        maksimumPerUnit: 2,
-        nilaiRetribusi: 0,
-      },
-    ],
-  },
-]);
+// const dataIndeksLokalitas = reactive([0.1, 0.2, 0.3, 0.4, 0.5]);
+
+// const dataIndeksKegiatan = reactive([
+//   { name: "Rusak Sedang - Pelestarian Madya", value: 0.225 },
+//   { name: "Rusak Berat - Pelestarian Pratama", value: 0.325 },
+//   { name: "Pembangunan Gedung Baru", value: 1 },
+//   { name: "Pelestarian Utama", value: 0.15 },
+// ]);
+
+const allIndeksBGTerbangun = async () => {
+  try {
+    const { data } = await customFetch.get("/indeks/indeks-bg-terbangun");
+    dataIndeksKegiatan.value = data.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// const dataIndeksBGTerbangun = reactive([
+//   { name: "Pembangunan Gedung Baru", value: 1 },
+//   { name: "Sedang - Rehabilitasi BG", value: 0.225 },
+//   { name: "Berat - Rehabilitasi BG", value: 0.325 },
+//   { name: "Pelestarian Pratama", value: 0.325 },
+//   { name: "Pelestarian Madya", value: 0.225 },
+//   { name: "Pelestarian Utama", value: 0.15 },
+// ]);
+
+const allIndeksBGTerbangunPrasarana = async () => {
+  try {
+    const { data } = await customFetch.get(
+      "/indeks/indeks-bg-terbangun-prasarana"
+    );
+    dataIndeksBGTerbangun.value = data.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const allDataPrasarana = async () => {
+  try {
+    const { data } = await customFetch.get("/kalkulator/prasarana");
+    dataPrasarana.value = TransformDataPrasarana(data.data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const TransformDataPrasarana = (dataArray) => {
+  const groupedData = dataArray.reduce((acc, currentItem) => {
+    const categoryName = currentItem.category;
+
+    const mappedItem = {
+      _id: currentItem._id,
+      bangunan: currentItem.building || "",
+      satuan: currentItem.satuan,
+      hspbg: currentItem.hspbg,
+      satuanLuas: currentItem.satuan_prasarana,
+      biayaTambahan: currentItem.charge,
+      maksimumPerUnit: currentItem.maksimum_per_unit,
+
+      luasPrasarana: 0,
+      indeksBGTerbangun: null,
+      luasPerUnit: [],
+      nilaiRetribusi: 0,
+    };
+
+    if (!acc[categoryName]) {
+      acc[categoryName] = {
+        jenis: categoryName,
+        data: [],
+      };
+    }
+
+    acc[categoryName].data.push(mappedItem);
+
+    return acc;
+  }, {});
+
+  return Object.values(groupedData);
+};
+
+// const dataPrasarana = reactive([
+//   {
+//     jenis: "Konstruksi pembatas/ penahan/pengaman",
+//     data: [
+//       {
+//         bangunan: "Pagar",
+//         satuan: "M",
+//         hspbg: 25200,
+//         luasPrasarana: 0,
+//         satuanLuas: "M<sup>2</sup>",
+//         indeksBGTerbangun: null,
+//         luasPerUnit: [],
+//         biayaTambahan: 0,
+//         maksimumPerUnit: null,
+//         nilaiRetribusi: 0,
+//       },
+//     ],
+//   },
+//   {
+//     jenis: "Konstruksi perkerasan aspal, beton",
+//     data: [
+//       {
+//         bangunan: "",
+//         satuan: "M<sup>2</sup>",
+//         hspbg: 2300,
+//         luasPrasarana: 0,
+//         satuanLuas: "M<sup>2</sup>",
+//         indeksBGTerbangun: null,
+//         luasPerUnit: [],
+//         biayaTambahan: 0,
+//         maksimumPerUnit: null,
+//         nilaiRetribusi: 0,
+//       },
+//     ],
+//   },
+//   {
+//     jenis: "Konstruksi reklame/ papan nama",
+//     data: [
+//       {
+//         bangunan: "Billboard papan iklan",
+//         satuan:
+//           "Unit dan penambahannya (Luas maksimum 12 m .Apabila ada penambahan luas unit, dikenakan biaya tambahan Rp 500.000,00/m )",
+//         hspbg: 6600000,
+//         luasPrasarana: 0,
+//         satuanLuas: "Unit",
+//         indeksBGTerbangun: null,
+//         luasPerUnit: [],
+//         biayaTambahan: 500000,
+//         maksimumPerUnit: 12,
+//         nilaiRetribusi: 0,
+//       },
+//       {
+//         bangunan: "Papan nama (berdiri sendiri atau berupa tembok pagar)",
+//         satuan:
+//           "Unit dan penambahannya (Luas maksimum 2 m<sup>2</sup>. Apabila ada penambahan luas unit, dikenakan biaya tambahan Rp 150.000,00/m )",
+//         hspbg: 306000,
+//         luasPrasarana: 0,
+//         satuanLuas: "Unit",
+//         indeksBGTerbangun: null,
+//         luasPerUnit: [],
+//         biayaTambahan: 150000,
+//         maksimumPerUnit: 2,
+//         nilaiRetribusi: 0,
+//       },
+//     ],
+//   },
+// ]);
 
 const form = reactive({
   fungsiBangunan: null,
@@ -1666,27 +1823,27 @@ const formIndeksKegiatan = reactive({
 const changeHandle = (kategori, index) => {
   if (kategori === "Fungsi Bangunan") {
     form.fungsiBangunan
-      ? (form.valueFungsiBangunan = form.fungsiBangunan.value)
+      ? (form.valueFungsiBangunan = form.fungsiBangunan.indeks)
       : (form.valueFungsiBangunan = 0);
   } else if (kategori === "Klasifikasi") {
-    if (dataClasifications[index].selectedParameter) {
-      dataClasifications[index].value =
-        dataClasifications[index].selectedParameter.value *
-        dataClasifications[index].weight;
+    if (dataClasifications.value[index].selectedParameter) {
+      dataClasifications.value[index].value =
+        dataClasifications.value[index].selectedParameter.value *
+        dataClasifications.value[index].weight;
     } else {
-      dataClasifications[index].value = 0;
+      dataClasifications.value[index].value = 0;
     }
-    form.valueClassification = dataClasifications
+    form.valueClassification = dataClasifications.value
       .reduce((n, { value }) => n + value, 0)
       .toFixed(2);
   } else if (kategori === "Faktor Kepemilikan") {
     form.faktorKepemilikan
-      ? (form.valueFaktorKepemilikan = form.faktorKepemilikan.value)
+      ? (form.valueFaktorKepemilikan = form.faktorKepemilikan.indeks)
       : (form.valueFaktorKepemilikan = 0);
   } else if (kategori === "Indeks BG Terbangun") {
     formIndeksKegiatan.indeksKegiatan
       ? (formIndeksKegiatan.valueIndeksKegiatan =
-          formIndeksKegiatan.indeksKegiatan.value)
+          formIndeksKegiatan.indeksKegiatan.indeks)
       : (formIndeksKegiatan.valueIndeksKegiatan = 0);
   }
   updatePerhitungan();
@@ -1711,61 +1868,67 @@ const updateJumlahLuasBangunan = () => {
 };
 
 const updateNilaiRetribusiPrasarana = (indexPrasarana, index) => {
-  if (dataPrasarana[indexPrasarana].data[index].satuanLuas === "Unit") {
+  if (dataPrasarana.value[indexPrasarana].data[index].satuanLuas === "Unit") {
     if (
-      dataPrasarana[indexPrasarana].data[index].luasPerUnit.length > 0 &&
-      dataPrasarana[indexPrasarana].data[index].luasPrasarana > 0
+      dataPrasarana.value[indexPrasarana].data[index].luasPerUnit.length > 0 &&
+      dataPrasarana.value[indexPrasarana].data[index].luasPrasarana > 0
     ) {
       let retribusiPerUnit = 0;
-      dataPrasarana[indexPrasarana].data[index].luasPerUnit.forEach(
+      dataPrasarana.value[indexPrasarana].data[index].luasPerUnit.forEach(
         (perUnit, indexPerUnit) => {
           if (
             indexPerUnit <=
-            dataPrasarana[indexPrasarana].data[index].luasPrasarana
+            dataPrasarana.value[indexPrasarana].data[index].luasPrasarana
           ) {
             if (perUnit > 0) {
               retribusiPerUnit =
                 retribusiPerUnit +
-                dataPrasarana[indexPrasarana].data[index].hspbg *
-                  dataPrasarana[indexPrasarana].data[index].indeksBGTerbangun *
+                dataPrasarana.value[indexPrasarana].data[index].hspbg *
+                  dataPrasarana.value[indexPrasarana].data[index]
+                    .indeksBGTerbangun *
                   1 *
                   1;
             }
             if (
               perUnit >
-              dataPrasarana[indexPrasarana].data[index].maksimumPerUnit
+              dataPrasarana.value[indexPrasarana].data[index].maksimumPerUnit
             ) {
               retribusiPerUnit =
                 retribusiPerUnit +
                 (perUnit -
-                  dataPrasarana[indexPrasarana].data[index].maksimumPerUnit) *
+                  dataPrasarana.value[indexPrasarana].data[index]
+                    .maksimumPerUnit) *
                   1 *
-                  dataPrasarana[indexPrasarana].data[index].indeksBGTerbangun *
-                  dataPrasarana[indexPrasarana].data[index].biayaTambahan;
+                  dataPrasarana.value[indexPrasarana].data[index]
+                    .indeksBGTerbangun *
+                  dataPrasarana.value[indexPrasarana].data[index].biayaTambahan;
             }
           }
         }
       );
-      dataPrasarana[indexPrasarana].data[index].nilaiRetribusi =
+      dataPrasarana.value[indexPrasarana].data[index].nilaiRetribusi =
         retribusiPerUnit;
     } else {
-      dataPrasarana[indexPrasarana].data[index].nilaiRetribusi = 0;
-      dataPrasarana[indexPrasarana].data[index].luasPerUnit = [];
+      dataPrasarana.value[indexPrasarana].data[index].nilaiRetribusi = 0;
+      dataPrasarana.value[indexPrasarana].data[index].luasPerUnit = [];
     }
   } else {
-    dataPrasarana[indexPrasarana].data[index].nilaiRetribusi =
-      dataPrasarana[indexPrasarana].data[index].hspbg *
-      dataPrasarana[indexPrasarana].data[index].luasPrasarana *
-      dataPrasarana[indexPrasarana].data[index].indeksBGTerbangun;
+    dataPrasarana.value[indexPrasarana].data[index].nilaiRetribusi =
+      dataPrasarana.value[indexPrasarana].data[index].hspbg *
+      dataPrasarana.value[indexPrasarana].data[index].luasPrasarana *
+      dataPrasarana.value[indexPrasarana].data[index].indeksBGTerbangun;
   }
-  form.jumlahRetribusiPrasarana = dataPrasarana.reduce((total, prasarana) => {
-    return (
-      total +
-      prasarana.data.reduce((subtotal, item) => {
-        return subtotal + item.nilaiRetribusi;
-      }, 0)
-    );
-  }, 0);
+  form.jumlahRetribusiPrasarana = dataPrasarana.value.reduce(
+    (total, prasarana) => {
+      return (
+        total +
+        prasarana.data.reduce((subtotal, item) => {
+          return subtotal + item.nilaiRetribusi;
+        }, 0)
+      );
+    },
+    0
+  );
   updateJumlahRetribusiSeluruhnya();
 };
 
@@ -1779,4 +1942,18 @@ const updatePerhitungan = () => {
   updateJumlahLuasBangunan();
   updateJumlahRetribusiSeluruhnya();
 };
+
+onMounted(async () => {
+  await allFungsiBangunan();
+  await allKlasifikasi();
+  await allKompleksitas();
+  await allPermanensi();
+  await allKetinggian();
+  await transformClassification();
+  await allFaktorKepemilikan();
+  await allIndeksLokalitas();
+  await allIndeksBGTerbangun();
+  await allIndeksBGTerbangunPrasarana();
+  await allDataPrasarana();
+});
 </script>

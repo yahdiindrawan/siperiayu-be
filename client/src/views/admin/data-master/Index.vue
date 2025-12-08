@@ -7,7 +7,7 @@
     </div>
     <div class="px-4 sm:px-6 lg:px-0">
       <div class="py-6">
-        <div class="overflow-auto">
+        <div class="overflow-hidden">
           <div class="border-b border-gray-200">
             <nav class="-mb-px flex space-x-8">
               <button

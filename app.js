@@ -2,6 +2,9 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
+import multer from "multer";
+import path from "path";
+import { fileURLToPath } from "url";
 
 // Router
 import authRouter from "./router/authRouter.js";
@@ -18,6 +21,9 @@ import IndeksBGTerbangunPrasaranaRouter from "./router/indeks/indeksBGTerbangunP
 // Kalkulator Router
 import klasifikasiRouter from "./router/kalkulator/klasifikasiRouter.js";
 import prasaranaRouter from "./router/kalkulator/prasaranaRouter.js";
+// Settings Router
+import heroRouter from "./router/settings/heroRouter.js";
+import peraturanRouter from "./router/settings/peraturanRouter.js";
 
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
@@ -28,11 +34,19 @@ dotenv.config();
 const app = express();
 const port = 3000;
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 // Middleware
 // app.use(cors())
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use("/images", express.static(path.join(__dirname, "images")));
+app.use("/files", express.static(path.join(__dirname, "files")));
+// app.use(
+//   multer({ storage: fileStorage, fileFilter: fileFilter }).single("image")
+// );
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
@@ -55,6 +69,9 @@ app.use(
 // kalkulator
 app.use("/api/v1/kalkulator/klasifikasi", klasifikasiRouter);
 app.use("/api/v1/kalkulator/prasarana", prasaranaRouter);
+// settings
+app.use("/api/v1/settings/hero", heroRouter);
+app.use("/api/v1/settings/peraturan", peraturanRouter);
 
 app.use(notFound);
 app.use(errorHandler);

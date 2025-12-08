@@ -17,7 +17,7 @@ const router = express.Router();
 router.post("/", authMiddleware, CreateFungsiBangunan);
 
 // get /api/v1/fungsi-bangunan
-router.get("/", authMiddleware, AllFungsiBangunan);
+router.get("/", AllFungsiBangunan);
 
 // get /api/v1/fungsi-bangunan/:id
 router.get("/:id", authMiddleware, DetailFungsiBangunan);

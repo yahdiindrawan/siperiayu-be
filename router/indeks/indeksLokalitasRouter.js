@@ -17,7 +17,7 @@ const router = express.Router();
 router.post("/", authMiddleware, CreateIndeksLokalitas);
 
 // get /api/v1/indeks-lokalitas
-router.get("/", authMiddleware, AllIndeksLokalitas);
+router.get("/", AllIndeksLokalitas);
 
 // get /api/v1/indeks-lokalitas/:id
 router.get("/:id", authMiddleware, DetailIndeksLokalitas);
