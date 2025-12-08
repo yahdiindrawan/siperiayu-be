@@ -5,6 +5,7 @@ import cors from "cors";
 import multer from "multer";
 import path from "path";
 import { fileURLToPath } from "url";
+import connectToDatabase from "./db.js";
 
 // Router
 import authRouter from "./router/authRouter.js";
@@ -32,7 +33,7 @@ import { errorHandler, notFound } from "./middleware/errorHandler.js";
 dotenv.config();
 
 const app = express();
-const port = 3000;
+// const port = process.env.PORT || 3000;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -40,7 +41,7 @@ const __dirname = path.dirname(__filename);
 // Middleware
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://siperi-ayu.vercel.app/",
+  "https://siperi-ayu.vercel.app",
   "https://siperi-ayu.indramayukab.go.id",
 ];
 
@@ -71,6 +72,16 @@ if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
+app.use(async (req, res, next) => {
+  try {
+    await connectToDatabase();
+    next();
+  } catch (error) {
+    console.error("Failed to connect to DB during request:", error);
+    return res.status(500).send("Database connection error."); // Tambahkan return!
+  }
+});
+
 // Parent Router
 app.use("/api/v1/auth", authRouter);
 // data-master
@@ -96,11 +107,24 @@ app.use("/api/v1/settings/peraturan", peraturanRouter);
 app.use(notFound);
 app.use(errorHandler);
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
-});
+// app.listen(port, () => {
+//   console.log(`Example app listening on port ${port}`);
+// });
 
 //Connection DB
-mongoose.connect(process.env.DATABASE, {}).then(() => {
-  console.log("Database connect");
-});
+// mongoose.connect(process.env.DATABASE, {}).then(() => {
+//   console.log("Database connect");
+// });
+
+if (
+  process.env.VERCEL_ENV !== "production" &&
+  process.env.NODE_ENV !== "production"
+) {
+  const port = process.env.PORT || 3000; // Gunakan port 3000 di lokal
+
+  app.listen(port, () => {
+    console.log(`Example app listening on port ${port} (Local/Dev)`);
+  });
+}
+
+export default app;

@@ -7,6 +7,7 @@ const BASE_API_URL =
 import axios from "axios";
 const customFetch = axios.create({
   baseURL: BASE_API_URL,
+  withCredentials: true,
   // ...
 });
 
