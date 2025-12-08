@@ -17,14 +17,14 @@
     </div>
     <div class="mx-2 mt-8 sm:-mx-0">
       <div
-        class="shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg px-4 py-2"
+        class="shadow overflow-x-auto ring-1 ring-black ring-opacity-5 sm:rounded-lg px-4 py-2"
       >
-        <table class="min-w-full divide-y divide-gray-300">
+        <table class="min-w-full overflow-hidden divide-y divide-gray-300">
           <thead class="bg-gray-50">
             <tr>
               <th
                 scope="col"
-                class="hidden py-3.5 px-2 text-left text-sm font-semibold text-gray-900 lg:table-cell"
+                class="py-3.5 px-2 text-left text-sm font-semibold text-gray-900"
               >
                 No
               </th>
@@ -32,13 +32,43 @@
                 scope="col"
                 class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
               >
-                prasarana
+                Jenis Prasarana
               </th>
               <th
                 scope="col"
-                class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell"
+                class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
               >
-                Bobot
+                Bangunan
+              </th>
+              <th
+                scope="col"
+                class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+              >
+                Satuan
+              </th>
+              <th
+                scope="col"
+                class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+              >
+                HSPBG
+              </th>
+              <th
+                scope="col"
+                class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+              >
+                Satuan Prasarana
+              </th>
+              <th
+                scope="col"
+                class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+              >
+                Biaya Tambahan
+              </th>
+              <th
+                scope="col"
+                class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+              >
+                Maksimum Per Unit
               </th>
               <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-0">
                 <span class="sr-only">Aksi</span>
@@ -47,22 +77,31 @@
           </thead>
           <tbody v-if="prasaranaData" class="divide-y divide-gray-200 bg-white">
             <tr v-for="(data, index) in prasaranaData" :key="data._id">
-              <td class="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">
+              <td class="px-3 py-4 text-sm text-gray-500">
                 {{ index + 1 }}
               </td>
               <td
-                class="w-full max-w-0 py-4 px-2 text-sm font-medium text-gray-900 sm:w-auto sm:max-w-none"
+                class="py-4 px-2 text-sm font-medium text-gray-500 sm:w-auto sm:max-w-none"
               >
-                {{ data.classification }}
-                <dl class="font-normal lg:hidden">
-                  <dt class="sr-only sm:hidden">weight</dt>
-                  <dd class="mt-1 truncate text-gray-500 sm:hidden">
-                    {{ data.weight }}
-                  </dd>
-                </dl>
+                {{ data.category }}
               </td>
-              <td class="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">
-                {{ data.weight }}
+              <td class="px-3 py-4 text-sm text-gray-500">
+                {{ data.building }}
+              </td>
+              <td class="px-3 py-4 text-sm text-gray-500">
+                {{ data.satuan }}
+              </td>
+              <td class="px-3 py-4 text-sm text-gray-500">
+                {{ data.hspbg }}
+              </td>
+              <td class="px-3 py-4 text-sm text-gray-500">
+                {{ data.satuan_prasarana }}
+              </td>
+              <td class="px-3 py-4 text-sm text-gray-500">
+                {{ data.charge }}
+              </td>
+              <td class="px-3 py-4 text-sm text-gray-500">
+                {{ data.maksimum_per_unit }}
               </td>
               <td class="py-4 px-2 text-center text-sm font-medium">
                 <button
@@ -152,11 +191,12 @@
                           <label
                             for="prasarana"
                             class="block text-sm font-medium leading-6 text-gray-900"
-                            >prasarana</label
                           >
+                            Jenis Prasarana
+                          </label>
                           <div class="mt-2">
                             <input
-                              v-model="prasarana.classification"
+                              v-model="prasarana.category"
                               id="prasarana"
                               name="prasarana"
                               type="text"
@@ -166,18 +206,102 @@
                         </div>
                         <div>
                           <label
-                            for="weight"
+                            for="bangunan"
                             class="block text-sm font-medium leading-6 text-gray-900"
-                            >Bobot</label
                           >
+                            Bangunan
+                          </label>
                           <div class="mt-2">
                             <input
-                              v-model="prasarana.weight"
-                              id="weight"
-                              name="weight"
+                              v-model="prasarana.building"
+                              id="bangunan"
+                              name="bangunan"
+                              type="text"
+                              class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6"
+                            />
+                          </div>
+                        </div>
+                        <div>
+                          <label
+                            for="satuan"
+                            class="block text-sm font-medium leading-6 text-gray-900"
+                          >
+                            Satuan
+                          </label>
+                          <div class="mt-2">
+                            <input
+                              v-model="prasarana.satuan"
+                              id="satuan"
+                              name="satuan"
+                              type="text"
+                              class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6"
+                            />
+                          </div>
+                        </div>
+                        <div>
+                          <label
+                            for="hspbg"
+                            class="block text-sm font-medium leading-6 text-gray-900"
+                          >
+                            HSPBG
+                          </label>
+                          <div class="mt-2">
+                            <input
+                              v-model="prasarana.hspbg"
+                              id="hspbg"
+                              name="hspbg"
                               type="number"
-                              min="0"
-                              step="0.01"
+                              class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6"
+                            />
+                          </div>
+                        </div>
+                        <div>
+                          <label
+                            for="satuan_prasarana"
+                            class="block text-sm font-medium leading-6 text-gray-900"
+                          >
+                            Satuan Prasarana
+                          </label>
+                          <div class="mt-2">
+                            <input
+                              v-model="prasarana.satuan_prasarana"
+                              id="satuan_prasarana"
+                              name="satuan_prasarana"
+                              type="text"
+                              class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6"
+                            />
+                          </div>
+                        </div>
+                        <div>
+                          <label
+                            for="charge"
+                            class="block text-sm font-medium leading-6 text-gray-900"
+                          >
+                            Biaya Tambahan
+                          </label>
+                          <div class="mt-2">
+                            <input
+                              v-model="prasarana.charge"
+                              id="charge"
+                              name="charge"
+                              type="number"
+                              class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6"
+                            />
+                          </div>
+                        </div>
+                        <div>
+                          <label
+                            for="maksimum_per_unit"
+                            class="block text-sm font-medium leading-6 text-gray-900"
+                          >
+                            Maksimum Per Unit
+                          </label>
+                          <div class="mt-2">
+                            <input
+                              v-model="prasarana.maksimum_per_unit"
+                              id="maksimum_per_unit"
+                              name="maksimum_per_unit"
+                              type="number"
                               class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6"
                             />
                           </div>

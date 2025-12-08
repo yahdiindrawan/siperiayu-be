@@ -17,7 +17,7 @@ const router = express.Router();
 router.post("/", authMiddleware, CreateIndeksBGTerbangun);
 
 // get /api/v1/indeks-bg-terbangun
-router.get("/", authMiddleware, AllIndeksBGTerbangun);
+router.get("/", AllIndeksBGTerbangun);
 
 // get /api/v1/indeks-bg-terbangun/:id
 router.get("/:id", authMiddleware, DetailIndeksBGTerbangun);

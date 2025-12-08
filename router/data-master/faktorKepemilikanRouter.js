@@ -17,7 +17,7 @@ const router = express.Router();
 router.post("/", authMiddleware, CreateFaktorKepemilikan);
 
 // get /api/v1/fungsi-bangunan
-router.get("/", authMiddleware, AllFaktorKepemilikan);
+router.get("/", AllFaktorKepemilikan);
 
 // get /api/v1/fungsi-bangunan/:id
 router.get("/:id", authMiddleware, DetailFaktorKepemilikan);

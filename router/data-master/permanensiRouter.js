@@ -17,7 +17,7 @@ const router = express.Router();
 router.post("/", authMiddleware, CreatePermanensi);
 
 // get /api/v1/fungsi-bangunan
-router.get("/", authMiddleware, AllPermanensi);
+router.get("/", AllPermanensi);
 
 // get /api/v1/fungsi-bangunan/:id
 router.get("/:id", authMiddleware, DetailPermanensi);

@@ -17,7 +17,7 @@ const router = express.Router();
 router.post("/", authMiddleware, CreateKompleksitas);
 
 // get /api/v1/fungsi-bangunan
-router.get("/", authMiddleware, AllKompleksitas);
+router.get("/", AllKompleksitas);
 
 // get /api/v1/fungsi-bangunan/:id
 router.get("/:id", authMiddleware, DetailKompleksitas);

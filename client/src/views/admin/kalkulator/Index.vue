@@ -7,7 +7,7 @@
     </div>
     <div class="px-4 sm:px-6 lg:px-0">
       <div class="py-6">
-        <div class="overflow-auto">
+        <div class="overflow-hidden">
           <div class="border-b border-gray-200">
             <nav class="-mb-px flex space-x-8">
               <button
@@ -31,6 +31,7 @@
         <!-- {{ currentTab }} -->
         <div>
           <TheKlasifikasi v-if="currentTab === 'Data Klasifikasi'" />
+          <ThePrasarana v-if="currentTab === 'Jenis Prasarana'" />
         </div>
       </div>
     </div>
@@ -40,6 +41,7 @@
 <script setup>
 import { ref } from "vue";
 import TheKlasifikasi from "@/components/partials/kalkulator/TheKlasifikasi.vue";
+import ThePrasarana from "@/components/partials/kalkulator/ThePrasarana.vue";
 
 const tabs = ["Data Klasifikasi", "Jenis Prasarana"];
 
