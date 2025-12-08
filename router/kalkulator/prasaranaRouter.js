@@ -17,7 +17,7 @@ const router = express.Router();
 router.post("/", authMiddleware, CreatePrasarana);
 
 // get /api/v1/kalkulator/prasarana
-router.get("/", authMiddleware, AllPrasarana);
+router.get("/", AllPrasarana);
 
 // get /api/v1/kalkulator/prasarana/:id
 router.get("/:id", authMiddleware, DetailPrasarana);
