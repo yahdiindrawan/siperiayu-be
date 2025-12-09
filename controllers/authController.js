@@ -10,12 +10,13 @@ const signToken = (id) => {
 
 const createSendToken = (user, statusCode, res) => {
   const token = signToken(user.id);
-
+  const isProduction = process.env.NODE_ENV === "production";
   const cookieOption = {
     expire: new Date(
       Date.now() + 6 * 24 * 60 * 60 * 1000 //Tambah 6 Hari
     ),
-    // secure: false,
+    secure: isProduction,
+    sameSite: isProduction ? "None" : "Lax",
     httpOnly: true,
     security: false,
   };

@@ -17,14 +17,14 @@
     </div>
     <div class="mx-2 mt-8 sm:-mx-0">
       <div
-        class="shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg px-4 py-2"
+        class="shadow overflow-x-auto ring-1 ring-black ring-opacity-5 sm:rounded-lg px-4 py-2"
       >
-        <table class="min-w-full divide-y divide-gray-300">
+        <table class="min-w-full overflow-hidden divide-y divide-gray-300">
           <thead class="bg-gray-50">
             <tr>
               <th
                 scope="col"
-                class="hidden py-3.5 px-2 text-left text-sm font-semibold text-gray-900 lg:table-cell"
+                class="py-3.5 px-2 text-left text-sm font-semibold text-gray-900"
               >
                 No
               </th>
@@ -32,42 +32,48 @@
                 scope="col"
                 class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
               >
-                Kategori
+                Judul
               </th>
               <th
                 scope="col"
-                class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell"
+                class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
               >
-                Indeks
+                Deskripsi
               </th>
-              <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-0">
+              <th
+                scope="col"
+                class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+              >
+                File
+              </th>
+              <th
+                scope="col"
+                class="relative min-w-20 py-3.5 pl-3 pr-4 sm:pr-0"
+              >
                 <span class="sr-only">Aksi</span>
               </th>
             </tr>
           </thead>
-          <tbody
-            v-if="fungsiBangunanData"
-            class="divide-y divide-gray-200 bg-white"
-          >
-            <tr v-for="(data, index) in fungsiBangunanData" :key="data._id">
-              <td class="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">
+          <tbody v-if="peraturanData" class="divide-y divide-gray-200 bg-white">
+            <tr v-for="(data, index) in peraturanData" :key="data._id">
+              <td class="px-3 py-4 text-sm text-gray-500">
                 {{ index + 1 }}
               </td>
-              <td
-                class="w-full max-w-0 py-4 px-2 text-sm font-medium text-gray-900 sm:w-auto sm:max-w-none"
-              >
-                {{ data.category }}
-                <dl class="font-normal lg:hidden">
-                  <dt class="sr-only sm:hidden">Indeks</dt>
-                  <dd class="mt-1 truncate text-gray-500 sm:hidden">
-                    {{ data.indeks }}
-                  </dd>
-                </dl>
+              <td class="py-4 px-2 text-sm font-medium text-gray-500">
+                {{ data.title }}
               </td>
-              <td class="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">
-                {{ data.indeks }}
+              <td class="px-3 py-4 text-sm text-gray-500">
+                {{ data.description }}
               </td>
-              <td class="py-4 px-2 text-center text-sm font-medium">
+              <td class="px-3 py-4 text-sm text-gray-500">
+                <a
+                  :href="BASEAPI_URL + '/' + data.file"
+                  target="_blank"
+                  class="underline"
+                  >Lihat Data</a
+                >
+              </td>
+              <td class="py-4 px-2 text-center text-sm font-medium max-w-8">
                 <button
                   type="button"
                   @click="handleEdit(data)"
@@ -141,7 +147,7 @@
                         as="h3"
                         class="text-base text-center font-semibold leading-6 text-gray-900"
                       >
-                        {{ !fungsiBangunan._id ? "Tambah Data" : "Edit Data" }}
+                        {{ !peraturan._id ? "Tambah Data" : "Edit Data" }}
                       </DialogTitle>
                       <CAlert
                         v-if="errorAlert"
@@ -153,36 +159,45 @@
                       <div class="mt-6 space-y-3 mx-4">
                         <div>
                           <label
-                            for="kategori"
+                            for="title"
                             class="block text-sm font-medium leading-6 text-gray-900"
-                            >Kategori</label
                           >
+                            Judul
+                          </label>
                           <div class="mt-2">
                             <input
-                              v-model="fungsiBangunan.category"
-                              id="kategori"
-                              name="kategori"
-                              type="text"
+                              v-model="peraturan.title"
+                              id="title"
+                              name="title"
                               class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6"
                             />
                           </div>
                         </div>
                         <div>
                           <label
-                            for="indeks"
+                            for="description"
                             class="block text-sm font-medium leading-6 text-gray-900"
-                            >Indeks</label
                           >
+                            Deskripsi
+                          </label>
                           <div class="mt-2">
                             <input
-                              v-model="fungsiBangunan.indeks"
-                              id="indeks"
-                              name="indeks"
-                              type="number"
-                              min="0"
-                              step="0.01"
+                              v-model="peraturan.description"
+                              id="description"
+                              name="description"
                               class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6"
                             />
+                          </div>
+                        </div>
+                        <div>
+                          <label
+                            for="file"
+                            class="block text-sm font-medium leading-6 text-gray-900"
+                          >
+                            File
+                          </label>
+                          <div class="mt-2">
+                            <input id="file" name="file" type="file" />
                           </div>
                         </div>
                       </div>
@@ -195,7 +210,7 @@
                       type="submit"
                       class="inline-flex w-full justify-center rounded-md bg-secondary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary sm:col-start-2"
                     >
-                      {{ !fungsiBangunan._id ? "Save" : "Update" }}
+                      {{ !peraturan._id ? "Save" : "Update" }}
                     </button>
                     <button
                       type="button"
@@ -236,15 +251,17 @@ import { CAlert, CToast, CLoadingSpinner } from "@/components/base";
 import { CheckIcon } from "@heroicons/vue/24/outline";
 import customFetch from "@/api";
 
+const BASEAPI_URL = import.meta.env.VITE_BASEAPI_URL;
 const isModal = ref(false);
 const isToast = ref(false);
 const errorMessage = ref("");
 const errorAlert = ref(false);
 
-const fungsiBangunan = reactive({
+const peraturan = reactive({
   _id: null,
-  category: null,
-  indeks: null,
+  title: null,
+  description: null,
+  file: null,
 });
 
 const toast = reactive({
@@ -252,12 +269,12 @@ const toast = reactive({
   message: "",
 });
 
-const fungsiBangunanData = ref(null);
+const peraturanData = ref(null);
 
-const allFungsiBangunan = async () => {
+const allperaturan = async () => {
   try {
-    const { data } = await customFetch.get("/data-master/fungsi-bangunan");
-    fungsiBangunanData.value = data.data;
+    const { data } = await customFetch.get("/settings/peraturan");
+    peraturanData.value = data.data;
   } catch (error) {
     console.log(error);
   }
@@ -265,9 +282,10 @@ const allFungsiBangunan = async () => {
 
 const clearInput = () => {
   isModal.value = false;
-  fungsiBangunan._id = null;
-  fungsiBangunan.category = null;
-  fungsiBangunan.indeks = null;
+  peraturan._id = null;
+  peraturan.title = null;
+  peraturan.description = null;
+  peraturan.file = null;
   errorAlert.value = false;
   errorMessage.value = "";
 };
@@ -280,19 +298,20 @@ const clearToast = () => {
 
 const handleEdit = (data) => {
   isModal.value = true;
-  fungsiBangunan._id = data._id;
-  fungsiBangunan.category = data.category;
-  fungsiBangunan.indeks = data.indeks;
+  peraturan._id = data._id;
+  peraturan.title = data.title;
+  peraturan.description = data.description;
+  peraturan.file = data.file;
 };
 
 const handleDelete = async (_id) => {
   try {
-    const tempFungsiBangunan = await customFetch.delete(
-      "/data-master/fungsi-bangunan/" + _id
+    const tempperaturan = await customFetch.delete(
+      "/settings/peraturan/" + _id
     );
-    toast.message = tempFungsiBangunan.data.message;
-    if (tempFungsiBangunan) {
-      allFungsiBangunan();
+    toast.message = tempperaturan.data.message;
+    if (tempperaturan) {
+      allperaturan();
 
       toast.title = "Berhasil";
       isToast.value = true;
@@ -308,31 +327,30 @@ const handleDelete = async (_id) => {
 
 const handleSubmit = async () => {
   try {
-    let tempFungsiBangunan;
-    if (!fungsiBangunan._id) {
-      tempFungsiBangunan = await customFetch.post(
-        "/data-master/fungsi-bangunan",
-        {
-          category: fungsiBangunan.category,
-          indeks: fungsiBangunan.indeks,
-        }
-      );
+    let tempperaturan;
+    if (!peraturan._id) {
+      tempperaturan = await customFetch.post("/settings/peraturan", {
+        title: peraturan.title,
+        description: peraturan.description,
+        file: peraturan.file,
+      });
 
-      toast.message = tempFungsiBangunan.data.message;
+      toast.message = tempperaturan.data.message;
     } else {
-      tempFungsiBangunan = await customFetch.put(
-        "/data-master/fungsi-bangunan/" + fungsiBangunan._id,
+      tempperaturan = await customFetch.put(
+        "/settings/peraturan/" + peraturan._id,
         {
-          category: fungsiBangunan.category,
-          indeks: fungsiBangunan.indeks,
+          title: peraturan.title,
+          description: peraturan.description,
+          file: peraturan.file,
         }
       );
 
-      toast.message = tempFungsiBangunan.data.message;
+      toast.message = tempperaturan.data.message;
     }
-    if (tempFungsiBangunan) {
+    if (tempperaturan) {
       clearInput();
-      allFungsiBangunan();
+      allperaturan();
       toast.title = "Berhasil";
       isToast.value = true;
 
@@ -347,18 +365,6 @@ const handleSubmit = async () => {
 };
 
 onMounted(() => {
-  allFungsiBangunan();
+  allperaturan();
 });
-
-// const FungsiBangunan = reactive([
-//   { name: "Hunian (< 100 m2 dan < 2 lantai)", value: 0.15 },
-//   { name: "Hunian (> 100 m2 dan > 2 lantai)", value: 0.17 },
-//   { name: "Keagamaan", value: 0 },
-//   { name: "Usaha", value: 0.7 },
-//   { name: "Usaha UMKM", value: 0.5 },
-//   { name: "Sosial & Budaya", value: 0.3 },
-//   { name: "Khusus", value: 1 },
-//   { name: "Ganda/Campuran (≤ 500 m2 dan ≤ 2 lantai)", value: 0.6 },
-//   { name: "Ganda/Campuran (> 500 m2 dan > 2 lantai)", value: 0.8 },
-// ]);
 </script>
