@@ -152,7 +152,7 @@
                         class="mt-4"
                         @close="errorAlert = false"
                       />
-                      <div class="mt-6 space-y-3">
+                      <div class="mt-6 space-y-3 mx-4">
                         <div>
                           <label
                             for="kategori"
@@ -191,7 +191,7 @@
                     </div>
                   </div>
                   <div
-                    class="mt-5 sm:mt-8 sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-3"
+                    class="mt-6 space-y-3mt-5 sm:mt-8 sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-3 mx-4"
                   >
                     <button
                       type="submit"

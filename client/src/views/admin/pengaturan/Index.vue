@@ -10,23 +10,26 @@
         <div class="overflow-hidden">
           <div class="border-b border-gray-200">
             <nav class="-mb-px flex space-x-8">
-              <a
+              <button
                 v-for="tab in tabs"
-                :key="tab.name"
-                :href="tab.href"
+                :key="tab"
+                @click="handleTab(tab)"
                 :class="[
-                  tab.current
+                  tab === currentTab
                     ? 'border-primary text-secondary'
                     : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700',
                   'whitespace-nowrap border-b-2 px-1 py-4 text-sm font-medium',
                 ]"
-                >{{ tab.name }}</a
               >
+                {{ tab }}
+              </button>
             </nav>
           </div>
         </div>
 
-        <!-- Description list with inline editing -->
+        <div>
+          <TheFilePeraturan v-if="currentTab === 'File Peraturan'" />
+        </div>
       </div>
     </div>
   </div>
@@ -34,12 +37,19 @@
 
 <script setup>
 import { ref } from "vue";
+import TheFilePeraturan from "@/components/partials/pengaturan/TheFilePeraturan.vue";
 const tabs = [
-  { name: "Hero", href: "#", current: true },
-  { name: "File Peraturan", href: "#", current: false },
-  { name: "Logo", href: "#", current: false },
-  { name: "Sosial Media", href: "#", current: false },
-  { name: "Kontak", href: "#", current: false },
-  { name: "Tautan", href: "#", current: false },
+  "Hero",
+  "File Peraturan",
+  "Logo",
+  "Sosial Media",
+  "Kontak",
+  "Tautan",
 ];
+
+let currentTab = ref("File Peraturan");
+
+const handleTab = (tab) => {
+  currentTab.value = tab;
+};
 </script>
