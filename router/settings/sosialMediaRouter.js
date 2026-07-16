@@ -16,10 +16,10 @@ const router = express.Router();
 router.post("/", authMiddleware, CreateSosialMedia);
 
 // GET ALL
-router.get("/", authMiddleware, AllSosialMedia);
+router.get("/", AllSosialMedia);
 
 // GET DETAIL
-router.get("/:id", authMiddleware, DetailSosialMedia);
+router.get("/:id", DetailSosialMedia);
 
 // UPDATE
 router.put("/:id", authMiddleware, UpdateSosialMedia);

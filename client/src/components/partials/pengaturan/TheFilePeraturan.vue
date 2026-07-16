@@ -204,6 +204,9 @@
                               @change="handleFileChange"
                             />
                           </div>
+                          <p class="text-xs text-gray-600 italic">
+                            Ukuran file maksimal 2 MB
+                          </p>
                         </div>
                       </div>
                     </div>

@@ -16,10 +16,10 @@ const router = express.Router();
 router.post("/", authMiddleware, CreatePengaturan);
 
 // GET ALL
-router.get("/", authMiddleware, AllPengaturan);
+router.get("/", AllPengaturan);
 
 // GET DETAIL
-router.get("/:id", authMiddleware, DetailPengaturan);
+router.get("/:id", DetailPengaturan);
 
 // UPDATE
 router.put("/:id", authMiddleware, UpdatePengaturan);

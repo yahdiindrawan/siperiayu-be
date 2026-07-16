@@ -38,7 +38,13 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-const uploadFile = multer({ storage: fileStorage, fileFilter }).single("file");
+const uploadFile = multer({
+  storage: fileStorage,
+  fileFilter,
+  limits: {
+    fileSize: 2 * 1024 * 1024,
+  },
+}).single("file");
 
 const router = express.Router();
 
@@ -46,10 +52,10 @@ const router = express.Router();
 router.post("/", uploadFile, authMiddleware, CreatePeraturan);
 
 // get /api/v1/settings/peraturan
-router.get("/", authMiddleware, AllPeraturan);
+router.get("/", AllPeraturan);
 
 // get /api/v1/settings/peraturan/:id
-router.get("/:id", authMiddleware, DetailPeraturan);
+router.get("/:id", DetailPeraturan);
 
 // put /api/v1/settings/peraturan
 router.put("/:id", uploadFile, authMiddleware, UpdatePeraturan);
