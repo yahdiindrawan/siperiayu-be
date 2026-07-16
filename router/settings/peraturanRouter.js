@@ -7,23 +7,7 @@ import {
   UpdatePeraturan,
   DeletePeraturan,
 } from "../../controllers/settings/peraturanController.js";
-import {
-  authMiddleware,
-  permissionUser,
-} from "../../middleware/authMiddleware.js";
-
-const fileStorage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    if (file.mimetype === "application/pdf") {
-      cb(null, "files");
-    } else {
-      cb(null, "images");
-    }
-  },
-  filename: (req, file, cb) => {
-    cb(null, new Date().getTime() + "-" + file.originalname);
-  },
-});
+import { authMiddleware } from "../../middleware/authMiddleware.js";
 
 const fileFilter = (req, file, cb) => {
   if (
@@ -34,33 +18,24 @@ const fileFilter = (req, file, cb) => {
   ) {
     cb(null, true);
   } else {
-    cb(null, false);
+    cb(new Error("Format file tidak didukung"), false);
   }
 };
 
 const uploadFile = multer({
-  storage: fileStorage,
+  storage: multer.memoryStorage(), // ← berubah dari diskStorage
   fileFilter,
   limits: {
-    fileSize: 2 * 1024 * 1024,
+    fileSize: 2 * 1024 * 1024, // tetap bisa dibatasi 2 MB
   },
 }).single("file");
 
 const router = express.Router();
 
-// post /api/v1/settings/peraturan
-router.post("/", uploadFile, authMiddleware, CreatePeraturan);
-
-// get /api/v1/settings/peraturan
+router.post("/", authMiddleware, uploadFile, CreatePeraturan);
 router.get("/", AllPeraturan);
-
-// get /api/v1/settings/peraturan/:id
 router.get("/:id", DetailPeraturan);
-
-// put /api/v1/settings/peraturan
-router.put("/:id", uploadFile, authMiddleware, UpdatePeraturan);
-
-// delete /api/v1/settings/peraturan
+router.put("/:id", authMiddleware, uploadFile, UpdatePeraturan);
 router.delete("/:id", authMiddleware, DeletePeraturan);
 
 export default router;
