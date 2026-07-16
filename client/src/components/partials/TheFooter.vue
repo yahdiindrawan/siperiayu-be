@@ -37,7 +37,7 @@
               SIMBG
             </a>
             <a
-              href="https://wa.me/+6287841401022"
+              :href="whatsappLink ?? 'https://wa.me/+6287841401022'"
               target="_blank"
               class="flex items-center"
             >
@@ -91,7 +91,9 @@
           </h5>
           <div class="flex space-x-2 lg:justify-around py-4 text-lg mx-auto">
             <a
-              href="https://www.instagram.com/dpupr.indramayu/"
+              :href="
+                instagramLink ?? 'https://www.instagram.com/dpupr.indramayu/'
+              "
               target="_blank"
               class="flex items-center transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-100 duration-300"
             >
@@ -102,7 +104,9 @@
               />
             </a>
             <a
-              href="https://www.facebook.com/dinaspuprindramayu"
+              :href="
+                facebookLink ?? 'https://www.facebook.com/dinaspuprindramayu'
+              "
               target="_blank"
               class="flex items-center transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-100 duration-300"
             >
@@ -113,7 +117,7 @@
               />
             </a>
             <a
-              href="https://x.com/IndramayuPupr"
+              :href="xLink ?? 'https://x.com/IndramayuPupr'"
               target="_blank"
               class="flex items-center transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-100 duration-300"
             >
@@ -138,12 +142,37 @@
     </div>
   </footer>
 </template>
-
-<script>
+<script setup>
+import { onMounted, ref } from "vue";
 import TheLogo from "@/components/partials/TheLogo.vue";
-export default {
-  components: {
-    TheLogo,
-  },
+import customFetch from "@/api";
+
+const dataSosialMedia = ref(null);
+const instagramLink = ref(null);
+const xLink = ref(null);
+const facebookLink = ref(null);
+const whatsappLink = ref(null);
+
+const allSosialMedia = async () => {
+  try {
+    const { data } = await customFetch.get("/settings/sosial-media");
+    dataSosialMedia.value = data.data;
+    instagramLink.value = data.data.find(
+      (item) => item.name === "Instagram",
+    )?.url;
+    xLink.value = data.data.find((item) => item.name === "X")?.url;
+    facebookLink.value = data.data.find(
+      (item) => item.name === "Facebook",
+    )?.url;
+    whatsappLink.value = data.data.find(
+      (item) => item.name === "Whatsapp",
+    )?.url;
+  } catch (error) {
+    console.log(error);
+  }
 };
+
+onMounted(async () => {
+  await allSosialMedia();
+});
 </script>
