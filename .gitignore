@@ -6,8 +6,12 @@ dist-ssr
 coverage
 *.local
 
+
 # local env files
 .env*.local
+.env
+files/
+images/
 
 # lock file
 *.lock
