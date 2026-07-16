@@ -67,7 +67,7 @@
               </td>
               <td class="px-3 py-4 text-sm text-gray-500">
                 <a
-                  :href="BASEAPI_URL + '/' + data.file"
+                  :href="'/storage/' + data.file"
                   target="_blank"
                   class="underline"
                   >Lihat Data</a
@@ -256,7 +256,6 @@ import {
 import { CAlert, CToast, CLoadingSpinner } from "@/components/base";
 import customFetch from "@/api";
 
-const BASEAPI_URL = import.meta.env.VITE_BASEAPI_URL;
 const isModal = ref(false);
 const isToast = ref(false);
 const errorMessage = ref("");

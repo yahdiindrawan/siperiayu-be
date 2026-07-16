@@ -428,8 +428,7 @@
                 peraturan yang berlaku saat ini.
                 <a
                   :href="
-                    BASEAPI_URL +
-                      '/' +
+                    '/storage/' +
                       dataPeraturan?.find((item) => item.title === 'SHST')
                         ?.file ?? '/perbup641-2024.pdf'
                   "
@@ -664,10 +663,9 @@
               }}
               <a
                 :href="
-                  BASEAPI_URL +
-                    '/' +
+                  '/storage/' +
                     dataPeraturan?.find((item) => item.title === 'PP')?.file ??
-                  '/pp16-2021.pdf'
+                  '/perbup641-2024.pdf'
                 "
                 target="_blank"
                 class="hover:underline text-blue-600"
@@ -963,7 +961,11 @@
               Satuan Prasarana Bangunan Gedung menggunakan SHST sesuai peraturan
               yang berlaku saat ini.
               <a
-                href="/perbup641-2024.pdf"
+                :href="
+                  '/storage/' +
+                    dataPeraturan?.find((item) => item.title === 'SHST')
+                      ?.file ?? '/perbup641-2024.pdf'
+                "
                 target="_blank"
                 class="hover:underline text-blue-600"
                 >Klik disini</a
@@ -1110,11 +1112,15 @@
               </div>
             </div>
             <div class="p-4 text-sm italic">
-              *Perhitungan retribusi ini berdasarkan Peraturan Pemerintah No.16
-              Tahun 2021 tentang Peraturan Pelaksanaan Undang-Undang Nomor 28
-              Tahun 2002 tentang Bangunan Gedung.
+              *{{
+                dataPeraturan?.find((item) => item.title === "PP")?.description
+              }}
               <a
-                href="/pp16-2021.pdf"
+                :href="
+                  '/storage/' +
+                    dataPeraturan?.find((item) => item.title === 'PP')?.file ??
+                  '/pp16-2021.pdf'
+                "
                 target="_blank"
                 class="hover:underline text-blue-600"
                 >Klik disini</a
@@ -1506,7 +1512,6 @@ import {
   DialogTitle,
 } from "@headlessui/vue";
 import customFetch from "@/api";
-const BASEAPI_URL = import.meta.env.VITE_BASEAPI_URL;
 
 const isOpen = ref(false);
 const dataFungsiBangunan = ref(null);

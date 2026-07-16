@@ -1,11 +1,6 @@
-import path from "path";
-import fs from "fs";
-import { fileURLToPath } from "url";
 import Peraturan from "../../models/settings/Peraturan.js";
 import asyncHandler from "../../middleware/asyncHandler.js";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+import { deleteFile, uploadFile } from "../../utils/blob.js";
 
 export const CreatePeraturan = asyncHandler(async (req, res) => {
   if (!req.file) {
@@ -14,11 +9,11 @@ export const CreatePeraturan = asyncHandler(async (req, res) => {
     });
   }
   const { title, description } = req.body;
-  const file = req.file.path;
+  const file = await uploadFile(req.file);
   const newPeraturan = await Peraturan.create({
     title,
     description,
-    file,
+    file: file.pathname,
   });
 
   return res.status(200).json({
@@ -69,8 +64,8 @@ export const UpdatePeraturan = asyncHandler(async (req, res) => {
 
   let file;
   if (req.file) {
-    file = req.file.path;
-    removeFile(PeraturanData.file);
+    await deleteFile(PeraturanData.file);
+    const file = await uploadFile(req.file);
     PeraturanData.file = file;
   }
 
@@ -92,15 +87,10 @@ export const DeletePeraturan = asyncHandler(async (req, res) => {
       message: "Data tidak ditemukan",
     });
   }
-  removeFile(PeraturanData.file);
+  await deleteFile(PeraturanData.file);
   await Peraturan.findByIdAndDelete(id);
 
   return res.status(200).json({
     message: "Data berhasil dihapus",
   });
 });
-
-const removeFile = (filePath) => {
-  filePath = path.join(__dirname, "..", filePath);
-  fs.unlink(filePath, (err) => console.log(err));
-};
