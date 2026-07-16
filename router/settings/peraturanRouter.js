@@ -38,7 +38,13 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-const uploadFile = multer({ storage: fileStorage, fileFilter }).single("file");
+const uploadFile = multer({
+  storage: fileStorage,
+  fileFilter,
+  limits: {
+    fileSize: 2 * 1024 * 1024,
+  },
+}).single("file");
 
 const router = express.Router();
 
