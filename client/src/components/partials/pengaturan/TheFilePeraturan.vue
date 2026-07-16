@@ -197,7 +197,12 @@
                             File
                           </label>
                           <div class="mt-2">
-                            <input id="file" name="file" type="file" />
+                            <input
+                              id="file"
+                              name="file"
+                              type="file"
+                              @change="handleFileChange"
+                            />
                           </div>
                         </div>
                       </div>
@@ -246,9 +251,6 @@ import {
   TransitionRoot,
 } from "@headlessui/vue";
 import { CAlert, CToast, CLoadingSpinner } from "@/components/base";
-// import CAlert from "@/components/base/CAlert.vue";
-// import CLoadingSpinner from "@/components/base/CLoadingSpinner.vue";
-import { CheckIcon } from "@heroicons/vue/24/outline";
 import customFetch from "@/api";
 
 const BASEAPI_URL = import.meta.env.VITE_BASEAPI_URL;
@@ -280,6 +282,10 @@ const allperaturan = async () => {
   }
 };
 
+const handleFileChange = (e) => {
+  peraturan.file = e.target.files[0];
+};
+
 const clearInput = () => {
   isModal.value = false;
   peraturan._id = null;
@@ -307,7 +313,7 @@ const handleEdit = (data) => {
 const handleDelete = async (_id) => {
   try {
     const tempperaturan = await customFetch.delete(
-      "/settings/peraturan/" + _id
+      "/settings/peraturan/" + _id,
     );
     toast.message = tempperaturan.data.message;
     if (tempperaturan) {
@@ -328,22 +334,20 @@ const handleDelete = async (_id) => {
 const handleSubmit = async () => {
   try {
     let tempperaturan;
+    const formData = new FormData();
+
+    formData.append("title", peraturan.title);
+    formData.append("description", peraturan.description);
+    formData.append("file", peraturan.file);
+
     if (!peraturan._id) {
-      tempperaturan = await customFetch.post("/settings/peraturan", {
-        title: peraturan.title,
-        description: peraturan.description,
-        file: peraturan.file,
-      });
+      tempperaturan = await customFetch.post("/settings/peraturan", formData);
 
       toast.message = tempperaturan.data.message;
     } else {
       tempperaturan = await customFetch.put(
         "/settings/peraturan/" + peraturan._id,
-        {
-          title: peraturan.title,
-          description: peraturan.description,
-          file: peraturan.file,
-        }
+        formData,
       );
 
       toast.message = tempperaturan.data.message;

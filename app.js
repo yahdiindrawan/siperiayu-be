@@ -25,6 +25,8 @@ import prasaranaRouter from "./router/kalkulator/prasaranaRouter.js";
 // Settings Router
 import heroRouter from "./router/settings/heroRouter.js";
 import peraturanRouter from "./router/settings/peraturanRouter.js";
+import sosialMediaRouter from "./router/settings/sosialMediaRouter.js";
+import pengaturanRouter from "./router/settings/pengaturanRouter.js";
 
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
@@ -95,7 +97,7 @@ app.use("/api/v1/indeks/indeks-lokalitas", IndeksLokalitasRouter);
 app.use("/api/v1/indeks/indeks-bg-terbangun", IndeksBGTerbangunRouter);
 app.use(
   "/api/v1/indeks/indeks-bg-terbangun-prasarana",
-  IndeksBGTerbangunPrasaranaRouter
+  IndeksBGTerbangunPrasaranaRouter,
 );
 // kalkulator
 app.use("/api/v1/kalkulator/klasifikasi", klasifikasiRouter);
@@ -103,6 +105,8 @@ app.use("/api/v1/kalkulator/prasarana", prasaranaRouter);
 // settings
 app.use("/api/v1/settings/hero", heroRouter);
 app.use("/api/v1/settings/peraturan", peraturanRouter);
+app.use("/api/v1/settings/sosial-media", sosialMediaRouter);
+app.use("/api/v1/settings/pengaturan", pengaturanRouter);
 
 app.use(notFound);
 app.use(errorHandler);
@@ -112,9 +116,9 @@ app.use(errorHandler);
 // });
 
 //Connection DB
-// mongoose.connect(process.env.DATABASE, {}).then(() => {
-//   console.log("Database connect");
-// });
+mongoose.connect(process.env.DATABASE, {}).then(() => {
+  console.log("Database connect");
+});
 
 if (
   process.env.VERCEL_ENV !== "production" &&

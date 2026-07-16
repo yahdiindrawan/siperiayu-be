@@ -75,7 +75,7 @@
             Kalkulator
           </router-link>
           <a
-            href="https://wa.me/+6287841401022"
+            :href="whatsappLink ?? 'https://wa.me/+6287841401022'"
             target="_blank"
             class="flex items-center text-sm md:text-base hover:opacity-90 hover:text-primary transition ease-in-out delay-150 hover:-translate-y-0.5 hover:scale-100 duration-300"
           >
@@ -112,7 +112,7 @@
           >Kalkulator</router-link
         >
         <a
-          href="https://wa.me/+6287841401022"
+          :href="whatsappLink ?? 'https://wa.me/+6287841401022'"
           target="_blank"
           class="block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700"
           >Hubungi Kami</a
@@ -132,8 +132,12 @@ import {
   MenuItem,
   MenuItems,
 } from "@headlessui/vue";
-import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/vue/24/outline";
-import { onMounted, reactive } from "vue";
+import { Bars3Icon, XMarkIcon } from "@heroicons/vue/24/outline";
+import { onMounted, reactive, ref } from "vue";
+import customFetch from "@/api";
+
+const dataSosialMedia = ref(null);
+const whatsappLink = ref(null);
 
 const view = reactive({
   atTopOfPage: true,
@@ -146,7 +150,20 @@ const handleScroll = () => {
     if (!view.atTopOfPage) view.atTopOfPage = true;
   }
 };
-onMounted(() => {
+
+const allSosialMedia = async () => {
+  try {
+    const { data } = await customFetch.get("/settings/sosial-media");
+    dataSosialMedia.value = data.data;
+    whatsappLink.value = data.data.find(
+      (item) => item.name === "Whatsapp",
+    )?.url;
+  } catch (error) {
+    console.log(error);
+  }
+};
+onMounted(async () => {
   window.addEventListener("scroll", handleScroll);
+  await allSosialMedia();
 });
 </script>

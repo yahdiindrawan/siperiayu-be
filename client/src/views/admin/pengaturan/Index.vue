@@ -29,6 +29,8 @@
 
         <div>
           <TheFilePeraturan v-if="currentTab === 'File Peraturan'" />
+          <TheSosialMedia v-if="currentTab === 'Kontak'" />
+          <TheData v-if="currentTab === 'Set Data'" />
         </div>
       </div>
     </div>
@@ -38,14 +40,9 @@
 <script setup>
 import { ref } from "vue";
 import TheFilePeraturan from "@/components/partials/pengaturan/TheFilePeraturan.vue";
-const tabs = [
-  "Hero",
-  "File Peraturan",
-  "Logo",
-  "Sosial Media",
-  "Kontak",
-  "Tautan",
-];
+import TheSosialMedia from "@/components/partials/pengaturan/TheSosialMedia.vue";
+import TheData from "@/components/partials/pengaturan/TheData.vue";
+const tabs = ["File Peraturan", "Kontak", "Set Data"];
 
 let currentTab = ref("File Peraturan");
 
